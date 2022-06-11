@@ -1,0 +1,11 @@
+{
+  "author": "Jimmy chu <jimmychu0807@gmail.com>",
+  "description": "@aoc-2021 Utilities",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "name": "@aoc-2021/utils",
+  "packageManager": "yarn@3.2.1",
+  "repository": "https://github.com/jimmychu0807/advent-of-code-2021/packages/utils",
+  "type": "module",
+  "version": "0.0.1"
+}

@@ -1,0 +1,11 @@
+{
+  "author": "Jimmy chu <jimmychu0807@gmail.com>",
+  "description": "Day 01 - Sonar Sweep",
+  "license": "MIT",
+  "main": "src/SonarSweep.ts",
+  "name": "@aoc-2021/sonar-sweep",
+  "packageManager": "yarn@3.2.1",
+  "repository": "https://github.com/jimmychu0807/advent-of-code-2021/packages/01-sonar-sweep",
+  "type": "module",
+  "version": "0.0.1"
+}

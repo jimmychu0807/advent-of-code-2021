@@ -1,0 +1,20 @@
+{
+  "extends": "@tsconfig/node16-strictest-esm/tsconfig.json",
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "outDir": "./dist",
+    "sourceMap": true,
+    "types": ["mocha", "node"]
+  },
+  "references": [
+    { "path": "./packages/01-sonar-sweep" },
+    { "path": "./packages/utils" }
+  ],
+  "ts-node": {
+    "esm": true
+  }
+}
