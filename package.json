@@ -1,0 +1,14 @@
+{
+  "name": "advent-of-code-2021",
+  "version": "0.0.1",
+  "description": "Advent of Code 2021",
+  "main": "index.js",
+  "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
+  "author": "Jimmy chu <jimmychu0807@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
+  }
+}
