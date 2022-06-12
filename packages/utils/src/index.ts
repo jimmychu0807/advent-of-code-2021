@@ -16,4 +16,9 @@ function readInput(path: string, opts: ReadInputOpts): string[] | number[] {
   return buffer.map((l) => Number(l))
 }
 
-export { readInput }
+// Type guard
+function isNotNullOrUndefined<T>(input: T | null | undefined): input is T {
+  return input != null
+}
+
+export { readInput, isNotNullOrUndefined }

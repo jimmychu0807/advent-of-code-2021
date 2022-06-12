@@ -1,4 +1,12 @@
-type TwoValTuple = [number, number | undefined]
+import { isNotNullOrUndefined } from '@aoc-2021/utils'
+
+interface CountDeltaType {
+  increasing: number
+  noChange: number
+  decreasing: number
+}
+
+type TwoValTuple = [CountDeltaType, number | undefined]
 
 class SonarSweep {
   input: number[]
@@ -7,20 +15,34 @@ class SonarSweep {
     this.input = input
   }
 
-  countIncreasing(): number {
-    // Count the increasing depth from the input.
+  count(windowWidth = 1): CountDeltaType {
+    // Grouping input into the window
+    const datInWindow = this.input
+      .map((_val, ind, arr) => {
+        if (ind + 1 >= arr.length) return null
+        return arr.slice(ind, ind + windowWidth).reduce((memo, val) => memo + val, 0)
+      })
+      .filter(isNotNullOrUndefined)
+
+    // Count the delta of depth from the input.
     // If the currentVal is larger than the prevVal, increment by 1.
     // memo[0] stores the cnt, memo[1] stores the previous value to be passed to the next call
-    const result = this.input.reduce(
-      (memo, val): TwoValTuple => {
-        if (typeof memo[1] === 'undefined') return [0, val]
-        if (val > memo[1]) return [(memo[0] as number) + 1, val]
-        return [memo[0], val]
+    const result = datInWindow.reduce(
+      ([cntObj, prev], current): TwoValTuple => {
+        if (typeof prev === 'undefined') return [cntObj, current] as TwoValTuple
+
+        if (current > prev) {
+          return [Object.assign(cntObj, { increasing: cntObj.increasing + 1 }), current]
+        } else if (current < prev) {
+          return [Object.assign(cntObj, { decreasing: cntObj.decreasing + 1 }), current]
+        } else {
+          return [Object.assign(cntObj, { noChange: cntObj.noChange + 1 }), current]
+        }
       },
-      [0, undefined] as TwoValTuple
+      [{ increasing: 0, noChange: 0, decreasing: 0 }, undefined] as TwoValTuple
     )
 
-    return result[0] as number
+    return result[0]
   }
 }
 
