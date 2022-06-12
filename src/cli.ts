@@ -3,12 +3,13 @@ import { Command } from 'commander'
 import { readInput } from '@aoc-2021/utils'
 import SonarSweep from '@aoc-2021/sonar-sweep'
 
-// cli sonar-sweep -i packages/01-sonar-sweep/input/input.dat
+// Read the current version
+const version = process.env['npm_package_version'] || '0.0.0'
 
 const program = new Command()
   .name('@aoc-2021/cli')
   .description('Running Advent of Code 2021')
-  .version('0.0.1')
+  .version(version)
 
 program
   .command('sonar-sweep')

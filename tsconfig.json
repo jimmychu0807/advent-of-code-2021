@@ -5,6 +5,7 @@
   "compilerOptions": {
     "declaration": true,
     "declarationMap": true,
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "outDir": "./dist",
     "sourceMap": true,
