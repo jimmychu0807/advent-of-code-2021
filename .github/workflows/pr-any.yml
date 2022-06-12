@@ -1,0 +1,16 @@
+name: Yarn Validate
+on: [pull_request]
+
+jobs:
+  yarn-validate:
+    strategy:
+      matrix:
+        step: ['validate']
+    name: ${{ matrix.step }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: ${{ matrix.step }}
+      run: |
+        yarn install --immutable | grep -v 'YN0013'
+        yarn ${{ matrix.step }}

@@ -17,8 +17,11 @@ program
   .action((options) => {
     const input = readInput(options.input, { type: 'number' }) as number[]
     const ss = new SonarSweep(input)
-    const result = ss.countIncreasing()
-    console.log(`The result is: ${result}.`)
+    const result1 = ss.count()
+    console.log('Part I result is:', result1)
+
+    const result2 = ss.count(3)
+    console.log('Part II result is:', result2)
   })
 
 program.parse()
