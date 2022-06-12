@@ -17,7 +17,8 @@
     "clean": "rm -rf ./dist",
     "lint:all": "tsc --build && eslint 'packages/*/**/*.ts' 'src/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'packages/*/**/*.ts' 'src/**/*.ts'",
     "test:all": "mocha 'packages/*/tests/**/*.ts'",
-    "validate": "yarn build && yarn lint:all && yarn test:all"
+    "validate": "yarn build && yarn lint:all && yarn test:all",
+    "docs:serve": "yarn docsify serve docs"
   },
   "dependencies": {
     "commander": "^9.3.0"
@@ -28,6 +29,7 @@
     "@types/node": "^16",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
+    "docsify-cli": "^4.4.4",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
     "lerna": "^5.1.1",
