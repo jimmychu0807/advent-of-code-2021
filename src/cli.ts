@@ -5,7 +5,7 @@ import SonarSweep from '@aoc-2021/sonar-sweep'
 
 // cli sonar-sweep -i packages/01-sonar-sweep/input/input.dat
 
-let program = new Command()
+const program = new Command()
   .name('@aoc-2021/cli')
   .description('Running Advent of Code 2021')
   .version('0.0.1')
