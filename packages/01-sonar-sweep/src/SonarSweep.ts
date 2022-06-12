@@ -17,12 +17,7 @@ class SonarSweep {
 
   count(windowWidth = 1): CountDeltaType {
     // Grouping input into the window
-    const datInWindow = this.input
-      .map((_val, ind, arr) => {
-        if (ind + 1 >= arr.length) return null
-        return arr.slice(ind, ind + windowWidth).reduce((memo, val) => memo + val, 0)
-      })
-      .filter(isNotNullOrUndefined)
+    const datInWindow = this.inputGroupByWindow(windowWidth)
 
     // Count the delta of depth from the input.
     // If the currentVal is larger than the prevVal, increment by 1.
@@ -44,6 +39,17 @@ class SonarSweep {
 
     return result[0]
   }
+
+  private inputGroupByWindow(windowWidth: number): number[] {
+    const data = this.input
+      .map((_val, ind, arr) => {
+        if (ind + windowWidth > arr.length) return null
+        return arr.slice(ind, ind + windowWidth).reduce((memo, val) => memo + val, 0)
+      })
+      .filter(isNotNullOrUndefined)
+
+    return data
+  }
 }
 
-export default SonarSweep
+export { SonarSweep as default, SonarSweep, CountDeltaType }

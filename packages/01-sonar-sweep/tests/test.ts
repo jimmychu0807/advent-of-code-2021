@@ -1,29 +1,59 @@
-import * as assert from "assert"
-import SonarSweep from '../src/SonarSweep';
+import { strict as assert } from 'node:assert'
+import { SonarSweep, CountDeltaType } from '../src/SonarSweep'
+
+function cntObjHelper(obj?: unknown): CountDeltaType {
+  const res = { increasing: 0, noChange: 0, decreasing: 0 }
+
+  if (!obj) return res
+
+  const newEl = {
+    increasing: (obj as CountDeltaType).increasing ?? 0,
+    noChange: (obj as CountDeltaType).noChange ?? 0,
+    decreasing: (obj as CountDeltaType).decreasing ?? 0
+  }
+
+  return Object.assign(res, newEl)
+}
 
 describe('SonarSweep test', () => {
-  it('should returns 0 for empty input', () => {
+  it('test for empty input', () => {
     const ss = new SonarSweep([])
-    assert.equal(ss.count(), 0, "empty array should returns 0.")
+    console.log(ss.count())
+    console.log(cntObjHelper())
+
+    assert.deepEqual(ss.count(), cntObjHelper(), 'empty array should returns 0.')
   })
 
-  it('should returns 0 for single input', () => {
+  it('test for single input', () => {
     const ss = new SonarSweep([100])
-    assert.equal(ss.count(), 0, "empty array should returns 0.")
+    assert.deepEqual(ss.count(), cntObjHelper(), 'empty array should returns 0.')
   })
 
-  it('should return 1 in simple case', () => {
+  it('test for a single increasing case', () => {
     const ss = new SonarSweep([100, 101])
-    assert.equal(ss.count(), 1, "empty array should returns 0.")
+    assert.deepEqual(ss.count(), cntObjHelper({ increasing: 1 }), 'empty array should returns 0.')
   })
 
-  it('should return 0 in simple case', () => {
+  it('test for a single decreasing case', () => {
     const ss = new SonarSweep([100, 99])
-    assert.equal(ss.count(), 0, "empty array should returns 0.")
+    assert.deepEqual(ss.count(), cntObjHelper({ decreasing: 1 }), 'empty array should returns 0.')
   })
 
-  it('should return 3 in a more complex case', () => {
+  it('test for a complex case with 1 window width', () => {
     const ss = new SonarSweep([100, 99, 100, 101, 105, 100, 98])
-    assert.equal(ss.count(), 3, "empty array should returns 0.")
+    assert.deepEqual(
+      ss.count(),
+      cntObjHelper({ increasing: 3, decreasing: 3 }),
+      'empty array should returns 0.'
+    )
+  })
+
+  it('test for a complex case with 3 window width', () => {
+    const ss = new SonarSweep([100, 99, 100, 101, 105, 100, 98])
+    assert.deepEqual(
+      ss.count(3),
+      cntObjHelper({ increasing: 2, noChange: 1, decreasing: 1 }),
+      'empty array should returns 0.'
+    )
   })
 })
