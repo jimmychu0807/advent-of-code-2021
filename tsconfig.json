@@ -13,6 +13,7 @@
   },
   "references": [
     { "path": "./packages/01-sonar-sweep" },
+    { "path": "./packages/cli" },
     { "path": "./packages/utils" }
   ],
   "ts-node": {

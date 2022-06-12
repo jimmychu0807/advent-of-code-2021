@@ -12,16 +12,13 @@
     "packages/*"
   ],
   "scripts": {
-    "main": "ts-node src/cli.ts",
+    "main": "ts-node packages/cli/src/cli.ts",
     "build": "yarn clean && tsc --build",
     "clean": "rm -rf ./dist",
-    "lint:all": "tsc --build && eslint 'packages/*/**/*.ts' 'src/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'packages/*/**/*.ts' 'src/**/*.ts'",
-    "test:all": "mocha 'packages/*/tests/**/*.ts'",
-    "validate": "yarn build && yarn lint:all && yarn test:all",
+    "lint": "tsc --build && eslint 'packages/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'packages/**/*.ts'",
+    "test": "mocha 'packages/*/tests/**/*.ts'",
+    "validate": "yarn build && yarn lint && yarn test",
     "docs:serve": "yarn docsify serve docs"
-  },
-  "dependencies": {
-    "commander": "^9.3.0"
   },
   "devDependencies": {
     "@tsconfig/node16-strictest-esm": "^1.0.2",

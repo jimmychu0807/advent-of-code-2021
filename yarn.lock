@@ -5,6 +5,14 @@ __metadata:
   version: 6
   cacheKey: 8
 
+"@aoc-2021/cli@workspace:packages/cli":
+  version: 0.0.0-use.local
+  resolution: "@aoc-2021/cli@workspace:packages/cli"
+  dependencies:
+    commander: ^9.3.0
+  languageName: unknown
+  linkType: soft
+
 "@aoc-2021/root@workspace:.":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/root@workspace:."
@@ -14,7 +22,6 @@ __metadata:
     "@types/node": ^16
     "@typescript-eslint/eslint-plugin": ^5.27.1
     "@typescript-eslint/parser": ^5.27.1
-    commander: ^9.3.0
     docsify-cli: ^4.4.4
     eslint: ^8.17.0
     eslint-config-prettier: ^8.5.0

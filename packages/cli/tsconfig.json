@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "esModuleInterop": true,
+    "outDir": "../../dist/packages/cli",
+    "sourceMap": true,
+    "types": ["mocha", "node"]
+  },
+  "extends": "@tsconfig/node16-strictest-esm/tsconfig.json",
+  "ts-node": {
+    "esm": true
+  }
+}

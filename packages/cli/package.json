@@ -1,0 +1,14 @@
+{
+  "author": "Jimmy chu <jimmychu0807@gmail.com>",
+  "name": "@aoc-2021/cli",
+  "description": "@aoc-2021/cli",
+  "license": "MIT",
+  "main": "src/cli.ts",
+  "packageManager": "yarn@3.2.1",
+  "repository": "https://github.com/jimmychu0807/advent-of-code-2021/packages/cli",
+  "type": "module",
+  "version": "0.0.0",
+  "dependencies": {
+    "commander": "^9.3.0"
+  }
+}
