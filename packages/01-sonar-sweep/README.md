@@ -1,6 +1,7 @@
-# Day 1: Sonar Sweep
+# Day 01 - Sonar Sweep
 
-src: <https://adventofcode.com/2021/day/1>
+- [Original problem statement](https://adventofcode.com/2021/day/1)
+- [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/packages/01-sonar-sweep)
 
 You're minding your own business on a ship at sea when the overboard alarm goes off! You rush to see if you can help. Apparently, one of the Elves tripped and accidentally sent the sleigh keys flying into the ocean!
 
@@ -52,7 +53,7 @@ How many measurements are larger than the previous measurement?
 
 Your puzzle answer was `1448`.
 
-## Part Two
+## Part Two :id=day-01-sonar-sweep-part-2
 
 Considering every single measurement isn't as useful as you expected: there's just too much noise in the data.
 
