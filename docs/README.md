@@ -5,3 +5,4 @@
 This is my attempt on [Advent of Code 2021](https://adventofcode.com/2021) :rocket:
 
 [Day 01 - Sonar Sweep](/01-sonar-sweep.md)
+[Day 02 - Dive!](/02-dive.md)
