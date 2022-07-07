@@ -13,6 +13,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@aoc-2021/dive@workspace:packages/02-dive":
+  version: 0.0.0-use.local
+  resolution: "@aoc-2021/dive@workspace:packages/02-dive"
+  languageName: unknown
+  linkType: soft
+
 "@aoc-2021/root@workspace:.":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/root@workspace:."

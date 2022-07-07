@@ -1,0 +1,15 @@
+{
+  "author": "Jimmy Chu <jimmychu0807@gmail.com>",
+  "name": "@aoc-2021/dive",
+  "version": "0.0.1-alpha.1",
+  "description": "Day 02 - Dive!",
+  "homepage": "https://jimmychu0807.github.io/advent-of-code-2021/tree/main/packages/02-dive#readme",
+  "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
+  "license": "MIT",
+  "main": "src/Dive.ts",
+  "packageManager": "yarn@3.2.1",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  }
+}
