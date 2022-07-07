@@ -31,7 +31,6 @@ describe('Dive test', () => {
   })
 
   describe('aim / multiplication with aim mode', () => {
-
     it('test for empty input', () => {
       const dive = new Dive([])
       assert.deepEqual(dive.execute({ op: 'aim' }), [0, 0])
@@ -51,6 +50,5 @@ describe('Dive test', () => {
       const dive = new Dive(['down 5', 'down 3', 'forward 10'])
       assert.deepEqual(dive.execute({ op: 'aim' }), [10, 80])
     })
-
   })
 })
