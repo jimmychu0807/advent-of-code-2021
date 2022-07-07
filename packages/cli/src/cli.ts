@@ -34,6 +34,9 @@ program
     const dive = new Dive(input)
     const result1 = dive.execute({ op: 'multiplication' })
     console.log('Part I result is:', result1)
+
+    const result2 = dive.execute({ op: 'aimWithMultiplication' })
+    console.log('Part II result is:', result2)
   })
 
 program.parse()
