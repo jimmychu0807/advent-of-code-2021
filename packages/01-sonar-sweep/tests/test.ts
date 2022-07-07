@@ -2,17 +2,13 @@ import { strict as assert } from 'node:assert'
 import { SonarSweep, CountDeltaType } from '../src/SonarSweep'
 
 function cntObjHelper(obj?: unknown): CountDeltaType {
-  const res = { increasing: 0, noChange: 0, decreasing: 0 }
+  if (!obj) return { increasing: 0, noChange: 0, decreasing: 0 }
 
-  if (!obj) return res
-
-  const newEl = {
+  return {
     increasing: (obj as CountDeltaType).increasing ?? 0,
     noChange: (obj as CountDeltaType).noChange ?? 0,
     decreasing: (obj as CountDeltaType).decreasing ?? 0
   }
-
-  return Object.assign(res, newEl)
 }
 
 describe('SonarSweep test', () => {
