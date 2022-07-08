@@ -1,5 +1,7 @@
 'use strict'
 
+type ZeroOrOneChar = '0' | '1'
+
 class BinaryDiagnostic {
   input: string[]
 
@@ -7,49 +9,76 @@ class BinaryDiagnostic {
     this.input = input
   }
 
-  powerConsumption(): number {
-    return this.gamma() * this.epsilon()
+  get powerConsumption(): number {
+    return this.gamma * this.epsilon
   }
 
-  gamma(): number {
+  get gamma(): number {
+    return this.concatDigitBy(this.getMostFreqDigitAt.bind(this))
+  }
+
+  get epsilon(): number {
+    return this.concatDigitBy(this.getLeastFreqDigitAt.bind(this))
+  }
+
+  private concatDigitBy(func: (input: string[], i: number) => ZeroOrOneChar): number {
     const len = this.input[0]?.length ?? 0
-    const result: number[] = []
+    let result = ''
 
     for (let i = 0; i < len; i++) {
-      result.push(this.getMostDigitAt(this.input, i))
+      result = result.concat(func(this.input, i))
     }
 
-    return this.arrBinaryToDecimal(result)
+    return this.binaryToDecimal(result)
   }
 
-  epsilon(): number {
+  get lifeSupportRating(): number {
+    return this.oxygenRating * this.co2Rating
+  }
+
+  get oxygenRating(): number {
+    return this.filterInputByDigitFunc(this.getMostFreqDigitAt.bind(this))
+  }
+
+  get co2Rating(): number {
+    return this.filterInputByDigitFunc(this.getLeastFreqDigitAt.bind(this))
+  }
+
+  private filterInputByDigitFunc(func: (input: string[], i: number) => ZeroOrOneChar): number {
+    let input = [...this.input]
+
     const len = this.input[0]?.length ?? 0
-    const result: number[] = []
 
     for (let i = 0; i < len; i++) {
-      result.push(1 - this.getMostDigitAt(this.input, i))
+      if (input.length <= 1) break
+
+      const digit = func(input, i)
+      input = input.filter((str) => digit === str.slice(i, i + 1))
     }
 
-    return this.arrBinaryToDecimal(result)
+    if (input.length > 1) {
+      throw new Error('Multiple value exists in oxygen rating.')
+    } else if (input.length === 0) {
+      throw new Error('No value exists in oxygen rating.')
+    }
+
+    return this.binaryToDecimal(input[0] as string)
   }
 
-  private getMostDigitAt(input: string[], ind: number): number {
+  private getMostFreqDigitAt(input: string[], ind: number): ZeroOrOneChar {
     const countOne = input.map((str) => str.slice(ind, ind + 1)).filter((val) => val === '1').length
-
     const countZero = input.length - countOne
-
-    return countOne > countZero ? 1 : 0
+    return countOne >= countZero ? '1' : '0'
   }
 
-  private arrBinaryToDecimal(arr: number[]): number {
-    let resInDecimal = 0
-    const len = arr.length
+  private getLeastFreqDigitAt(input: string[], ind: number): ZeroOrOneChar {
+    return this.getMostFreqDigitAt(input, ind) === '1' ? '0' : '1'
+  }
 
-    arr.forEach((val, ind) => {
-      resInDecimal += val * 2 ** (len - ind - 1)
-    })
-
-    return resInDecimal
+  private binaryToDecimal(input: string): number {
+    return input
+      .split('')
+      .reduce((mem, curr, ind) => mem + Number(curr) * 2 ** (input.length - ind - 1), 0)
   }
 }
 
