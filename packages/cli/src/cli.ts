@@ -3,6 +3,7 @@ import { Command } from 'commander'
 import { readInput } from '@aoc-2021/utils'
 import SonarSweep from '@aoc-2021/sonar-sweep'
 import Dive from '@aoc-2021/dive'
+import BinaryDiagnostic from '@aoc-2021/binary-diagnostic'
 
 // Read the package.json info
 const name = process.env['npm_package_name'] ?? ''
@@ -37,6 +38,17 @@ program
 
     const result2 = dive.execute({ op: 'aimWithMultiplication' })
     console.log('Part II result is:', result2)
+  })
+
+program
+  .command('binary-diagnostic')
+  .description('Day 03 - Binary Diagnostic')
+  .requiredOption('-i, --input <inputPath>', 'path to input data')
+  .action((options) => {
+    const input: string[] = readInput(options.input, { type: 'string' }) as string[]
+    const bd = new BinaryDiagnostic(input)
+    const result1 = bd.powerConsumption()
+    console.log('Part I result is:', result1)
   })
 
 program.parse()
