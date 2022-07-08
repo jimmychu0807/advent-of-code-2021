@@ -47,8 +47,11 @@ program
   .action((options) => {
     const input: string[] = readInput(options.input, { type: 'string' }) as string[]
     const bd = new BinaryDiagnostic(input)
-    const result1 = bd.powerConsumption()
+    const result1 = bd.powerConsumption
     console.log('Part I result is:', result1)
+
+    const result2 = bd.lifeSupportRating
+    console.log('Part II result is:', result2)
   })
 
 program.parse()
