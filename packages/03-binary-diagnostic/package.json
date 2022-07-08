@@ -1,0 +1,15 @@
+{
+  "name": "@aoc-2021/binary-diagnostic",
+  "version": "0.0.1-alpha.1",
+  "description": "Day 03 - Binary Diagnostic",
+  "author": "Jimmy Chu <jimmychu0807@gmail.com>",
+  "homepage": "https://jimmychu0807.github.io/advent-of-code-2021/tree/main/packages/03-binary-diagnostic#readme",
+  "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
+  "license": "MIT",
+  "main": "src/binary-diagnostic.ts",
+  "packageManager": "yarn@3.2.1",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -9,6 +9,7 @@ function readInput(path: string, opts: ReadInputOpts): string[] | number[] {
     .readFileSync(path, { encoding: 'utf-8' })
     .split('\n')
     .map((l) => l.trim())
+    .filter((l) => l !== '') // Discard all empty lines
 
   if (opts.type === 'string') return buffer
 

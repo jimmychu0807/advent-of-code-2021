@@ -5,6 +5,12 @@ __metadata:
   version: 6
   cacheKey: 8
 
+"@aoc-2021/binary-diagnostic@workspace:packages/03-binary-diagnostic":
+  version: 0.0.0-use.local
+  resolution: "@aoc-2021/binary-diagnostic@workspace:packages/03-binary-diagnostic"
+  languageName: unknown
+  linkType: soft
+
 "@aoc-2021/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/cli@workspace:packages/cli"
