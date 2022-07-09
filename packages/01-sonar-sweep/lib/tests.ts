@@ -11,7 +11,7 @@ function cntObjHelper(obj?: unknown): CountDeltaType {
   }
 }
 
-describe('Day 01 - SonarSweep test', () => {
+describe('Day 01 - Sonar Sweep', () => {
   it('test for empty input', () => {
     const ss = new SonarSweep([])
     assert.deepEqual(ss.count(), cntObjHelper(), 'empty array should returns 0.')

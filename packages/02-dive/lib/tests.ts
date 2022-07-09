@@ -1,7 +1,7 @@
 import { strict as assert } from 'node:assert'
 import { Dive } from './dive'
 
-describe('Day 02 - Dive test', () => {
+describe('Day 02 - Dive', () => {
   describe('noop / multiplication mode', () => {
     it('test for empty input', () => {
       const dive = new Dive([])

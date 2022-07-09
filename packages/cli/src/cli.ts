@@ -61,8 +61,8 @@ program
   .requiredOption('-i, --input <inputPath>', 'path to input data')
   .action((options) => {
     const gs = new GiantSquid(options.input)
-    console.log(gs.numberStream())
-    console.log(gs.boards())
+    console.log(gs.inputStream)
+    console.log(gs.boards)
   })
 
 program.parse()
