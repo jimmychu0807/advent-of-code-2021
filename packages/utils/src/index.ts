@@ -1,4 +1,6 @@
 import * as fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 interface ReadInputOpts {
   type: 'string' | 'number'
@@ -30,4 +32,10 @@ function isNotNullOrUndefined<T>(input: T | null | undefined): input is T {
   return input != null
 }
 
-export { readInput, isNotNullOrUndefined }
+function currentPathName(curr: string): [string, string] {
+  const __filename = fileURLToPath(curr)
+  const __dirname = path.dirname(__filename)
+  return [__filename, __dirname]
+}
+
+export { readInput, isNotNullOrUndefined, currentPathName }

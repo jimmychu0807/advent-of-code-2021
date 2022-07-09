@@ -2,6 +2,9 @@
 
 import { readInput } from '@aoc-2021/utils'
 
+type MarkedBoard = boolean[][]
+type WinningCondition = [number, MarkedBoard, number]
+
 class GiantSquid {
   private _inputStream: string
   private _boards: number[][][]
@@ -41,8 +44,10 @@ class GiantSquid {
     return this._inputStream
   }
 
-  public findWinningBoard(inputStream: string = this._inputStream): number | undefined {
-    const markedBoards: boolean[][][] = this.initMarkedBoards()
+  public findWinningBoardAndCondition(
+    inputStream: string = this._inputStream
+  ): WinningCondition | undefined {
+    const markedBoards: MarkedBoard[] = this.initMarkedBoards()
     const nums: number[] = inputStream.split(',').map((v) => Number(v.trim()))
 
     for (const num of nums) {
@@ -50,16 +55,20 @@ class GiantSquid {
         const pos = this.boardPositionFromNumber(board, num)
 
         if (pos) {
-          const row = (markedBoards[ind] as boolean[][])[pos[0]] as boolean[]
+          const row = markedBoards[ind]?.[pos[0]] as boolean[]
           row[pos[1]] = true
         }
       })
 
-      console.log(`after ${num}:`, markedBoards)
+      // note: key state for checking
+      //console.log(`after ${num}:`, markedBoards)
 
-      let boardAndInd = markedBoards.map((board, ind) => [board, ind] as [boolean[][], number])
-      boardAndInd = boardAndInd.filter(([board]) => this.isBoardWinning(board))
-      if (boardAndInd.length > 0) return (boardAndInd[0] as [boolean[][], number])[1]
+      let indAndBoard = markedBoards.map<[number, boolean[][]]>((board, ind) => [ind, board])
+      indAndBoard = indAndBoard.filter(([, board]) => this.isBoardWinning(board))
+      if (indAndBoard.length > 0) {
+        const [winningInd, markedBoard] = indAndBoard[0] as [number, boolean[][]]
+        return [winningInd, markedBoard, this.score(winningInd, markedBoard, num)]
+      }
     }
 
     return undefined
@@ -101,6 +110,17 @@ class GiantSquid {
     }
     return false
   }
+
+  protected score(winningInd: number, markedBoard: boolean[][], lastNum: number): number {
+    const winningBoard = this._boards[winningInd] as number[][]
+    const sum = (m: number, n: number) => m + n
+
+    const total = winningBoard
+      .map((row, y) => row.map((val, x) => (markedBoard[y]?.[x] ? 0 : val)).reduce(sum, 0))
+      .reduce(sum, 0)
+
+    return total * lastNum
+  }
 }
 
-export { GiantSquid as default, GiantSquid }
+export { GiantSquid as default, GiantSquid, WinningCondition }
