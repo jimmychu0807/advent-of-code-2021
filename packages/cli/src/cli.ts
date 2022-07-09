@@ -4,6 +4,7 @@ import { readInput } from '@aoc-2021/utils'
 import SonarSweep from '@aoc-2021/sonar-sweep'
 import Dive from '@aoc-2021/dive'
 import BinaryDiagnostic from '@aoc-2021/binary-diagnostic'
+import GiantSquid from '@aoc-2021/giant-squid'
 
 // Read the package.json info
 const name = process.env['npm_package_name'] ?? ''
@@ -52,6 +53,16 @@ program
 
     const result2 = bd.lifeSupportRating
     console.log('Part II result is:', result2)
+  })
+
+program
+  .command('giant-squid')
+  .description('Day 04 - Giant Squid')
+  .requiredOption('-i, --input <inputPath>', 'path to input data')
+  .action((options) => {
+    const gs = new GiantSquid(options.input)
+    console.log(gs.numberStream())
+    console.log(gs.boards())
   })
 
 program.parse()

@@ -1,5 +1,5 @@
 import { strict as assert } from 'node:assert'
-import { BinaryDiagnostic } from '../src/binary-diagnostic'
+import { BinaryDiagnostic } from './binary-diagnostic'
 
 const testInput = [
   '00100',
@@ -74,6 +74,5 @@ describe('Day 03 - Binary Diagnostic', () => {
       const bg = new BinaryDiagnostic(testInput)
       assert.strictEqual(bg.co2Rating, 10)
     })
-
   })
 })

@@ -15,7 +15,7 @@
     "clean": "rm -rf ./dist",
     "lint": "tsc --build && eslint 'packages/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'packages/**/*.ts'",
     "test": "mocha",
-    "test:all": "mocha 'packages/*/tests/**/*.ts'",
+    "test:all": "mocha 'packages/**/lib/tests.ts'",
     "validate": "yarn build && yarn lint && yarn test:all",
     "docs:serve": "yarn docsify serve docs"
   },

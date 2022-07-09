@@ -25,6 +25,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@aoc-2021/giant-squid@workspace:packages/04-giant-squid":
+  version: 0.0.0-use.local
+  resolution: "@aoc-2021/giant-squid@workspace:packages/04-giant-squid"
+  languageName: unknown
+  linkType: soft
+
 "@aoc-2021/root@workspace:.":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/root@workspace:."

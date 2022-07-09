@@ -1,5 +1,5 @@
 import { strict as assert } from 'node:assert'
-import { SonarSweep, CountDeltaType } from '../src/SonarSweep'
+import { SonarSweep, CountDeltaType } from './sonar-sweep'
 
 function cntObjHelper(obj?: unknown): CountDeltaType {
   if (!obj) return { increasing: 0, noChange: 0, decreasing: 0 }

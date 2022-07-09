@@ -6,7 +6,7 @@
   "homepage": "https://jimmychu0807.github.io/advent-of-code-2021/tree/main/packages/02-dive#readme",
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
   "license": "MIT",
-  "main": "src/Dive.ts",
+  "main": "lib/dive.ts",
   "packageManager": "yarn@3.2.1",
   "type": "module",
   "publishConfig": {

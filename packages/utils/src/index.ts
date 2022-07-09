@@ -5,16 +5,24 @@ interface ReadInputOpts {
 }
 
 function readInput(path: string, opts: ReadInputOpts): string[] | number[] {
-  const buffer = fs
+  const reducedResult = fs
     .readFileSync(path, { encoding: 'utf-8' })
     .split('\n')
     .map((l) => l.trim())
-    .filter((l) => l !== '') // Discard all empty lines
+    .reduce<[string[], string[], boolean]>(
+      (mem, l) => {
+        const [accum, buf, bStarted] = mem
+        return l.length > 0
+          ? [bStarted ? accum.concat(...buf, l) : [l], [], true]
+          : [accum, buf.concat(l), bStarted]
+      },
+      [[], [], false]
+    ) // Discard beginning and trailing empty lines
 
-  if (opts.type === 'string') return buffer
+  if (opts.type === 'string') return reducedResult[0]
 
   // Convert all values to number
-  return buffer.map((l) => Number(l))
+  return reducedResult[0].map((l) => Number(l))
 }
 
 // Type guard
