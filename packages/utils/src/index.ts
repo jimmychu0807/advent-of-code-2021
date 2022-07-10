@@ -38,4 +38,11 @@ function currentPathName(curr: string): [string, string] {
   return [__filename, __dirname]
 }
 
-export { readInput, isNotNullOrUndefined, currentPathName }
+function capitalize(input: string): string {
+  const arr = input.split(' ');
+  return arr
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
+
+export { readInput, isNotNullOrUndefined, currentPathName, capitalize }

@@ -5,6 +5,7 @@
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
   "author": "Jimmy chu <jimmychu0807@gmail.com>",
   "license": "MIT",
+  "type": "module",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -17,6 +18,7 @@
     "test": "mocha",
     "test:all": "mocha 'packages/**/lib/tests.ts'",
     "validate": "yarn build && yarn lint && yarn test:all",
+    "docs:update": "ts-node scripts/docs-update.ts",
     "docs:serve": "yarn docsify serve docs"
   },
   "devDependencies": {

@@ -1,0 +1,38 @@
+name: Regenerate documentations
+
+on:
+  push:
+    branches:
+      - main
+    # Review gh actions docs if you want to further define triggers, paths, etc
+    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
+
+jobs:
+  regen_docs:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        lfs: true
+        submodules: 'recursive'
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+        cache: yarn
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+    - name: Regenerate docs website
+      run: yarn docs:update
+    # Docs: https://github.com/ad-m/github-push-action#example-workflow-file
+    - name: Commit files
+      run: |
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git commit -m "Add changes" -a
+    - name: Push changes to GitHub
+      uses: ad-m/github-push-action@v0.6.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
