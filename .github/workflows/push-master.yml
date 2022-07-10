@@ -27,11 +27,15 @@ jobs:
       run: yarn docs:update
     # Docs: https://github.com/ad-m/github-push-action#example-workflow-file
     - name: Commit files
+      id: git_commit
+      continue-on-error: true
       run: |
         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
         git commit -m "Add changes" -a
+    # s/o: https://stackoverflow.com/questions/60589373/how-to-force-to-exit-in-github-actions-step
     - name: Push changes to GitHub
+      if: steps.git_commit.outcome == 'success'
       uses: ad-m/github-push-action@v0.6.0
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
