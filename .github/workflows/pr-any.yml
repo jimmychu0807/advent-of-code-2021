@@ -9,8 +9,10 @@ jobs:
     name: ${{ matrix.step }}
     runs-on: ubuntu-latest
     steps:
-    - run: 'git lfs install'
     - uses: actions/checkout@v3
+      with:
+        lfs: true
+        submodules: 'recursive'
     - name: ${{ matrix.step }}
       run: |
         yarn install --immutable | grep -v 'YN0013'
