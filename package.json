@@ -15,24 +15,28 @@
     "clean": "rm -rf ./dist",
     "lint": "tsc --build && eslint 'packages/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'packages/**/*.ts'",
     "test": "mocha",
-    "test:all": "mocha 'packages/*/tests/**/*.ts'",
+    "test:all": "mocha 'packages/**/lib/tests.ts'",
     "validate": "yarn build && yarn lint && yarn test:all",
     "docs:serve": "yarn docsify serve docs"
   },
   "devDependencies": {
     "@tsconfig/node16-strictest-esm": "^1.0.2",
+    "@types/debug": "^4.1.7",
     "@types/mocha": "^9.1.1",
-    "@types/node": "^16",
+    "@types/node": "^16.11.43",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "docsify-cli": "^4.4.4",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
-    "lerna": "^5.1.1",
+    "lerna": "^5.1.8",
     "mocha": "^10.0.0",
-    "prettier": "^2.6.2",
+    "prettier": "^2.7.1",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.3"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.2.1",
+  "dependencies": {
+    "debug": "^4.3.4"
+  }
 }

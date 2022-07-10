@@ -1,12 +1,12 @@
 {
-  "name": "@aoc-2021/binary-diagnostic",
+  "name": "@aoc-2021/giant-squid",
   "version": "0.0.1-alpha.1",
-  "description": "Day 03 - Binary Diagnostic",
+  "description": "Day 04 - Giant Squid",
   "author": "Jimmy Chu <jimmychu0807@gmail.com>",
-  "homepage": "https://github.com/jimmychu0807/advent-of-code-2021/blob/main/packages/03-binary-diagnostic/README.md",
+  "homepage": "https://github.com/jimmychu0807/advent-of-code-2021/blob/main/packages/04-giant-squid/README.md",
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
   "license": "MIT",
-  "main": "lib/binary-diagnostic.ts",
+  "main": "lib/giant-squid.ts",
   "packageManager": "yarn@3.2.1",
   "type": "module",
   "publishConfig": {

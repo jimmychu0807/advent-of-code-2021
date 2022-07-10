@@ -15,6 +15,7 @@
     { "path": "./packages/01-sonar-sweep" },
     { "path": "./packages/02-dive" },
     { "path": "./packages/03-binary-diagnostic" },
+    { "path": "./packages/04-giant-squid" },
     { "path": "./packages/cli" },
     { "path": "./packages/utils" }
   ],
