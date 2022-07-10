@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert'
 import { currentPathName } from '@aoc-2021/utils'
-import { GiantSquid, WinningCondition } from './giant-squid'
+import { GiantSquid } from './giant-squid'
 
 const testCases = {
   oneBoardNoWinning: ['10, 11', '', '10 9', '8 11'],
@@ -32,48 +32,59 @@ const testCases = {
 const testFilePath = `${currentPathName(import.meta.url)[1]}/../input/test.dat`
 
 describe('Day 04 - Giant Squid', () => {
-  it('test for one board no winning', () => {
-    const gs = new GiantSquid(testCases.oneBoardNoWinning)
-    assert.deepEqual(gs.findWinningBoardAndCondition(), null)
-  })
+  describe('Part I', () => {
+    it('test for one board no winning', () => {
+      const gs = new GiantSquid(testCases.oneBoardNoWinning)
+      assert.deepEqual(gs.findWinningBoardAndCondition(), null)
+    })
 
-  it('test for one board with winning', () => {
-    const gs = new GiantSquid(testCases.oneBoardWithWinning)
-    assert.deepEqual(gs.findWinningBoardAndCondition(), {
-      winningInd: 0,
-      markedBoard: [
-        [true, false],
-        [true, false]
-      ],
-      score: 187,
-      inputStreamRead: 2
+    it('test for one board with winning', () => {
+      const gs = new GiantSquid(testCases.oneBoardWithWinning)
+      assert.deepEqual(gs.findWinningBoardAndCondition(), {
+        winningInd: 0,
+        markedBoard: [
+          [true, false],
+          [true, false]
+        ],
+        score: 187,
+        inputStreamRead: 2
+      })
+    })
+
+    it('test for two boards no winning', () => {
+      const gs = new GiantSquid(testCases.twoBoardsNoWinning)
+      assert.deepEqual(gs.findWinningBoardAndCondition(), null)
+    })
+
+    it('test for two boards with winning', () => {
+      const gs = new GiantSquid(testCases.twoBoardsWithWinning)
+      assert.deepEqual(gs.findWinningBoardAndCondition(), {
+        winningInd: 1,
+        markedBoard: [
+          [true, false, false],
+          [true, false, false],
+          [true, false, false]
+        ],
+        score: 462,
+        inputStreamRead: 4
+      })
+    })
+
+    it('test for the given example', () => {
+      const gs = new GiantSquid(testFilePath)
+      const cond = gs.findWinningBoardAndCondition()
+      assert.deepEqual(cond?.winningInd, 2)
+      assert.deepEqual(cond?.score, 4512)
+      assert.deepEqual(cond?.inputStreamRead, 12)
     })
   })
 
-  it('test for two boards no winning', () => {
-    const gs = new GiantSquid(testCases.twoBoardsNoWinning)
-    assert.deepEqual(gs.findWinningBoardAndCondition(), null)
-  })
-
-  it('test for two boards with winning', () => {
-    const gs = new GiantSquid(testCases.twoBoardsWithWinning)
-    assert.deepEqual(gs.findWinningBoardAndCondition(), {
-      winningInd: 1,
-      markedBoard: [
-        [true, false, false],
-        [true, false, false],
-        [true, false, false]
-      ],
-      score: 462,
-      inputStreamRead: 4
+  describe('Part II', () => {
+    it('test for the given example', () => {
+      const gs = new GiantSquid(testFilePath)
+      const cond = gs.findLastWinningBoardAndCondition()
+      assert.deepEqual(cond?.winningInd, 1)
+      assert.deepEqual(cond?.score, 1924)
     })
-  })
-
-  it('test for the given example', () => {
-    const gs = new GiantSquid(testFilePath)
-    const cond = gs.findWinningBoardAndCondition() as WinningCondition
-    assert.deepEqual(cond.winningInd, 2)
-    assert.deepEqual(cond.score, 4512)
-    assert.deepEqual(cond.inputStreamRead, 12)
   })
 })

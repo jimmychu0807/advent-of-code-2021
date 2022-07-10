@@ -63,6 +63,9 @@ program
     const gs = new GiantSquid(options.input)
     const result1 = gs.findWinningBoardAndCondition()
     console.log('Part I result is:', result1)
+
+    const result2 = gs.findLastWinningBoardAndCondition()
+    console.log('Part II result is:', result2)
   })
 
 program.parse()

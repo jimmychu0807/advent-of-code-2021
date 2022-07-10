@@ -1,14 +1,21 @@
 'use strict'
 
 import { readInput } from '@aoc-2021/utils'
+import Debug from 'debug'
 
 type MarkedBoard = boolean[][]
 type BingoBoard = number[][]
+
 interface WinningCondition {
   winningInd: number
   markedBoard: MarkedBoard
   score: number
   inputStreamRead: number
+}
+
+const debug = {
+  winningBoard: Debug('giant-squid:winningBoard'),
+  lastWinningBoard: Debug('giant-squid:lastWinningBoard')
 }
 
 class GiantSquid {
@@ -68,14 +75,13 @@ class GiantSquid {
       })
 
       // note: key state for checking
-      //console.log(`after ${num}:`, markedBoards)
+      debug.winningBoard(`after ${num}:`, markedBoards)
 
       let indAndBoard = markedBoards.map<[number, MarkedBoard]>((board, ind) => [ind, board])
       indAndBoard = indAndBoard.filter(([, board]) => this.isBoardWinning(board))
       if (indAndBoard.length > 0) {
-        if (indAndBoard.length > 1) {
-          throw new Error('Not handling the case that multiple boards are winning.')
-        }
+        // We are returning only the first result here, but it is possible that more than one
+        //   boards are winning here.
         const [winningInd, markedBoard] = indAndBoard[0] as [number, MarkedBoard]
         return {
           winningInd,
@@ -93,36 +99,34 @@ class GiantSquid {
     inputStream: string = this._inputStream,
     boards: BingoBoard[] = this._boards
   ): WinningCondition | null {
-    let remainingStream = Object.assign('', inputStream) as string
-    const boardsWon = Array(boards.length).fill(false)
-    let lastWinningCond: WinningCondition | undefined = undefined
-    let adjustedWinningInd: number | undefined = undefined
+    const remainingBoardIndices = Array(boards.length)
+      .fill(0)
+      .map((_, ind) => ind)
+    let lastWinningCond = undefined
+    let lastWinningBoardInd = undefined
 
-    while (remainingStream.length > 0 && boardsWon.some((val) => !val)) {
-      const remainingBoards = boards.filter((_, ind) => !boardsWon[ind])
-      const cond = this.findWinningBoardAndCondition(remainingStream, remainingBoards)
+    while (remainingBoardIndices.length > 0) {
+      debug.lastWinningBoard('Remaining board indices', remainingBoardIndices)
+
+      const remainingBoards = remainingBoardIndices.map((ind) => boards[ind]) as BingoBoard[]
+      const cond = this.findWinningBoardAndCondition(inputStream, remainingBoards)
 
       // Iterate thru the remaining stream and boards and no winning board
       if (!cond) break
 
       // A winning condition occured
-      // note: need to adjust winningInd
-      adjustedWinningInd = this.adjustIndex(boardsWon, cond.winningInd)
-      if (!adjustedWinningInd) throw new Error('Finding adjustedIndex return undefined value.')
-      boardsWon[adjustedWinningInd] = true
-      remainingStream = this.convertStreamToNumArr(remainingStream)
-        .slice(cond.inputStreamRead)
-        .join(',')
-      // Save the winning condition
+      const remainingBoardWinningInd = cond.winningInd
+      lastWinningBoardInd = remainingBoardIndices.splice(remainingBoardWinningInd, 1)[0]
       lastWinningCond = Object.assign({}, cond)
 
-      console.log('Current winning condition', cond)
-      console.log('boards won', boardsWon)
+      debug.lastWinningBoard('Current winning condition', cond)
     }
 
     if (!lastWinningCond) return null
 
-    lastWinningCond.winningInd = adjustedWinningInd as number
+    lastWinningCond.winningInd = lastWinningBoardInd as number
+
+    debug.lastWinningBoard('Last winning condition', lastWinningCond)
     return lastWinningCond
   }
 

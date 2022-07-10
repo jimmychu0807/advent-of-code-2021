@@ -17,7 +17,7 @@ const testInput = [
 ]
 
 describe('Day 03 - Binary Diagnostic', () => {
-  describe('Tests of Part I', () => {
+  describe('Part I', () => {
     it('test gamma on a single input', () => {
       const bg = new BinaryDiagnostic(['111'])
       assert.strictEqual(bg.gamma, 7)
@@ -54,7 +54,7 @@ describe('Day 03 - Binary Diagnostic', () => {
     })
   })
 
-  describe('Tests of Part II', () => {
+  describe('Part II', () => {
     it('test oxygenRating on a dual input', () => {
       const bg = new BinaryDiagnostic(['000', '110'])
       assert.strictEqual(bg.oxygenRating, 6)

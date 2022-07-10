@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@tsconfig/node16-strictest-esm": "^1.0.2",
+    "@types/debug": "^4.1.7",
     "@types/mocha": "^9.1.1",
     "@types/node": "^16.11.43",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
@@ -34,5 +35,8 @@
     "ts-node": "^10.8.1",
     "typescript": "^4.7.3"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.2.1",
+  "dependencies": {
+    "debug": "^4.3.4"
+  }
 }

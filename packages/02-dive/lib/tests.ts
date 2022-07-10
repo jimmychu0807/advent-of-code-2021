@@ -2,7 +2,7 @@ import { strict as assert } from 'node:assert'
 import { Dive } from './dive'
 
 describe('Day 02 - Dive', () => {
-  describe('noop / multiplication mode', () => {
+  describe('Part I', () => {
     it('test for empty input', () => {
       const dive = new Dive([])
       assert.deepEqual(dive.execute(), [0, 0])
@@ -30,7 +30,7 @@ describe('Day 02 - Dive', () => {
     })
   })
 
-  describe('aim / multiplication with aim mode', () => {
+  describe('Part II', () => {
     it('test for empty input', () => {
       const dive = new Dive([])
       assert.deepEqual(dive.execute({ op: 'aim' }), [0, 0])
