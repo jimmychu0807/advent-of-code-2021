@@ -9,7 +9,7 @@ on:
 
 jobs:
   regen_docs:
-    name: Deploy to GitHub Pages
+    name: Regenerate documentations
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
