@@ -5,12 +5,14 @@
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
   "author": "Jimmy chu <jimmychu0807@gmail.com>",
   "license": "MIT",
+  "type": "module",
   "private": true,
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
     "main": "ts-node packages/cli/src/cli.ts",
+    "docs-update": "ts-node scripts/docs-update.ts",
     "build": "yarn clean && tsc --build",
     "clean": "rm -rf ./dist",
     "lint": "tsc --build && eslint 'packages/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'packages/**/*.ts'",

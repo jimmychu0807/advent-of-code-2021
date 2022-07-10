@@ -5,5 +5,6 @@
 This is my attempt on [Advent of Code 2021](https://adventofcode.com/2021) :rocket:
 
 - [Day 01 - Sonar Sweep](./packages/01-sonar-sweep)
-- [Day 02 - Dive!](./packages/02-dive.md)
-- [Day 03 - Binary Diagnostic](./packages/03-binary-diagnostic.md)
+- [Day 02 - Dive](./packages/02-dive)
+- [Day 03 - Binary Diagnostic](./packages/03-binary-diagnostic)
+- [Day 04 - Giant Squid](./packages/04-giant-squid)
