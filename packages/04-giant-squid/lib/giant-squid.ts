@@ -3,11 +3,17 @@
 import { readInput } from '@aoc-2021/utils'
 
 type MarkedBoard = boolean[][]
-type WinningCondition = [number, MarkedBoard, number]
+type BingoBoard = number[][]
+interface WinningCondition {
+  winningInd: number
+  markedBoard: MarkedBoard
+  score: number
+  inputStreamRead: number
+}
 
 class GiantSquid {
   private _inputStream: string
-  private _boards: number[][][]
+  private _boards: BingoBoard[]
 
   constructor(rawInput: string[] | string) {
     const input = Array.isArray(rawInput)
@@ -36,7 +42,7 @@ class GiantSquid {
     })
   }
 
-  get boards(): number[][][] {
+  get boards(): BingoBoard[] {
     return this._boards
   }
 
@@ -45,13 +51,14 @@ class GiantSquid {
   }
 
   public findWinningBoardAndCondition(
-    inputStream: string = this._inputStream
-  ): WinningCondition | undefined {
-    const markedBoards: MarkedBoard[] = this.initMarkedBoards()
-    const nums: number[] = inputStream.split(',').map((v) => Number(v.trim()))
+    inputStream: string = this._inputStream,
+    boards: BingoBoard[] = this._boards
+  ): WinningCondition | null {
+    const markedBoards: MarkedBoard[] = this.initMarkedBoards(boards.length, boards[0]?.length ?? 0)
+    const nums: number[] = this.convertStreamToNumArr(inputStream)
 
-    for (const num of nums) {
-      this._boards.forEach((board, ind) => {
+    for (const [inputInd, num] of nums.entries()) {
+      boards.forEach((board, ind) => {
         const pos = this.boardPositionFromNumber(board, num)
 
         if (pos) {
@@ -63,21 +70,75 @@ class GiantSquid {
       // note: key state for checking
       //console.log(`after ${num}:`, markedBoards)
 
-      let indAndBoard = markedBoards.map<[number, boolean[][]]>((board, ind) => [ind, board])
+      let indAndBoard = markedBoards.map<[number, MarkedBoard]>((board, ind) => [ind, board])
       indAndBoard = indAndBoard.filter(([, board]) => this.isBoardWinning(board))
       if (indAndBoard.length > 0) {
-        const [winningInd, markedBoard] = indAndBoard[0] as [number, boolean[][]]
-        return [winningInd, markedBoard, this.score(winningInd, markedBoard, num)]
+        if (indAndBoard.length > 1) {
+          throw new Error('Not handling the case that multiple boards are winning.')
+        }
+        const [winningInd, markedBoard] = indAndBoard[0] as [number, MarkedBoard]
+        return {
+          winningInd,
+          markedBoard,
+          score: this.score(boards[winningInd] as BingoBoard, markedBoard, num),
+          inputStreamRead: inputInd + 1
+        }
       }
     }
 
+    return null
+  }
+
+  public findLastWinningBoardAndCondition(
+    inputStream: string = this._inputStream,
+    boards: BingoBoard[] = this._boards
+  ): WinningCondition | null {
+    let remainingStream = Object.assign('', inputStream) as string
+    const boardsWon = Array(boards.length).fill(false)
+    let lastWinningCond: WinningCondition | undefined = undefined
+    let adjustedWinningInd: number | undefined = undefined
+
+    while (remainingStream.length > 0 && boardsWon.some((val) => !val)) {
+      const remainingBoards = boards.filter((_, ind) => !boardsWon[ind])
+      const cond = this.findWinningBoardAndCondition(remainingStream, remainingBoards)
+
+      // Iterate thru the remaining stream and boards and no winning board
+      if (!cond) break
+
+      // A winning condition occured
+      // note: need to adjust winningInd
+      adjustedWinningInd = this.adjustIndex(boardsWon, cond.winningInd)
+      if (!adjustedWinningInd) throw new Error('Finding adjustedIndex return undefined value.')
+      boardsWon[adjustedWinningInd] = true
+      remainingStream = this.convertStreamToNumArr(remainingStream)
+        .slice(cond.inputStreamRead)
+        .join(',')
+      // Save the winning condition
+      lastWinningCond = Object.assign({}, cond)
+
+      console.log('Current winning condition', cond)
+      console.log('boards won', boardsWon)
+    }
+
+    if (!lastWinningCond) return null
+
+    lastWinningCond.winningInd = adjustedWinningInd as number
+    return lastWinningCond
+  }
+
+  protected adjustIndex(boardsWon: boolean[], ind: number): number | undefined {
+    let count = ind
+
+    for (const [adjustedInd, val] of boardsWon.entries()) {
+      if (val) continue
+      if (count === 0) return adjustedInd
+      count -= 1
+    }
     return undefined
   }
 
-  protected initMarkedBoards(): boolean[][][] {
-    const numBoard = this._boards.length
-    const boardLen = this._boards[0]?.length || 0
-    const markedBoards: boolean[][][] = []
+  protected initMarkedBoards(numBoard: number, boardLen: number): MarkedBoard[] {
+    const markedBoards: MarkedBoard[] = []
 
     for (let i = 0; i < numBoard; i++) {
       markedBoards[i] = Array(boardLen)
@@ -88,16 +149,16 @@ class GiantSquid {
     return markedBoards
   }
 
-  protected boardPositionFromNumber(board: number[][], num: number): [number, number] | undefined {
+  protected boardPositionFromNumber(board: BingoBoard, num: number): [number, number] | null {
     for (const [y, row] of board.entries()) {
       for (const [x, val] of row.entries()) {
         if (val === num) return [y, x]
       }
     }
-    return undefined
+    return null
   }
 
-  protected isBoardWinning(board: boolean[][]): boolean {
+  protected isBoardWinning(board: MarkedBoard): boolean {
     // Check rows
     for (const row of board) {
       if (row.every((el) => el)) return true
@@ -111,8 +172,7 @@ class GiantSquid {
     return false
   }
 
-  protected score(winningInd: number, markedBoard: boolean[][], lastNum: number): number {
-    const winningBoard = this._boards[winningInd] as number[][]
+  protected score(winningBoard: BingoBoard, markedBoard: MarkedBoard, lastNum: number): number {
     const sum = (m: number, n: number) => m + n
 
     const total = winningBoard
@@ -120,6 +180,10 @@ class GiantSquid {
       .reduce(sum, 0)
 
     return total * lastNum
+  }
+
+  protected convertStreamToNumArr(inputStream: string): number[] {
+    return inputStream.split(',').map((v) => Number(v.trim()))
   }
 }
 
