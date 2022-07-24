@@ -11,32 +11,36 @@
     "packages/*"
   ],
   "scripts": {
-    "main": "ts-node packages/cli/src/cli.ts",
-    "build": "yarn clean && tsc --build",
-    "clean": "rm -rf ./dist",
-    "lint": "tsc --build && eslint 'packages/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'packages/**/*.ts'",
-    "test:all": "mocha 'packages/**/lib/tests.ts'",
-    "validate": "yarn build && yarn lint && yarn test:all",
+    "build": "yarn workspaces build",
+    "clean": "yarn workspaces clean",
+    "lint": "yarn workspaces lint",
+    "test": "yarn workspaces test",
+    "validate": "yarn workspaes validate",
     "docs:update": "ts-node scripts/docs-update.ts",
     "docs:serve": "yarn docsify serve docs"
   },
   "devDependencies": {
     "@tsconfig/node16-strictest-esm": "^1.0.2",
-    "@types/debug": "^4.1.7",
-    "@types/mocha": "^9.1.1",
     "@types/node": "^16.11.43",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "docsify-cli": "^4.4.4",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
-    "mocha": "^10.0.0",
     "prettier": "^2.7.1",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.3"
   },
-  "packageManager": "yarn@3.2.1",
-  "dependencies": {
-    "debug": "^4.3.4"
-  }
+  "resolutions": {
+    "@types/node": "^16.11.43",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "del-cli": "^5.0.0",
+    "eslint": "^8.17.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.7.1",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
+  },
+  "packageManager": "yarn@3.2.1"
 }
