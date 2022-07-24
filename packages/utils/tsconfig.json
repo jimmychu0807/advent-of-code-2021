@@ -1,13 +1,12 @@
 {
-  "extends": "@tsconfig/node16-strictest-esm/tsconfig.json",
+  "extends": "../../tsconfig-base.json",
+  "include": [
+    "src/**/*.ts"
+  ],
   "compilerOptions": {
-    "composite": true,
-    "esModuleInterop": true,
+    "rootDir": "src",
     "outDir": "../../dist/packages/utils",
-    "sourceMap": true,
-    "types": ["mocha", "node"]
-  },
-  "ts-node": {
-    "esm": true
+    // Need to config `tsBuildInfoFile` when `rootDir` and `outDir` have been configured
+    "tsBuildInfoFile": "../../dist/packages/utils/tsconfig.tsbuildinfo"
   }
 }

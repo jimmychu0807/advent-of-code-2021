@@ -1,11 +1,11 @@
 {
+  "author": "Jimmy chu <jimmychu0807@gmail.com>",
   "name": "@aoc-2021/root",
   "description": "Advent of Code 2021",
   "homepage": "https://jimmychu0807.github.io/advent-of-code-2021/",
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
-  "author": "Jimmy chu <jimmychu0807@gmail.com>",
-  "license": "MIT",
   "type": "module",
+  "license": "MIT",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -31,7 +31,6 @@
     "docsify-cli": "^4.4.4",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
-    "lerna": "^5.1.8",
     "mocha": "^10.0.0",
     "prettier": "^2.7.1",
     "ts-node": "^10.8.1",
