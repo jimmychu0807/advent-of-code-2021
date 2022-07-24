@@ -39,10 +39,8 @@ function currentPathName(curr: string): [string, string] {
 }
 
 function capitalize(input: string): string {
-  const arr = input.split(' ');
-  return arr
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ')
+  const arr = input.split(' ')
+  return arr.map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
 }
 
 export { readInput, isNotNullOrUndefined, currentPathName, capitalize }

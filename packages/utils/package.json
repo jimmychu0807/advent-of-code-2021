@@ -6,23 +6,29 @@
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
   "license": "MIT",
   "version": "0.0.1-alpha.1",
-  "type": "module",
+  "type": "commonjs",
   "main": "src/index.ts",
   "packageManager": "yarn@3.2.1",
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "clean": "del -f ../../dist/packages/utils",
-    "build": "tsc -p .",
-    "lint": "echo TODO lint",
-    "test": "mocha",
-    "start": "echo TODO start"
+    "build": "yarn clean && tsc -p .",
+    "lint": "eslint 'src/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'src/**/*.ts'",
+    "test": "mocha --require ts-node/register 'src/**/*.test.ts'",
+    "validate": "yarn build && yarn test && yarn lint"
   },
   "devDependencies": {
+    "@types/mocha": "^9.1.1",
     "@types/node": "^16.11.43",
     "del-cli": "^5.0.0",
+    "eslint": "^8.17.0",
+    "eslint-config-prettier": "^8.5.0",
+    "mocha": "^10.0.0",
+    "prettier": "^2.7.1",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.3"
+  },
+  "publishConfig": {
+    "access": "public",
+    "main": "../../dist/packages/utils/index.js"
   }
 }

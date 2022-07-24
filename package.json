@@ -15,7 +15,6 @@
     "build": "yarn clean && tsc --build",
     "clean": "rm -rf ./dist",
     "lint": "tsc --build && eslint 'packages/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'packages/**/*.ts'",
-    "test": "mocha",
     "test:all": "mocha 'packages/**/lib/tests.ts'",
     "validate": "yarn build && yarn lint && yarn test:all",
     "docs:update": "ts-node scripts/docs-update.ts",
