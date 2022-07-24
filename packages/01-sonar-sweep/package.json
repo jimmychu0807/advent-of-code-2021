@@ -6,10 +6,34 @@
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
   "license": "MIT",
   "version": "0.0.1-alpha.1",
-  "main": "lib/sonar-sweep.ts",
+  "type": "commonjs",
+  "main": "src/sonar-sweep.ts",
   "packageManager": "yarn@3.2.1",
-  "type": "module",
+  "scripts": {
+    "clean": "del -f ../../dist/packages/01-sonar-sweep",
+    "build": "yarn clean && tsc -p .",
+    "lint": "eslint 'src/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'src/**/*.ts'",
+    "test": "mocha -r ts-node/register 'src/**/*.test.ts'",
+    "validate": "yarn build && yarn test && yarn lint"
+  },
+  "dependencies": {
+    "@aoc-2021/utils": "latest"
+  },
+  "devDependencies": {
+    "@types/mocha": "^9.1.1",
+    "@types/node": "^16.11.43",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "del-cli": "^5.0.0",
+    "eslint": "^8.17.0",
+    "eslint-config-prettier": "^8.5.0",
+    "mocha": "^10.0.0",
+    "prettier": "^2.7.1",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
+  },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "main": "../../dist/packages/sonar-sweep/sonar-sweep.js"
   }
 }

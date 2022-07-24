@@ -13,7 +13,7 @@
     "clean": "del -f ../../dist/packages/utils",
     "build": "yarn clean && tsc -p .",
     "lint": "eslint 'src/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'src/**/*.ts'",
-    "test": "mocha --require ts-node/register 'src/**/*.test.ts'",
+    "test": "mocha -r ts-node/register 'src/**/*.test.ts'",
     "validate": "yarn build && yarn test && yarn lint"
   },
   "devDependencies": {

@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "build": "yarn workspaces build",
-    "clean": "yarn workspaces clean",
+    "clean": "del -f dist",
     "lint": "yarn workspaces lint",
     "test": "yarn workspaces test",
     "validate": "yarn workspaes validate",
@@ -24,6 +24,7 @@
     "@types/node": "^16.11.43",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
+    "del-cli": "^5.0.0",
     "docsify-cli": "^4.4.4",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
