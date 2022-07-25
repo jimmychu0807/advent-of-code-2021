@@ -5,8 +5,6 @@
   ],
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "../../dist/packages/utils",
-    // Need to config `tsBuildInfoFile` when `rootDir` and `outDir` have been configured
-    "tsBuildInfoFile": "../../dist/packages/utils/tsconfig.tsbuildinfo"
+    "outDir": "dist"
   }
 }

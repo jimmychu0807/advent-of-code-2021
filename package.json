@@ -20,7 +20,7 @@
     "docs:serve": "yarn docsify serve docs"
   },
   "devDependencies": {
-    "@tsconfig/node16-strictest-esm": "^1.0.2",
+    "@tsconfig/node16-strictest": "^1.0.3",
     "@types/node": "^16.11.43",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",

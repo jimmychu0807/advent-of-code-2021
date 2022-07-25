@@ -35,10 +35,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@aoc-2021/root@workspace:."
   dependencies:
-    "@tsconfig/node16-strictest-esm": ^1.0.2
+    "@tsconfig/node16-strictest": ^1.0.3
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
     "@typescript-eslint/parser": ^5.27.1
+    del-cli: ^5.0.0
     docsify-cli: ^4.4.4
     eslint: ^8.17.0
     eslint-config-prettier: ^8.5.0
@@ -51,8 +52,28 @@ __metadata:
 "@aoc-2021/sonar-sweep@workspace:packages/01-sonar-sweep":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/sonar-sweep@workspace:packages/01-sonar-sweep"
+  dependencies:
+    "@aoc-2021/utils": latest
+    "@types/mocha": ^9.1.1
+    "@types/node": ^16.11.43
+    "@typescript-eslint/eslint-plugin": ^5.27.1
+    "@typescript-eslint/parser": ^5.27.1
+    del-cli: ^5.0.0
+    eslint: ^8.17.0
+    eslint-config-prettier: ^8.5.0
+    mocha: ^10.0.0
+    prettier: ^2.7.1
+    ts-node: ^10.8.1
+    typescript: ^4.7.3
   languageName: unknown
   linkType: soft
+
+"@aoc-2021/utils@npm:latest":
+  version: 0.0.1-alpha.1
+  resolution: "@aoc-2021/utils@npm:0.0.1-alpha.1"
+  checksum: ea8fd910d5ec6fb8b8af51f1686758e91dff2dca743f6005eb2b397830c60228715fa3baf2449a5bffd3736b314629ad19efd67f0a9d5bc437a19c9f01fac5e5
+  languageName: node
+  linkType: hard
 
 "@aoc-2021/utils@workspace:packages/utils":
   version: 0.0.0-use.local
@@ -67,6 +88,7 @@ __metadata:
     eslint-config-prettier: ^8.5.0
     mocha: ^10.0.0
     prettier: ^2.7.1
+    ts-mocha: ^10.0.0
     ts-node: ^10.8.1
     typescript: ^4.7.3
   languageName: unknown
@@ -265,10 +287,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tsconfig/node16-strictest-esm@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "@tsconfig/node16-strictest-esm@npm:1.0.2"
-  checksum: 847042424269acdcdcf758e9e0c1e08c26903b1e397a16ec7d3f3a949035de26fe5c594fe7693d00f92f8ff8b5bc1fbf10d4b90d2bde0e72ee75be337aaf5928
+"@tsconfig/node16-strictest@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "@tsconfig/node16-strictest@npm:1.0.3"
+  checksum: ab4b129be6cb38baf5223e64d4887dcc4276efbee8734e87e7c2d9c4df4ee8837323ef45a6710fe803841ab26676ef3d53c3cf3e0dede65963b5356fc172b8e6
   languageName: node
   linkType: hard
 
@@ -283,6 +305,13 @@ __metadata:
   version: 7.0.11
   resolution: "@types/json-schema@npm:7.0.11"
   checksum: 527bddfe62db9012fccd7627794bd4c71beb77601861055d87e3ee464f2217c85fca7a4b56ae677478367bbd248dbde13553312b7d4dbc702a2f2bbf60c4018d
+  languageName: node
+  linkType: hard
+
+"@types/json5@npm:^0.0.29":
+  version: 0.0.29
+  resolution: "@types/json5@npm:0.0.29"
+  checksum: e60b153664572116dfea673c5bda7778dbff150498f44f998e34b5886d8afc47f16799280e4b6e241c0472aef1bc36add771c569c68fc5125fc2ae519a3eb9ac
   languageName: node
   linkType: hard
 
@@ -2394,6 +2423,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"json5@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "json5@npm:1.0.1"
+  dependencies:
+    minimist: ^1.2.0
+  bin:
+    json5: lib/cli.js
+  checksum: e76ea23dbb8fc1348c143da628134a98adf4c5a4e8ea2adaa74a80c455fc2cdf0e2e13e6398ef819bfe92306b610ebb2002668ed9fc1af386d593691ef346fc3
+  languageName: node
+  linkType: hard
+
 "jsonfile@npm:^4.0.0":
   version: 4.0.0
   resolution: "jsonfile@npm:4.0.0"
@@ -2711,7 +2751,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimist@npm:^1.2.0":
+"minimist@npm:^1.2.0, minimist@npm:^1.2.6":
   version: 1.2.6
   resolution: "minimist@npm:1.2.6"
   checksum: d15428cd1e11eb14e1233bcfb88ae07ed7a147de251441d61158619dfb32c4d7e9061d09cab4825fdee18ecd6fce323228c8c47b5ba7cd20af378ca4048fb3fb
@@ -3730,6 +3770,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"strip-bom@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "strip-bom@npm:3.0.0"
+  checksum: 8d50ff27b7ebe5ecc78f1fe1e00fcdff7af014e73cf724b46fb81ef889eeb1015fc5184b64e81a2efe002180f3ba431bdd77e300da5c6685d702780fbf0c8d5b
+  languageName: node
+  linkType: hard
+
 "strip-indent@npm:^3.0.0":
   version: 3.0.0
   resolution: "strip-indent@npm:3.0.0"
@@ -3868,6 +3915,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ts-mocha@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "ts-mocha@npm:10.0.0"
+  dependencies:
+    ts-node: 7.0.1
+    tsconfig-paths: ^3.5.0
+  peerDependencies:
+    mocha: ^3.X.X || ^4.X.X || ^5.X.X || ^6.X.X || ^7.X.X || ^8.X.X || ^9.X.X || ^10.X.X
+  dependenciesMeta:
+    tsconfig-paths:
+      optional: true
+  bin:
+    ts-mocha: bin/ts-mocha
+  checksum: b11f2a8ceecf195b0db724da429159982fef12e4357088fe900289223587217e8c126ead7929679edd58bf19ad96c5da5911535d26f535386632e18fbff10c40
+  languageName: node
+  linkType: hard
+
 "ts-node@npm:^10.8.1":
   version: 10.8.1
   resolution: "ts-node@npm:10.8.1"
@@ -3903,6 +3967,18 @@ __metadata:
     ts-node-transpile-only: dist/bin-transpile.js
     ts-script: dist/bin-script-deprecated.js
   checksum: 7d1aa7aa3ae1c0459c4922ed0dbfbade442cfe0c25aebaf620cdf1774f112c8d7a9b14934cb6719274917f35b2c503ba87bcaf5e16a0d39ba0f68ce3e7728363
+  languageName: node
+  linkType: hard
+
+"tsconfig-paths@npm:^3.5.0":
+  version: 3.14.1
+  resolution: "tsconfig-paths@npm:3.14.1"
+  dependencies:
+    "@types/json5": ^0.0.29
+    json5: ^1.0.1
+    minimist: ^1.2.6
+    strip-bom: ^3.0.0
+  checksum: 8afa01c673ebb4782ba53d3a12df97fa837ce524f8ad38ee4e2b2fd57f5ac79abc21c574e9e9eb014d93efe7fe8214001b96233b5c6ea75bd1ea82afe17a4c6d
   languageName: node
   linkType: hard
 
