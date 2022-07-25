@@ -53,7 +53,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@aoc-2021/sonar-sweep@workspace:packages/01-sonar-sweep"
   dependencies:
-    "@aoc-2021/utils": latest
+    "@aoc-2021/utils": ^0.0.1
     "@types/mocha": ^9.1.1
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
@@ -63,19 +63,13 @@ __metadata:
     eslint-config-prettier: ^8.5.0
     mocha: ^10.0.0
     prettier: ^2.7.1
+    ts-mocha: ^10.0.0
     ts-node: ^10.8.1
     typescript: ^4.7.3
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/utils@npm:latest":
-  version: 0.0.1-alpha.1
-  resolution: "@aoc-2021/utils@npm:0.0.1-alpha.1"
-  checksum: ea8fd910d5ec6fb8b8af51f1686758e91dff2dca743f6005eb2b397830c60228715fa3baf2449a5bffd3736b314629ad19efd67f0a9d5bc437a19c9f01fac5e5
-  languageName: node
-  linkType: hard
-
-"@aoc-2021/utils@workspace:packages/utils":
+"@aoc-2021/utils@^0.0.1, @aoc-2021/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/utils@workspace:packages/utils"
   dependencies:

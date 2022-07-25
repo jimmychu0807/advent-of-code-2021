@@ -5,9 +5,7 @@
   ],
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "../../dist/packages/01-sonar-sweep",
-    // Need to config `tsBuildInfoFile` when `rootDir` and `outDir` have been configured
-    "tsBuildInfoFile": "../../dist/packages/01-sonar-sweep/tsconfig.tsbuildinfo"
+    "outDir": "dist"
   },
   "references": [
     { "path": "../utils" },
