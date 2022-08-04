@@ -8,7 +8,8 @@
   "private": true,
   "workspaces": [
     "packages/utils",
-    "packages/01-sonar-sweep"
+    "packages/01-sonar-sweep",
+    "packages/02-dive"
   ],
   "scripts": {
     "build": "yarn workspaces foreach -pt run build",
