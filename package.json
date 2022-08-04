@@ -4,18 +4,18 @@
   "description": "Advent of Code 2021",
   "homepage": "https://jimmychu0807.github.io/advent-of-code-2021/",
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
-  "type": "module",
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/utils",
+    "packages/01-sonar-sweep"
   ],
   "scripts": {
-    "build": "yarn workspaces build",
-    "clean": "del -f dist",
-    "lint": "yarn workspaces lint",
-    "test": "yarn workspaces test",
-    "validate": "yarn workspaes validate",
+    "build": "yarn workspaces foreach -pt run build",
+    "clean": "yarn workspaces foreach -p run clean",
+    "lint": "yarn workspaces foreach -p run lint",
+    "test": "yarn workspaces foreach -p run test",
+    "validate": "yarn workspaces foreach -pt run validate",
     "docs:update": "ts-node scripts/docs-update.ts",
     "docs:serve": "yarn docsify serve docs"
   },
