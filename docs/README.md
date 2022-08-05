@@ -8,3 +8,32 @@ This is my attempt on [Advent of Code 2021](https://adventofcode.com/2021) :rock
 - [Day 02 - Dive](/02-dive.md)
 - [Day 03 - Binary Diagnostic](/03-binary-diagnostic.md)
 - [Day 04 - Giant Squid](/04-giant-squid.md)
+
+## Workflow
+
+**Normal run**
+
+```bash
+yarn install
+# More help text will be displayed
+yarn cli
+```
+
+Note when entering input file in relative path in `yarn cli`, the path is relative to `packages/cli` directory, not the current user directory.
+
+**For CI**
+
+```bash
+yarn install
+# More help text will be displayed
+yarn validate
+```
+
+**For docs generation**
+
+```bash
+yarn docs:update
+# Preview docs
+yarn docs:serve
+```
+

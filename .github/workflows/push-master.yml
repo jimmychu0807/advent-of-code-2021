@@ -21,10 +21,10 @@ jobs:
       with:
         node-version: 16.x
         cache: yarn
-    - name: Install dependencies
-      run: yarn install --frozen-lockfile
-    - name: Regenerate docs website
-      run: yarn docs:update
+    - name: yarn install && build && docs:update
+      run: |
+        yarn install --frozen-lockfile
+        yarn docs:update
     # Docs: https://github.com/ad-m/github-push-action#example-workflow-file
     - name: Commit files
       id: git_commit

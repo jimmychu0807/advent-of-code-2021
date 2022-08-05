@@ -16,8 +16,11 @@
   ],
   "scripts": {
     "build": "yarn workspaces foreach -pt run build",
-    "clean": "yarn del tsconfig.tsbuildinfo && yarn workspaces foreach -p run clean",
-    "lint": "yarn workspaces foreach -p run lint",
+    "postinstall": "yarn build",
+    "clean": "yarn workspaces foreach -p run clean",
+    "lint:workspaces": "yarn workspaces foreach -p run lint",
+    "lint:self": "eslint 'scripts/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'scripts/**/*.ts'",
+    "lint": "yarn lint:self && yarn lint:workspaces",
     "test": "yarn workspaces foreach -p run test",
     "validate": "yarn workspaces foreach -pt run validate",
     "cli": "yarn workspace @aoc-2021/cli cli",
