@@ -13,6 +13,7 @@ __metadata:
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
     "@typescript-eslint/parser": ^5.27.1
+    commander: ^9.4.0
     del-cli: ^5.0.0
     eslint: ^8.17.0
     eslint-config-prettier: ^8.5.0
@@ -78,6 +79,7 @@ __metadata:
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
     "@typescript-eslint/parser": ^5.27.1
+    commander: ^9.4.0
     debug: ^4.3.4
     del-cli: ^5.0.0
     eslint: ^8.17.0

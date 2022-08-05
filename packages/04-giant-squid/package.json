@@ -18,8 +18,8 @@
   },
   "dependencies": {
     "@aoc-2021/utils": "workspace:*",
-    "debug": "^4.3.4",
-    "commander": "^9.4.0"
+    "commander": "^9.4.0",
+    "debug": "^4.3.4"
   },
   "devDependencies": {
     "@types/debug": "^4",
