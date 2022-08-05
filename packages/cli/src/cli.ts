@@ -1,7 +1,7 @@
 import { Command } from 'commander'
 
 import { readInput } from '@aoc-2021/utils'
-import SonarSweep from '@aoc-2021/sonar-sweep'
+import { SonarSweepCommand } from '@aoc-2021/sonar-sweep'
 import Dive from '@aoc-2021/dive'
 import BinaryDiagnostic from '@aoc-2021/binary-diagnostic'
 import GiantSquid from '@aoc-2021/giant-squid'
@@ -11,21 +11,14 @@ const name = process.env['npm_package_name'] ?? ''
 const description = process.env['npm_package_description'] ?? ''
 const version = process.env['npm_package_version'] ?? ''
 
-const program = new Command().name(name).description(description).version(version)
+const program = new Command()
+  .name(name)
+  .description(description)
+  .version(version)
+  .showHelpAfterError()
 
 program
-  .command('sonar-sweep')
-  .description('Day 01 - Sonar Sweep')
-  .requiredOption('-i, --input <inputPath>', 'path to input data')
-  .action((options) => {
-    const input = readInput(options.input, { type: 'number' }) as number[]
-    const ss = new SonarSweep(input)
-    const result1 = ss.count()
-    console.log('Part I result is:', result1)
-
-    const result2 = ss.count(3)
-    console.log('Part II result is:', result2)
-  })
+  .addCommand(SonarSweepCommand)
 
 program
   .command('dive')

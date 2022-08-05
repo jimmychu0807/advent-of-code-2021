@@ -117,6 +117,7 @@ __metadata:
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
     "@typescript-eslint/parser": ^5.27.1
+    commander: ^9.4.0
     del-cli: ^5.0.0
     eslint: ^8.17.0
     eslint-config-prettier: ^8.5.0
@@ -1068,7 +1069,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^9.3.0":
+"commander@npm:^9.4.0":
   version: 9.4.0
   resolution: "commander@npm:9.4.0"
   checksum: a322de584a6ccd1ea83c24f6a660e52d16ffbe2613fcfbb8d2cc68bc9dec637492456d754fe8bb5b039ad843ed8e04fb0b107e581a75f62cde9e1a0ab1546e09

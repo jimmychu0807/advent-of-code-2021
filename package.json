@@ -24,7 +24,6 @@
     "test": "yarn workspaces foreach -p run test",
     "validate": "yarn workspaces foreach -pt run validate",
     "cli": "yarn workspace @aoc-2021/cli cli",
-    "cli:dev": "yarn workspace @aoc-2021/cli cli:dev",
     "docs:update": "ts-node scripts/docs-update.ts",
     "docs:serve": "yarn docsify serve docs -o"
   },
@@ -48,6 +47,7 @@
     "@types/node": "^16.11.43",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
+    "commander": "^9.4.0",
     "del-cli": "^5.0.0",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
