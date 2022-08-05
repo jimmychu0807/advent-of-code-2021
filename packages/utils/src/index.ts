@@ -6,7 +6,6 @@ interface ReadInputOpts {
 }
 
 function readInput(inputPath: string, opts: ReadInputOpts): string[] | number[] {
-
   const absPath = path.isAbsolute(inputPath) ? inputPath : path.join(process.cwd(), inputPath)
 
   const reducedResult = fs
