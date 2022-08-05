@@ -22,7 +22,7 @@
     "lint:self": "eslint 'scripts/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'scripts/**/*.ts'",
     "lint:all": "yarn lint:self && yarn lint:workspaces",
     "test": "yarn workspaces foreach -p run test",
-    "validate": "yarn workspaces foreach -pt run validate",
+    "validate": "yarn clean && yarn workspaces foreach -pt run validate",
     "cli": "yarn workspace @aoc-2021/cli cli",
     "docs:update": "ts-node scripts/docs-update.ts",
     "docs:serve": "yarn docsify serve docs -o"

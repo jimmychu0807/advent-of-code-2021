@@ -17,6 +17,7 @@
     "validate": "yarn build && yarn test && yarn lint"
   },
   "dependencies": {
+    "@aoc-2021/utils": "workspace:*",
     "commander": "^9.4.0"
   },
   "devDependencies": {
