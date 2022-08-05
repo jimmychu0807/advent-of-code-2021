@@ -9,6 +9,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@aoc-2021/binary-diagnostic@workspace:packages/03-binary-diagnostic"
   dependencies:
+    "@aoc-2021/utils": "workspace:*"
     "@types/mocha": ^9.1.1
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
@@ -53,6 +54,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@aoc-2021/dive@workspace:packages/02-dive"
   dependencies:
+    "@aoc-2021/utils": "workspace:*"
     "@types/mocha": ^9.1.1
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
