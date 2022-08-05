@@ -6,13 +6,37 @@
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
   "license": "MIT",
   "version": "0.0.1-alpha.1",
-  "main": "src/cli.ts",
+  "main": "dist/cli.js",
   "packageManager": "yarn@3.2.1",
-  "type": "module",
-  "publishConfig": {
-    "access": "public"
+  "scripts": {
+    "build": "tsc -p .",
+    "clean": "del -f dist node_modules tsconfig.tsbuildinfo",
+    "lint": "eslint 'src/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'src/**/*.ts'",
+    "test": "exit 0",
+    "cli": "node dist/cli.js",
+    "validate": "yarn build && yarn test && yarn lint"
   },
   "dependencies": {
-    "commander": "^9.3.0"
+    "commander": "^9.3.0",
+    "@aoc-2021/utils": "workspace:*",
+    "@aoc-2021/sonar-sweep": "workspace:*",
+    "@aoc-2021/dive": "workspace:*",
+    "@aoc-2021/binary-diagnostic": "workspace:*",
+    "@aoc-2021/giant-squid": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/debug": "^4",
+    "@types/node": "^16.11.43",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "del-cli": "^5.0.0",
+    "eslint": "^8.17.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.7.1",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

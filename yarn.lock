@@ -5,7 +5,7 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@aoc-2021/binary-diagnostic@workspace:packages/03-binary-diagnostic":
+"@aoc-2021/binary-diagnostic@workspace:*, @aoc-2021/binary-diagnostic@workspace:packages/03-binary-diagnostic":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/binary-diagnostic@workspace:packages/03-binary-diagnostic"
   dependencies:
@@ -24,7 +24,30 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/dive@workspace:packages/02-dive":
+"@aoc-2021/cli@workspace:packages/cli":
+  version: 0.0.0-use.local
+  resolution: "@aoc-2021/cli@workspace:packages/cli"
+  dependencies:
+    "@aoc-2021/binary-diagnostic": "workspace:*"
+    "@aoc-2021/dive": "workspace:*"
+    "@aoc-2021/giant-squid": "workspace:*"
+    "@aoc-2021/sonar-sweep": "workspace:*"
+    "@aoc-2021/utils": "workspace:*"
+    "@types/debug": ^4
+    "@types/node": ^16.11.43
+    "@typescript-eslint/eslint-plugin": ^5.27.1
+    "@typescript-eslint/parser": ^5.27.1
+    commander: ^9.3.0
+    del-cli: ^5.0.0
+    eslint: ^8.17.0
+    eslint-config-prettier: ^8.5.0
+    prettier: ^2.7.1
+    ts-node: ^10.8.1
+    typescript: ^4.7.3
+  languageName: unknown
+  linkType: soft
+
+"@aoc-2021/dive@workspace:*, @aoc-2021/dive@workspace:packages/02-dive":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/dive@workspace:packages/02-dive"
   dependencies:
@@ -43,7 +66,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/giant-squid@workspace:packages/04-giant-squid":
+"@aoc-2021/giant-squid@workspace:*, @aoc-2021/giant-squid@workspace:packages/04-giant-squid":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/giant-squid@workspace:packages/04-giant-squid"
   dependencies:
@@ -83,7 +106,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/sonar-sweep@workspace:packages/01-sonar-sweep":
+"@aoc-2021/sonar-sweep@workspace:*, @aoc-2021/sonar-sweep@workspace:packages/01-sonar-sweep":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/sonar-sweep@workspace:packages/01-sonar-sweep"
   dependencies:
@@ -1038,6 +1061,13 @@ __metadata:
   bin:
     color-support: bin.js
   checksum: 9b7356817670b9a13a26ca5af1c21615463b500783b739b7634a0c2047c16cef4b2865d7576875c31c3cddf9dd621fa19285e628f20198b233a5cfdda6d0793b
+  languageName: node
+  linkType: hard
+
+"commander@npm:^9.3.0":
+  version: 9.4.0
+  resolution: "commander@npm:9.4.0"
+  checksum: a322de584a6ccd1ea83c24f6a660e52d16ffbe2613fcfbb8d2cc68bc9dec637492456d754fe8bb5b039ad843ed8e04fb0b107e581a75f62cde9e1a0ab1546e09
   languageName: node
   linkType: hard
 
