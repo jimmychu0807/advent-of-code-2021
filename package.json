@@ -1,44 +1,56 @@
 {
+  "author": "Jimmy chu <jimmychu0807@gmail.com>",
   "name": "@aoc-2021/root",
   "description": "Advent of Code 2021",
   "homepage": "https://jimmychu0807.github.io/advent-of-code-2021/",
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
-  "author": "Jimmy chu <jimmychu0807@gmail.com>",
   "license": "MIT",
-  "type": "module",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/utils",
+    "packages/01-sonar-sweep",
+    "packages/02-dive",
+    "packages/03-binary-diagnostic",
+    "packages/04-giant-squid",
+    "packages/cli"
   ],
   "scripts": {
-    "main": "ts-node packages/cli/src/cli.ts",
-    "build": "yarn clean && tsc --build",
-    "clean": "rm -rf ./dist",
-    "lint": "tsc --build && eslint 'packages/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'packages/**/*.ts'",
-    "test": "mocha",
-    "test:all": "mocha 'packages/**/lib/tests.ts'",
-    "validate": "yarn build && yarn lint && yarn test:all",
+    "build": "yarn workspaces foreach -pt run build",
+    "clean": "yarn del tsconfig.tsbuildinfo && yarn workspaces foreach -p run clean",
+    "lint": "yarn workspaces foreach -p run lint",
+    "test": "yarn workspaces foreach -p run test",
+    "validate": "yarn workspaces foreach -pt run validate",
+    "cli": "yarn workspace @aoc-2021/cli cli",
+    "cli:dev": "yarn workspace @aoc-2021/cli cli:dev",
     "docs:update": "ts-node scripts/docs-update.ts",
     "docs:serve": "yarn docsify serve docs"
   },
+  "dependencies": {
+    "@aoc-2021/utils": "workspace:*"
+  },
   "devDependencies": {
-    "@tsconfig/node16-strictest-esm": "^1.0.2",
-    "@types/debug": "^4.1.7",
-    "@types/mocha": "^9.1.1",
+    "@tsconfig/node16-strictest": "^1.0.3",
     "@types/node": "^16.11.43",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
+    "del-cli": "^5.0.0",
     "docsify-cli": "^4.4.4",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
-    "lerna": "^5.1.8",
-    "mocha": "^10.0.0",
     "prettier": "^2.7.1",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.3"
   },
-  "packageManager": "yarn@3.2.1",
-  "dependencies": {
-    "debug": "^4.3.4"
-  }
+  "resolutions": {
+    "@types/node": "^16.11.43",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "del-cli": "^5.0.0",
+    "eslint": "^8.17.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.7.1",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
+  },
+  "packageManager": "yarn@3.2.1"
 }

@@ -1,0 +1,21 @@
+{
+  "extends": "@tsconfig/node16-strictest/tsconfig.json",
+  "include": [
+    "src/**/*.ts",
+  ],
+  "exclude": ["node_modules", "dist"],
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "inlineSources": true,
+    "inlineSourceMap": true,
+    "module": "commonjs",
+    "rootDir": "src",
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "strict": true,
+    "target": "es2021",
+    "types": ["mocha", "node"]
+  }
+}

@@ -1,13 +1,1 @@
-{
-  "extends": "@tsconfig/node16-strictest-esm/tsconfig.json",
-  "compilerOptions": {
-    "composite": true,
-    "esModuleInterop": true,
-    "outDir": "../../dist/packages/02-dive",
-    "sourceMap": true,
-    "types": ["mocha", "node"]
-  },
-  "ts-node": {
-    "esm": true
-  }
-}
+../../tsconfig-package.json

@@ -1,14 +1,16 @@
 import * as fs from 'fs'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import * as path from 'path'
 
 interface ReadInputOpts {
   type: 'string' | 'number'
 }
 
-function readInput(path: string, opts: ReadInputOpts): string[] | number[] {
+function readInput(inputPath: string, opts: ReadInputOpts): string[] | number[] {
+
+  const absPath = path.isAbsolute(inputPath) ? inputPath : path.join(process.cwd(), inputPath)
+
   const reducedResult = fs
-    .readFileSync(path, { encoding: 'utf-8' })
+    .readFileSync(absPath, { encoding: 'utf-8' })
     .split('\n')
     .map((l) => l.trim())
     .reduce<[string[], string[], boolean]>(
@@ -32,17 +34,9 @@ function isNotNullOrUndefined<T>(input: T | null | undefined): input is T {
   return input != null
 }
 
-function currentPathName(curr: string): [string, string] {
-  const __filename = fileURLToPath(curr)
-  const __dirname = path.dirname(__filename)
-  return [__filename, __dirname]
-}
-
 function capitalize(input: string): string {
-  const arr = input.split(' ');
-  return arr
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ')
+  const arr = input.split(' ')
+  return arr.map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
 }
 
-export { readInput, isNotNullOrUndefined, currentPathName, capitalize }
+export { readInput, isNotNullOrUndefined, capitalize }

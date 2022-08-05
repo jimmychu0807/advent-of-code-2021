@@ -1,5 +1,5 @@
 import { strict as assert } from 'node:assert'
-import { currentPathName } from '@aoc-2021/utils'
+import * as path from 'path'
 import { GiantSquid } from './giant-squid'
 
 const testCases = {
@@ -29,7 +29,7 @@ const testCases = {
   ]
 }
 
-const testFilePath = `${currentPathName(import.meta.url)[1]}/../input/test.dat`
+const testFilePath = path.join(__dirname, '../input/test.dat')
 
 describe('Day 04 - Giant Squid', () => {
   describe('Part I', () => {
