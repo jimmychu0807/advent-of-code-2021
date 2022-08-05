@@ -2,7 +2,7 @@
   "author": "Jimmy chu <jimmychu0807@gmail.com>",
   "name": "@aoc-2021/sonar-sweep",
   "description": "Day 01 - Sonar Sweep",
-  "homepage": "https://jimmychu0807.github.io/advent-of-code-2021/",
+  "homepage": "https://github.com/jimmychu0807/advent-of-code-2021/blob/main/packages/01-sonar-sweep/README.md",
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
   "license": "MIT",
   "version": "0.0.1",

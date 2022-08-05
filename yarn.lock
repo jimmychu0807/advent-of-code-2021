@@ -5,6 +5,25 @@ __metadata:
   version: 6
   cacheKey: 8
 
+"@aoc-2021/binary-diagnostic@workspace:packages/03-binary-diagnostic":
+  version: 0.0.0-use.local
+  resolution: "@aoc-2021/binary-diagnostic@workspace:packages/03-binary-diagnostic"
+  dependencies:
+    "@types/mocha": ^9.1.1
+    "@types/node": ^16.11.43
+    "@typescript-eslint/eslint-plugin": ^5.27.1
+    "@typescript-eslint/parser": ^5.27.1
+    del-cli: ^5.0.0
+    eslint: ^8.17.0
+    eslint-config-prettier: ^8.5.0
+    mocha: ^10.0.0
+    prettier: ^2.7.1
+    ts-mocha: ^10.0.0
+    ts-node: ^10.8.1
+    typescript: ^4.7.3
+  languageName: unknown
+  linkType: soft
+
 "@aoc-2021/dive@workspace:packages/02-dive":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/dive@workspace:packages/02-dive"
@@ -13,6 +32,27 @@ __metadata:
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
     "@typescript-eslint/parser": ^5.27.1
+    del-cli: ^5.0.0
+    eslint: ^8.17.0
+    eslint-config-prettier: ^8.5.0
+    mocha: ^10.0.0
+    prettier: ^2.7.1
+    ts-mocha: ^10.0.0
+    ts-node: ^10.8.1
+    typescript: ^4.7.3
+  languageName: unknown
+  linkType: soft
+
+"@aoc-2021/giant-squid@workspace:packages/04-giant-squid":
+  version: 0.0.0-use.local
+  resolution: "@aoc-2021/giant-squid@workspace:packages/04-giant-squid"
+  dependencies:
+    "@types/debug": ^4
+    "@types/mocha": ^9.1.1
+    "@types/node": ^16.11.43
+    "@typescript-eslint/eslint-plugin": ^5.27.1
+    "@typescript-eslint/parser": ^5.27.1
+    debug: ^4.3.4
     del-cli: ^5.0.0
     eslint: ^8.17.0
     eslint-config-prettier: ^8.5.0
@@ -37,7 +77,6 @@ __metadata:
     eslint: ^8.17.0
     eslint-config-prettier: ^8.5.0
     prettier: ^2.7.1
-    ts-mocha: ^10.0.0
     ts-node: ^10.8.1
     typescript: ^4.7.3
   languageName: unknown
@@ -289,6 +328,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/debug@npm:^4":
+  version: 4.1.7
+  resolution: "@types/debug@npm:4.1.7"
+  dependencies:
+    "@types/ms": "*"
+  checksum: 0a7b89d8ed72526858f0b61c6fd81f477853e8c4415bb97f48b1b5545248d2ae389931680b94b393b993a7cfe893537a200647d93defe6d87159b96812305adc
+  languageName: node
+  linkType: hard
+
 "@types/json-schema@npm:^7.0.9":
   version: 7.0.11
   resolution: "@types/json-schema@npm:7.0.11"
@@ -323,6 +371,13 @@ __metadata:
   version: 9.1.1
   resolution: "@types/mocha@npm:9.1.1"
   checksum: 516077c0acd9806dc78317f88aaac0df5aaf0bdc2f63dfdadeabdf0b0137953b6ca65472e6ff7c30bc93ce4e0ae76eae70e8d46764b9a8eae4877a928b6ef49a
+  languageName: node
+  linkType: hard
+
+"@types/ms@npm:*":
+  version: 0.7.31
+  resolution: "@types/ms@npm:0.7.31"
+  checksum: daadd354aedde024cce6f5aa873fefe7b71b22cd0e28632a69e8b677aeb48ae8caa1c60e5919bb781df040d116b01cb4316335167a3fc0ef6a63fa3614c0f6da
   languageName: node
   linkType: hard
 

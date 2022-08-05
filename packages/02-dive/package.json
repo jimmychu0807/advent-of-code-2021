@@ -3,7 +3,7 @@
   "name": "@aoc-2021/dive",
   "version": "0.0.1-alpha.1",
   "description": "Day 02 - Dive!",
-  "homepage": "https://jimmychu0807.github.io/advent-of-code-2021/",
+  "homepage": "https://github.com/jimmychu0807/advent-of-code-2021/blob/main/packages/02-dive/README.md",
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
   "license": "MIT",
   "main": "dist/dive.js",
