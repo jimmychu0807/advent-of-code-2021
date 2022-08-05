@@ -13,10 +13,12 @@ This is my attempt on [Advent of Code 2021](https://adventofcode.com/2021) :rock
 ```bash
 yarn install
 # More help text will be displayed
-yarn cli
+yarn cli <sub-command> <input argument>
+# Example
+yarn cli sonar-sweep -i packages/01-sonar-sweep/input/input.dat
+# Can also run it inside the workspace
+yarn workspace @aoc-2021/sonar-sweep cli -i packages/01-sonar-sweep/input/input.dat
 ```
-
-Note when entering input file in relative path in `yarn cli`, the path is relative to `packages/cli` directory, not the current user directory.
 
 **For CI**
 
