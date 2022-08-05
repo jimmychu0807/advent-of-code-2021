@@ -1,8 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { capitalize, currentPathName } from '@aoc-2021/utils'
-
-const __dirname = currentPathName(import.meta.url)[1]
+import { capitalize } from '@aoc-2021/utils'
 
 const PACKAGES_PATH = path.join(__dirname, '/../packages')
 const README_TPL_PATH = path.join(__dirname, '/templates/README.md.tpl')

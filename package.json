@@ -16,13 +16,17 @@
   ],
   "scripts": {
     "build": "yarn workspaces foreach -pt run build",
-    "clean": "yarn workspaces foreach -p run clean",
+    "clean": "yarn del tsconfig.tsbuildinfo && yarn workspaces foreach -p run clean",
     "lint": "yarn workspaces foreach -p run lint",
     "test": "yarn workspaces foreach -p run test",
     "validate": "yarn workspaces foreach -pt run validate",
     "cli": "yarn workspace @aoc-2021/cli cli",
+    "cli:dev": "yarn workspace @aoc-2021/cli cli:dev",
     "docs:update": "ts-node scripts/docs-update.ts",
     "docs:serve": "yarn docsify serve docs"
+  },
+  "dependencies": {
+    "@aoc-2021/utils": "workspace:*"
   },
   "devDependencies": {
     "@tsconfig/node16-strictest": "^1.0.3",

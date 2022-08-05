@@ -1,12 +1,16 @@
 import * as fs from 'fs'
+import * as path from 'path'
 
 interface ReadInputOpts {
   type: 'string' | 'number'
 }
 
-function readInput(path: string, opts: ReadInputOpts): string[] | number[] {
+function readInput(inputPath: string, opts: ReadInputOpts): string[] | number[] {
+
+  const absPath = path.isAbsolute(inputPath) ? inputPath : path.join(process.cwd(), inputPath)
+
   const reducedResult = fs
-    .readFileSync(path, { encoding: 'utf-8' })
+    .readFileSync(absPath, { encoding: 'utf-8' })
     .split('\n')
     .map((l) => l.trim())
     .reduce<[string[], string[], boolean]>(

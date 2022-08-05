@@ -14,15 +14,16 @@
     "lint": "eslint 'src/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'src/**/*.ts'",
     "test": "exit 0",
     "cli": "node dist/cli.js",
+    "cli:dev": "ts-node src/cli.ts",
     "validate": "yarn build && yarn test && yarn lint"
   },
   "dependencies": {
-    "commander": "^9.3.0",
-    "@aoc-2021/utils": "workspace:*",
-    "@aoc-2021/sonar-sweep": "workspace:*",
-    "@aoc-2021/dive": "workspace:*",
     "@aoc-2021/binary-diagnostic": "workspace:*",
-    "@aoc-2021/giant-squid": "workspace:*"
+    "@aoc-2021/dive": "workspace:*",
+    "@aoc-2021/giant-squid": "workspace:*",
+    "@aoc-2021/sonar-sweep": "workspace:*",
+    "@aoc-2021/utils": "workspace:*",
+    "commander": "^9.3.0"
   },
   "devDependencies": {
     "@types/debug": "^4",
