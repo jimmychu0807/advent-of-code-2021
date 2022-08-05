@@ -6,17 +6,19 @@
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
   "license": "MIT",
   "version": "0.0.1",
-  "main": "dist/sonar-sweep.js",
+  "main": "dist/index.js",
   "packageManager": "yarn@3.2.1",
   "scripts": {
     "build": "tsc -p .",
     "clean": "del -f dist node_modules tsconfig.tsbuildinfo",
     "lint": "eslint 'src/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'src/**/*.ts'",
     "test": "ts-mocha 'src/**/*.test.ts'",
+    "cli": "ts-node src/cli.ts",
     "validate": "yarn build && yarn test && yarn lint"
   },
   "dependencies": {
-    "@aoc-2021/utils": "workspace:*"
+    "@aoc-2021/utils": "workspace:*",
+    "commander": "^9.4.0"
   },
   "devDependencies": {
     "@types/mocha": "^9.1.1",
