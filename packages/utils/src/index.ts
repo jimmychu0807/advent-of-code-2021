@@ -1,6 +1,4 @@
 import * as fs from 'fs'
-import path from 'path'
-import { fileURLToPath } from 'url'
 
 interface ReadInputOpts {
   type: 'string' | 'number'
@@ -32,15 +30,9 @@ function isNotNullOrUndefined<T>(input: T | null | undefined): input is T {
   return input != null
 }
 
-function currentPathName(curr: string): [string, string] {
-  const __filename = fileURLToPath(curr)
-  const __dirname = path.dirname(__filename)
-  return [__filename, __dirname]
-}
-
 function capitalize(input: string): string {
   const arr = input.split(' ')
   return arr.map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
 }
 
-export { readInput, isNotNullOrUndefined, currentPathName, capitalize }
+export { readInput, isNotNullOrUndefined, capitalize }
