@@ -16,6 +16,4 @@ const command = new Command('sonar-sweep')
     console.log('Part II result is:', result2)
   })
 
-export {
-  command as default
-}
+export { command as default }

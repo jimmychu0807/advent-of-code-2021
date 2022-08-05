@@ -1,7 +1,4 @@
-import command from "./command"
-import * as BinaryDiagnostic from "./binary-diagnostic"
+import command from './command'
+import * as BinaryDiagnostic from './binary-diagnostic'
 
-export {
-  BinaryDiagnostic as default,
-  command as BinaryDiagnosticCommand
-}
+export { BinaryDiagnostic as default, command as BinaryDiagnosticCommand }

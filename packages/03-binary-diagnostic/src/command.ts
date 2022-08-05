@@ -16,6 +16,4 @@ const command = new Command('binary-diagnostic')
     console.log('Part II result is:', result2)
   })
 
-export {
-  command as default
-}
+export { command as default }

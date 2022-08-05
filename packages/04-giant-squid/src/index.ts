@@ -1,7 +1,4 @@
-import command from "./command"
-import * as GiantSquid from "./giant-squid"
+import command from './command'
+import * as GiantSquid from './giant-squid'
 
-export {
-  GiantSquid as default,
-  command as GiantSquidCommand
-}
+export { GiantSquid as default, command as GiantSquidCommand }

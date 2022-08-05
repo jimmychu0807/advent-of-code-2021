@@ -14,6 +14,4 @@ const command = new Command('giant-squid')
     console.log('Part II result is:', result2)
   })
 
-export {
-  command as default
-}
+export { command as default }
