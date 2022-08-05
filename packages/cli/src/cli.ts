@@ -1,9 +1,7 @@
 import { Command } from 'commander'
-
-import { readInput } from '@aoc-2021/utils'
 import { SonarSweepCommand } from '@aoc-2021/sonar-sweep'
-import Dive from '@aoc-2021/dive'
-import BinaryDiagnostic from '@aoc-2021/binary-diagnostic'
+import { DiveCommand } from '@aoc-2021/dive'
+import { BinaryDiagnosticCommand } from '@aoc-2021/binary-diagnostic'
 import GiantSquid from '@aoc-2021/giant-squid'
 
 // Read the package.json info
@@ -19,34 +17,8 @@ const program = new Command()
 
 program
   .addCommand(SonarSweepCommand)
-
-program
-  .command('dive')
-  .description('Day 02 - Dive!')
-  .requiredOption('-i, --input <inputPath>', 'path to input data')
-  .action((options) => {
-    const input: string[] = readInput(options.input, { type: 'string' }) as string[]
-    const dive = new Dive(input)
-    const result1 = dive.execute({ op: 'multiplication' })
-    console.log('Part I result is:', result1)
-
-    const result2 = dive.execute({ op: 'aimWithMultiplication' })
-    console.log('Part II result is:', result2)
-  })
-
-program
-  .command('binary-diagnostic')
-  .description('Day 03 - Binary Diagnostic')
-  .requiredOption('-i, --input <inputPath>', 'path to input data')
-  .action((options) => {
-    const input: string[] = readInput(options.input, { type: 'string' }) as string[]
-    const bd = new BinaryDiagnostic(input)
-    const result1 = bd.powerConsumption
-    console.log('Part I result is:', result1)
-
-    const result2 = bd.lifeSupportRating
-    console.log('Part II result is:', result2)
-  })
+  .addCommand(DiveCommand)
+  .addCommand(BinaryDiagnosticCommand)
 
 program
   .command('giant-squid')
