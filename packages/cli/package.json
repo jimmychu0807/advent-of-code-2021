@@ -23,7 +23,8 @@
     "@aoc-2021/giant-squid": "workspace:*",
     "@aoc-2021/sonar-sweep": "workspace:*",
     "@aoc-2021/utils": "workspace:*",
-    "commander": "^9.3.0"
+    "commander": "^9.3.0",
+    "debug": "^4.3.4"
   },
   "devDependencies": {
     "@types/debug": "^4",

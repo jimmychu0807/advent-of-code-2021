@@ -38,6 +38,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.27.1
     "@typescript-eslint/parser": ^5.27.1
     commander: ^9.3.0
+    debug: ^4.3.4
     del-cli: ^5.0.0
     eslint: ^8.17.0
     eslint-config-prettier: ^8.5.0
@@ -131,10 +132,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@aoc-2021/utils@workspace:packages/utils"
   dependencies:
+    "@types/debug": ^4
     "@types/mocha": ^9.1.1
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
     "@typescript-eslint/parser": ^5.27.1
+    debug: ^4.3.4
     del-cli: ^5.0.0
     eslint: ^8.17.0
     eslint-config-prettier: ^8.5.0
