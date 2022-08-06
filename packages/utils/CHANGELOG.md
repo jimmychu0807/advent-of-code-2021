@@ -1,5 +1,7 @@
 # @aoc-2021/utils
 
+## 0.0.4
+
 ## 0.0.3
 
 ### Patch Changes
