@@ -11,6 +11,7 @@
     "packages/02-dive",
     "packages/03-binary-diagnostic",
     "packages/04-giant-squid",
+    "packages/05-hydrothermal-venture",
     "packages/cli"
   ],
   "scripts": {

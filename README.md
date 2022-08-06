@@ -8,6 +8,7 @@ This is my attempt on [Advent of Code 2021](https://adventofcode.com/2021) :rock
 - [Day 02 - Dive](./packages/02-dive)
 - [Day 03 - Binary Diagnostic](./packages/03-binary-diagnostic)
 - [Day 04 - Giant Squid](./packages/04-giant-squid)
+- [Day 05 - Hydrothermal Venture](./packages/05-hydrothermal-venture)
 
 ## Workflow
 
