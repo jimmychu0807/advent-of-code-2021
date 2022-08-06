@@ -1,0 +1,8 @@
+# @aoc-2021/sonar-sweep
+
+## 0.0.2
+
+### Patch Changes
+
+- With four problem sets and monorepo config.
+  - @aoc-2021/utils@0.0.2
