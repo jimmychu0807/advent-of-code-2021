@@ -5,7 +5,7 @@
   "homepage": "https://jimmychu0807.github.io/advent-of-code-2021/",
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
   "main": "dist/cli.js",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "scripts": {
     "build": "tsc -p .",
     "clean": "del -f dist node_modules tsconfig.tsbuildinfo",
@@ -15,11 +15,11 @@
     "validate": "yarn build && yarn test && yarn lint"
   },
   "dependencies": {
-    "@aoc-2021/binary-diagnostic": "workspace:*",
-    "@aoc-2021/dive": "workspace:*",
-    "@aoc-2021/giant-squid": "workspace:*",
-    "@aoc-2021/sonar-sweep": "workspace:*",
-    "@aoc-2021/utils": "workspace:*",
+    "@aoc-2021/binary-diagnostic": "^0.0.3",
+    "@aoc-2021/dive": "^0.0.3",
+    "@aoc-2021/giant-squid": "^0.0.3",
+    "@aoc-2021/sonar-sweep": "^0.0.3",
+    "@aoc-2021/utils": "^0.0.3",
     "commander": "^9.3.0",
     "debug": "^4.3.4"
   },
