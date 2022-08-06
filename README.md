@@ -39,3 +39,5 @@ yarn docs:update
 yarn docs:serve
 ```
 
+- Do not update the root [`README.md`](README.md) directly. Instead update [`scripts/templates/README.md.tpl`](scripts/templates/README.md.tpl) as `scripts/doc-update.ts` will auto-generate the doc based on this template.
+

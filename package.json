@@ -4,7 +4,6 @@
   "description": "Advent of Code 2021",
   "homepage": "https://jimmychu0807.github.io/advent-of-code-2021/",
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
-  "license": "MIT",
   "private": true,
   "workspaces": [
     "packages/utils",
@@ -28,9 +27,10 @@
     "docs:serve": "yarn docsify serve docs -o"
   },
   "dependencies": {
-    "@aoc-2021/utils": "workspace:*"
+    "@aoc-2021/utils": "^0.0.2"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.24.2",
     "@tsconfig/node16-strictest": "^1.0.3",
     "@types/node": "^16.11.43",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
@@ -56,5 +56,6 @@
     "typescript": "^4.7.3",
     "strip-indent": "^3.0.0"
   },
+  "license": "MIT",
   "packageManager": "yarn@3.2.1"
 }
