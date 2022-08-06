@@ -5,11 +5,11 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@aoc-2021/binary-diagnostic@^0.0.2, @aoc-2021/binary-diagnostic@workspace:packages/03-binary-diagnostic":
+"@aoc-2021/binary-diagnostic@^0.0.3, @aoc-2021/binary-diagnostic@workspace:packages/03-binary-diagnostic":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/binary-diagnostic@workspace:packages/03-binary-diagnostic"
   dependencies:
-    "@aoc-2021/utils": ^0.0.2
+    "@aoc-2021/utils": ^0.0.3
     "@types/mocha": ^9.1.1
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
@@ -30,11 +30,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@aoc-2021/cli@workspace:packages/cli"
   dependencies:
-    "@aoc-2021/binary-diagnostic": ^0.0.2
-    "@aoc-2021/dive": ^0.0.2
-    "@aoc-2021/giant-squid": ^0.0.2
-    "@aoc-2021/sonar-sweep": ^0.0.2
-    "@aoc-2021/utils": ^0.0.2
+    "@aoc-2021/binary-diagnostic": ^0.0.3
+    "@aoc-2021/dive": ^0.0.3
+    "@aoc-2021/giant-squid": ^0.0.3
+    "@aoc-2021/sonar-sweep": ^0.0.3
+    "@aoc-2021/utils": ^0.0.3
     "@types/debug": ^4
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
@@ -50,11 +50,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/dive@^0.0.2, @aoc-2021/dive@workspace:packages/02-dive":
+"@aoc-2021/dive@^0.0.3, @aoc-2021/dive@workspace:packages/02-dive":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/dive@workspace:packages/02-dive"
   dependencies:
-    "@aoc-2021/utils": ^0.0.2
+    "@aoc-2021/utils": ^0.0.3
     "@types/mocha": ^9.1.1
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
@@ -71,11 +71,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/giant-squid@^0.0.2, @aoc-2021/giant-squid@workspace:packages/04-giant-squid":
+"@aoc-2021/giant-squid@^0.0.3, @aoc-2021/giant-squid@workspace:packages/04-giant-squid":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/giant-squid@workspace:packages/04-giant-squid"
   dependencies:
-    "@aoc-2021/utils": ^0.0.2
+    "@aoc-2021/utils": ^0.0.3
     "@types/debug": ^4
     "@types/mocha": ^9.1.1
     "@types/node": ^16.11.43
@@ -114,11 +114,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/sonar-sweep@^0.0.2, @aoc-2021/sonar-sweep@workspace:packages/01-sonar-sweep":
+"@aoc-2021/sonar-sweep@^0.0.3, @aoc-2021/sonar-sweep@workspace:packages/01-sonar-sweep":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/sonar-sweep@workspace:packages/01-sonar-sweep"
   dependencies:
-    "@aoc-2021/utils": ^0.0.2
+    "@aoc-2021/utils": ^0.0.3
     "@types/mocha": ^9.1.1
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
@@ -135,7 +135,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/utils@^0.0.2, @aoc-2021/utils@workspace:packages/utils":
+"@aoc-2021/utils@^0.0.3, @aoc-2021/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/utils@workspace:packages/utils"
   dependencies:
@@ -155,6 +155,15 @@ __metadata:
     typescript: ^4.7.3
   languageName: unknown
   linkType: soft
+
+"@aoc-2021/utils@npm:^0.0.2":
+  version: 0.0.2
+  resolution: "@aoc-2021/utils@npm:0.0.2"
+  dependencies:
+    debug: ^4.3.4
+  checksum: 60ca19c824f9332bc7c94e2051afc3746f170f74fb7ba9c04564c57fc250c309d7cd367defa73d77fa70ad24e34094ab1ee11d8a54d10c8298bc272ca2224e2d
+  languageName: node
+  linkType: hard
 
 "@babel/code-frame@npm:^7.0.0":
   version: 7.16.7
