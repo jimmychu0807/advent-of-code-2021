@@ -1,13 +1,11 @@
 {
   "author": "Jimmy Chu <jimmychu0807@gmail.com>",
   "name": "@aoc-2021/dive",
-  "version": "0.0.1-alpha.1",
   "description": "Day 02 - Dive!",
   "homepage": "https://github.com/jimmychu0807/advent-of-code-2021/blob/main/packages/02-dive/README.md",
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
-  "license": "MIT",
   "main": "dist/index.js",
-  "packageManager": "yarn@3.2.1",
+  "version": "0.0.1",
   "scripts": {
     "build": "tsc -p .",
     "clean": "del -f dist node_modules tsconfig.tsbuildinfo",
@@ -34,6 +32,8 @@
     "ts-node": "^10.8.1",
     "typescript": "^4.7.3"
   },
+  "license": "MIT",
+  "packageManager": "yarn@3.2.1",
   "publishConfig": {
     "access": "public"
   }

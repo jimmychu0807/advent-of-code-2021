@@ -4,10 +4,8 @@
   "description": "Shared utilities for @aoc-2021 monorepo",
   "homepage": "https://jimmychu0807.github.io/advent-of-code-2021/",
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
-  "license": "MIT",
-  "version": "0.0.1",
   "main": "dist/index.js",
-  "packageManager": "yarn@3.2.1",
+  "version": "0.0.1",
   "scripts": {
     "clean": "del -f dist node_modules tsconfig.tsbuildinfo",
     "build": "tsc -p .",
@@ -33,6 +31,8 @@
     "ts-node": "^10.8.1",
     "typescript": "^4.7.3"
   },
+  "license": "MIT",
+  "packageManager": "yarn@3.2.1",
   "publishConfig": {
     "access": "public"
   }
