@@ -5,11 +5,11 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@aoc-2021/binary-diagnostic@^0.0.3, @aoc-2021/binary-diagnostic@workspace:packages/03-binary-diagnostic":
+"@aoc-2021/binary-diagnostic@^0.0.4, @aoc-2021/binary-diagnostic@workspace:packages/03-binary-diagnostic":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/binary-diagnostic@workspace:packages/03-binary-diagnostic"
   dependencies:
-    "@aoc-2021/utils": ^0.0.3
+    "@aoc-2021/utils": ^0.0.4
     "@types/mocha": ^9.1.1
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
@@ -30,11 +30,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@aoc-2021/cli@workspace:packages/cli"
   dependencies:
-    "@aoc-2021/binary-diagnostic": ^0.0.3
-    "@aoc-2021/dive": ^0.0.3
-    "@aoc-2021/giant-squid": ^0.0.3
-    "@aoc-2021/sonar-sweep": ^0.0.3
-    "@aoc-2021/utils": ^0.0.3
+    "@aoc-2021/binary-diagnostic": ^0.0.4
+    "@aoc-2021/dive": ^0.0.4
+    "@aoc-2021/giant-squid": ^0.0.4
+    "@aoc-2021/sonar-sweep": ^0.0.4
+    "@aoc-2021/utils": ^0.0.4
     "@types/debug": ^4
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
@@ -47,14 +47,16 @@ __metadata:
     prettier: ^2.7.1
     ts-node: ^10.8.1
     typescript: ^4.7.3
+  bin:
+    aoc-2021: bin.js
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/dive@^0.0.3, @aoc-2021/dive@workspace:packages/02-dive":
+"@aoc-2021/dive@^0.0.4, @aoc-2021/dive@workspace:packages/02-dive":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/dive@workspace:packages/02-dive"
   dependencies:
-    "@aoc-2021/utils": ^0.0.3
+    "@aoc-2021/utils": ^0.0.4
     "@types/mocha": ^9.1.1
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
@@ -71,11 +73,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/giant-squid@^0.0.3, @aoc-2021/giant-squid@workspace:packages/04-giant-squid":
+"@aoc-2021/giant-squid@^0.0.4, @aoc-2021/giant-squid@workspace:packages/04-giant-squid":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/giant-squid@workspace:packages/04-giant-squid"
   dependencies:
-    "@aoc-2021/utils": ^0.0.3
+    "@aoc-2021/utils": ^0.0.4
     "@types/debug": ^4
     "@types/mocha": ^9.1.1
     "@types/node": ^16.11.43
@@ -114,11 +116,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/sonar-sweep@^0.0.3, @aoc-2021/sonar-sweep@workspace:packages/01-sonar-sweep":
+"@aoc-2021/sonar-sweep@^0.0.4, @aoc-2021/sonar-sweep@workspace:packages/01-sonar-sweep":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/sonar-sweep@workspace:packages/01-sonar-sweep"
   dependencies:
-    "@aoc-2021/utils": ^0.0.3
+    "@aoc-2021/utils": ^0.0.4
     "@types/mocha": ^9.1.1
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
@@ -135,7 +137,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/utils@^0.0.3, @aoc-2021/utils@workspace:packages/utils":
+"@aoc-2021/utils@^0.0.4, @aoc-2021/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/utils@workspace:packages/utils"
   dependencies:

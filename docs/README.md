@@ -41,3 +41,34 @@ yarn docs:serve
 
 - Do not update the root [`README.md`](README.md) directly. Instead update [`scripts/templates/README.md.tpl`](scripts/templates/README.md.tpl) as `scripts/doc-update.ts` will auto-generate the doc based on this template.
 
+**For publish packages**
+
+```bash
+# Contributor
+
+yarn changeset add
+yarn changeset version
+yarn install
+git add .
+git commit -m "message"
+git push <repo>
+# Pull request to remote repo base branch
+
+# Repo owner
+
+# Merge PR from contributor to base branch
+yarn changeset publish
+git push --follow-tags
+```
+
+For detail refer to: <https://github.com/changesets/changesets/blob/main/packages/cli/README.md>
+
+**Running the command in your own package**
+
+```bash
+yarn add -D @aoc-2021/cli
+yarn aoc-2021
+# or
+yarn dlx @aoc-2021/cli
+```
+
