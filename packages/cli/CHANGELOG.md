@@ -1,5 +1,18 @@
 # @aoc-2021/cli
 
+## 0.0.5
+
+### Patch Changes
+
+- Completed Day 05 problem.
+- Updated dependencies
+  - @aoc-2021/hydrothermal-venture@0.0.5
+  - @aoc-2021/sonar-sweep@0.0.5
+  - @aoc-2021/dive@0.0.5
+  - @aoc-2021/binary-diagnostic@0.0.5
+  - @aoc-2021/giant-squid@0.0.5
+  - @aoc-2021/utils@0.0.5
+
 ## 0.0.4
 
 ### Patch Changes

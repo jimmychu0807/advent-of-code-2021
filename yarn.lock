@@ -5,11 +5,11 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@aoc-2021/binary-diagnostic@^0.0.4, @aoc-2021/binary-diagnostic@workspace:packages/03-binary-diagnostic":
+"@aoc-2021/binary-diagnostic@^0.0.5, @aoc-2021/binary-diagnostic@workspace:packages/03-binary-diagnostic":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/binary-diagnostic@workspace:packages/03-binary-diagnostic"
   dependencies:
-    "@aoc-2021/utils": ^0.0.4
+    "@aoc-2021/utils": ^0.0.5
     "@types/mocha": ^9.1.1
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
@@ -30,12 +30,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@aoc-2021/cli@workspace:packages/cli"
   dependencies:
-    "@aoc-2021/binary-diagnostic": ^0.0.4
-    "@aoc-2021/dive": ^0.0.4
-    "@aoc-2021/giant-squid": ^0.0.4
-    "@aoc-2021/hydrothermal-venture": ^0.0.4
-    "@aoc-2021/sonar-sweep": ^0.0.4
-    "@aoc-2021/utils": ^0.0.4
+    "@aoc-2021/binary-diagnostic": ^0.0.5
+    "@aoc-2021/dive": ^0.0.5
+    "@aoc-2021/giant-squid": ^0.0.5
+    "@aoc-2021/hydrothermal-venture": ^0.0.5
+    "@aoc-2021/sonar-sweep": ^0.0.5
+    "@aoc-2021/utils": ^0.0.5
     "@types/debug": ^4
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
@@ -53,11 +53,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/dive@^0.0.4, @aoc-2021/dive@workspace:packages/02-dive":
+"@aoc-2021/dive@^0.0.5, @aoc-2021/dive@workspace:packages/02-dive":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/dive@workspace:packages/02-dive"
   dependencies:
-    "@aoc-2021/utils": ^0.0.4
+    "@aoc-2021/utils": ^0.0.5
     "@types/mocha": ^9.1.1
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
@@ -74,11 +74,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/giant-squid@^0.0.4, @aoc-2021/giant-squid@workspace:packages/04-giant-squid":
+"@aoc-2021/giant-squid@^0.0.5, @aoc-2021/giant-squid@workspace:packages/04-giant-squid":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/giant-squid@workspace:packages/04-giant-squid"
   dependencies:
-    "@aoc-2021/utils": ^0.0.4
+    "@aoc-2021/utils": ^0.0.5
     "@types/debug": ^4
     "@types/mocha": ^9.1.1
     "@types/node": ^16.11.43
@@ -97,11 +97,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/hydrothermal-venture@^0.0.4, @aoc-2021/hydrothermal-venture@workspace:packages/05-hydrothermal-venture":
+"@aoc-2021/hydrothermal-venture@^0.0.5, @aoc-2021/hydrothermal-venture@workspace:packages/05-hydrothermal-venture":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/hydrothermal-venture@workspace:packages/05-hydrothermal-venture"
   dependencies:
-    "@aoc-2021/utils": ^0.0.4
+    "@aoc-2021/utils": ^0.0.5
     "@types/debug": ^4
     "@types/mocha": ^9.1.1
     "@types/node": ^16.11.43
@@ -124,7 +124,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@aoc-2021/root@workspace:."
   dependencies:
-    "@aoc-2021/utils": ^0.0.4
     "@changesets/cli": ^2.24.2
     "@tsconfig/node16-strictest": ^1.0.3
     "@types/node": ^16.11.43
@@ -140,11 +139,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/sonar-sweep@^0.0.4, @aoc-2021/sonar-sweep@workspace:packages/01-sonar-sweep":
+"@aoc-2021/sonar-sweep@^0.0.5, @aoc-2021/sonar-sweep@workspace:packages/01-sonar-sweep":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/sonar-sweep@workspace:packages/01-sonar-sweep"
   dependencies:
-    "@aoc-2021/utils": ^0.0.4
+    "@aoc-2021/utils": ^0.0.5
     "@types/mocha": ^9.1.1
     "@types/node": ^16.11.43
     "@typescript-eslint/eslint-plugin": ^5.27.1
@@ -161,7 +160,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/utils@^0.0.4, @aoc-2021/utils@workspace:packages/utils":
+"@aoc-2021/utils@^0.0.5, @aoc-2021/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/utils@workspace:packages/utils"
   dependencies:
