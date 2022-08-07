@@ -33,11 +33,10 @@ class HydrothermalVenture {
 
     // Find the _maxWidth and _maxDepth
     input.forEach((line) => {
-      this.inputToCoords(line)
-        .forEach(point => {
-          if (point.y >= this._maxDepth) this._maxDepth = point.y + 1
-          if (point.x >= this._maxWidth) this._maxWidth = point.x + 1
-        })
+      this.inputToCoords(line).forEach((point) => {
+        if (point.y >= this._maxDepth) this._maxDepth = point.y + 1
+        if (point.x >= this._maxWidth) this._maxWidth = point.x + 1
+      })
     })
 
     // Initialize with an empty board
@@ -47,20 +46,20 @@ class HydrothermalVenture {
 
     // Filter non-horizontal line
     this._board = this._inputs
-      .filter(input => this.isHorizontalOrVertical(...this.inputToCoords(input)))
+      .filter((input) => this.isHorizontalOrVertical(...this.inputToCoords(input)))
       .reduce((board, input) => {
         const [pt1, pt2] = this.inputToCoords(input)
         log.debug(`pt1: ${pt1.toString()}, pt2: ${pt2.toString()}`)
         if (pt1.x === pt2.x) {
           const [from, to] = pt1.y < pt2.y ? [pt1.y, pt2.y] : [pt2.y, pt1.y]
           for (let i = from; i <= to; i++) {
-            (board[i] as number[])[pt1.x] += 1
+            ;(board[i] as number[])[pt1.x] += 1
           }
         } else {
           // pt1.y === pt2.y
           const [from, to] = pt1.x < pt2.x ? [pt1.x, pt2.x] : [pt2.x, pt1.x]
           for (let i = from; i <= to; i++) {
-            (board[pt1.y] as number[])[i] += 1
+            ;(board[pt1.y] as number[])[i] += 1
           }
         }
         return board
@@ -68,9 +67,12 @@ class HydrothermalVenture {
   }
 
   private inputToCoords(input: string): [Coordinate, Coordinate] {
-    const [y1, x1, y2, x2] = input
-      .split(/->|,/)
-      .map((v) => Number(v.trim())) as [number, number, number, number]
+    const [y1, x1, y2, x2] = input.split(/->|,/).map((v) => Number(v.trim())) as [
+      number,
+      number,
+      number,
+      number
+    ]
 
     return [new Coordinate(y1, x1), new Coordinate(y2, x2)]
   }
@@ -81,7 +83,7 @@ class HydrothermalVenture {
 
   public countOverlap(): number {
     return this._board
-      .map(row => row.filter(el => el > 1).length)
+      .map((row) => row.filter((el) => el > 1).length)
       .reduce((memo, val) => memo + val, 0)
   }
 }
