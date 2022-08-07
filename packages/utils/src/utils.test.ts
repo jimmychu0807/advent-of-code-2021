@@ -1,5 +1,5 @@
 import { strict as assert } from 'node:assert'
-import { isNotNullOrUndefined, capitalize } from './index'
+import { isNotNullOrUndefined, capitalize } from './utils'
 
 describe('@aoc-2021/utils', () => {
   it('test isNotNullOrUndefined()', () => {
