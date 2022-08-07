@@ -8,11 +8,18 @@ const log = {
   debug: Debug('hydrothermal:debug')
 }
 
+interface HydrothermalVentureOptions {
+  horizontalVertical: boolean
+  diagonal: boolean
+}
+
 class HydrothermalVenture {
   private _maxWidth: number
   private _maxDepth: number
   private _inputs: string[]
   private _board: number[][]
+  private _opts: HydrothermalVentureOptions
+
   get maxWidth() {
     return this._maxWidth
   }
@@ -26,10 +33,14 @@ class HydrothermalVenture {
     return this._board
   }
 
-  constructor(input: string[]) {
+  constructor(
+    input: string[],
+    opts: HydrothermalVentureOptions = { horizontalVertical: true, diagonal: false }
+  ) {
     this._inputs = [...input]
     this._maxWidth = 0
     this._maxDepth = 0
+    this._opts = { ...opts }
 
     // Find the _maxWidth and _maxDepth
     input.forEach((line) => {
@@ -46,20 +57,34 @@ class HydrothermalVenture {
 
     // Filter non-horizontal line
     this._board = this._inputs
-      .filter((input) => this.isHorizontalOrVertical(...this.inputToCoords(input)))
+      .filter(
+        (input) =>
+          (this._opts.diagonal && this.isDiagonal(...this.inputToCoords(input))) ||
+          (this._opts.horizontalVertical &&
+            this.isHorizontalOrVertical(...this.inputToCoords(input)))
+      )
       .reduce((board, input) => {
         const [pt1, pt2] = this.inputToCoords(input)
         log.debug(`pt1: ${pt1.toString()}, pt2: ${pt2.toString()}`)
+
         if (pt1.x === pt2.x) {
           const [from, to] = pt1.y < pt2.y ? [pt1.y, pt2.y] : [pt2.y, pt1.y]
           for (let i = from; i <= to; i++) {
             ;(board[i] as number[])[pt1.x] += 1
           }
-        } else {
-          // pt1.y === pt2.y
+        } else if (pt1.y === pt2.y) {
           const [from, to] = pt1.x < pt2.x ? [pt1.x, pt2.x] : [pt2.x, pt1.x]
           for (let i = from; i <= to; i++) {
             ;(board[pt1.y] as number[])[i] += 1
+          }
+        } else {
+          // diagonal line
+          const [top, bottom] = pt1.y < pt2.y ? [pt1, pt2] : [pt2, pt1]
+          const growToRight = top.x < bottom.x
+
+          for (let i = 0; i <= bottom.y - top.y; i++) {
+            const x = growToRight ? top.x + i : top.x - i
+            ;(board[top.y + i] as number[])[x] += 1
           }
         }
         return board
@@ -79,6 +104,14 @@ class HydrothermalVenture {
 
   private isHorizontalOrVertical(pt1: Coordinate, pt2: Coordinate): boolean {
     return pt1.y === pt2.y || pt1.x === pt2.x
+  }
+
+  private isDiagonal(pt1: Coordinate, pt2: Coordinate): boolean {
+    if (this.isHorizontalOrVertical(pt1, pt2)) return false
+
+    const [top, bottom] = pt1.y < pt2.y ? [pt1, pt2] : [pt2, pt1]
+    const growToRight = top.x < bottom.x
+    return bottom.y - top.y === (growToRight ? bottom.x - top.x : top.x - bottom.x)
   }
 
   public countOverlap(): number {

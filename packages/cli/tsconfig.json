@@ -12,6 +12,7 @@
     { "path": "../02-dive" },
     { "path": "../03-binary-diagnostic" },
     { "path": "../04-giant-squid" },
+    { "path": "../05-hydrothermal-venture" },
     { "path": "../utils" }
   ]
 }

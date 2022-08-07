@@ -33,6 +33,7 @@ __metadata:
     "@aoc-2021/binary-diagnostic": ^0.0.4
     "@aoc-2021/dive": ^0.0.4
     "@aoc-2021/giant-squid": ^0.0.4
+    "@aoc-2021/hydrothermal-venture": ^0.0.4
     "@aoc-2021/sonar-sweep": ^0.0.4
     "@aoc-2021/utils": ^0.0.4
     "@types/debug": ^4
@@ -96,7 +97,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/hydrothermal-venture@workspace:packages/05-hydrothermal-venture":
+"@aoc-2021/hydrothermal-venture@^0.0.4, @aoc-2021/hydrothermal-venture@workspace:packages/05-hydrothermal-venture":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/hydrothermal-venture@workspace:packages/05-hydrothermal-venture"
   dependencies:

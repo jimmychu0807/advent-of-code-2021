@@ -8,8 +8,11 @@ const command = new Command('hydrothermal-venture')
   .showHelpAfterError()
   .action((options) => {
     const inputs = readInput(options.input, { type: 'string' }) as string[]
-    const hv = new HydrothermalVenture(inputs)
-    console.log('Part I result is:', hv.countOverlap())
+    const hv1 = new HydrothermalVenture(inputs)
+    console.log('Part I result is:', hv1.countOverlap())
+
+    const hv2 = new HydrothermalVenture(inputs, { horizontalVertical: true, diagonal: true })
+    console.log('Part II result is:', hv2.countOverlap())
   })
 
 export { command as default }
