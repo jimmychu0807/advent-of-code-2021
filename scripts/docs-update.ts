@@ -1,6 +1,5 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { capitalize } from '@aoc-2021/utils'
 
 const PACKAGES_PATH = path.join(__dirname, '/../packages')
 const README_TPL_PATH = path.join(__dirname, '/templates/README.md.tpl')
@@ -14,6 +13,11 @@ const packageDirs = (): fs.Dirent[] =>
   fs
     .readdirSync(PACKAGES_PATH, { encoding: 'utf-8', withFileTypes: true })
     .filter((dir) => dir.isDirectory() && dir.name.match(/^\d+-.+$/))
+
+function capitalize(input: string): string {
+  const arr = input.split(' ')
+  return arr.map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+}
 
 function genDocContent(contentPrefix: string, problemLinkFn: (name: string) => string): string {
   const dirs = packageDirs()

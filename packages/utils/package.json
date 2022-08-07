@@ -5,7 +5,7 @@
   "homepage": "https://jimmychu0807.github.io/advent-of-code-2021/",
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
   "main": "dist/index.js",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "scripts": {
     "clean": "del -f dist node_modules tsconfig.tsbuildinfo",
     "build": "tsc -p .",

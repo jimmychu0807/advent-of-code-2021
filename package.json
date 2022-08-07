@@ -27,9 +27,6 @@
     "docs:update": "ts-node scripts/docs-update.ts",
     "docs:serve": "yarn docsify serve docs -o"
   },
-  "dependencies": {
-    "@aoc-2021/utils": "^0.0.4"
-  },
   "devDependencies": {
     "@changesets/cli": "^2.24.2",
     "@tsconfig/node16-strictest": "^1.0.3",
