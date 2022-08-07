@@ -11,6 +11,7 @@
     "packages/02-dive",
     "packages/03-binary-diagnostic",
     "packages/04-giant-squid",
+    "packages/05-hydrothermal-venture",
     "packages/cli"
   ],
   "scripts": {
@@ -27,7 +28,7 @@
     "docs:serve": "yarn docsify serve docs -o"
   },
   "dependencies": {
-    "@aoc-2021/utils": "^0.0.2"
+    "@aoc-2021/utils": "^0.0.4"
   },
   "devDependencies": {
     "@changesets/cli": "^2.24.2",
