@@ -9,6 +9,7 @@ This is my attempt on [Advent of Code 2021](https://adventofcode.com/2021) :rock
 - [Day 03 - Binary Diagnostic](/03-binary-diagnostic.md)
 - [Day 04 - Giant Squid](/04-giant-squid.md)
 - [Day 05 - Hydrothermal Venture](/05-hydrothermal-venture.md)
+- [Day 06 - Latternfish](/06-latternfish.md)
 
 ## Workflow
 
@@ -40,9 +41,9 @@ yarn docs:update
 yarn docs:serve
 ```
 
-- Do not update the root [`README.md`](README.md) directly. Instead update [`scripts/templates/README.md.tpl`](scripts/templates/README.md.tpl) as `scripts/doc-update.ts` will auto-generate the doc based on this template.
+- Do not update the root [`README.md`](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/README.md) directly. Instead update [`scripts/templates/README.md.tpl`](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/scripts/templates/README.md.tpl) as `scripts/doc-update.ts` will auto-generate the doc based on this template.
 
-**For publish packages**
+**For publishing packages**
 
 ```bash
 # Contributor
@@ -57,7 +58,7 @@ git push <repo>
 
 # Repo owner
 
-# Merge PR from contributor to base branch
+# (Squash) Merge PR from contributor to base branch
 yarn changeset publish
 git push --follow-tags
 ```

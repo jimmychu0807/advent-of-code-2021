@@ -6,13 +6,7 @@
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
   "private": true,
   "workspaces": [
-    "packages/utils",
-    "packages/01-sonar-sweep",
-    "packages/02-dive",
-    "packages/03-binary-diagnostic",
-    "packages/04-giant-squid",
-    "packages/05-hydrothermal-venture",
-    "packages/cli"
+    "packages/*"
   ],
   "scripts": {
     "build": "yarn workspaces foreach -pt run build",
