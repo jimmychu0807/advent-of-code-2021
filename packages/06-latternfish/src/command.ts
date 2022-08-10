@@ -17,7 +17,7 @@ const command = new Command('latternfish')
       },
       80
     )
-    console.log('Part I result is:', result1.length)
+    console.log('Part I result is:', Latternfish.countFishes(result1))
 
     const result2 = Latternfish.modeling(
       {
@@ -27,7 +27,7 @@ const command = new Command('latternfish')
       },
       256
     )
-    console.log('Part II result is:', result2.length)
+    console.log('Part II result is:', Latternfish.countFishes(result2))
   })
 
 export { command as default }
