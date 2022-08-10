@@ -45,7 +45,17 @@ const testCases: Record<string, TestCase> = {
     },
     modelDay: 80,
     expect: 5934
-  }
+  },
+  givenExampleThree: {
+    // Come from the problem
+    config: {
+      fishes: [3, 4, 3, 1, 2],
+      dayToSpawn: 6,
+      initDayToSpawn: 8
+    },
+    modelDay: 256,
+    expect: 26984457539
+  },
 }
 
 describe('Day 06 - Latternfish', () => {
@@ -53,6 +63,7 @@ describe('Day 06 - Latternfish', () => {
   it('test for fish with spawning', () => runTestCase('simpleWithSpawning'))
   it('test for the given example I', () => runTestCase('givenExampleOne'))
   it('test for the given example II', () => runTestCase('givenExampleTwo'))
+  it('test for the given example III', () => runTestCase('givenExampleThree'))
 
   it('can count fishes', () => {
     const res = Latternfish.countFishes([[1, 2], [3, 4]])
