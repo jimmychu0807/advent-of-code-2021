@@ -20,15 +20,15 @@ const command = new Command('latternfish')
     )
     console.log('Part I result is:', result1.length)
 
-    // const result2 = Latternfish.modeling(
-    //   {
-    //     fishes,
-    //     dayToSpawn: 6,
-    //     initDayToSpawn: 8
-    //   },
-    //   256
-    // )
-    // console.log('Part II result is:', result2.length)
+    const result2 = Latternfish.modeling(
+      {
+        fishes,
+        dayToSpawn: 6,
+        initDayToSpawn: 8
+      },
+      256
+    )
+    console.log('Part II result is:', result2.length)
   })
 
 export { command as default }

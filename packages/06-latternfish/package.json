@@ -17,7 +17,8 @@
   "dependencies": {
     "@aoc-2021/utils": "^0.0.5",
     "commander": "^9.4.0",
-    "debug": "^4.3.4"
+    "debug": "^4.3.4",
+    "tempy": "^3.0.0"
   },
   "devDependencies": {
     "@types/debug": "^4",

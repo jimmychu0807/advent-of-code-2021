@@ -63,7 +63,7 @@ describe('Day 06 - Latternfish', () => {
   it('test for fish with spawning', () => runTestCase('simpleWithSpawning'))
   it('test for the given example I', () => runTestCase('givenExampleOne'))
   it('test for the given example II', () => runTestCase('givenExampleTwo'))
-  // it('test for the given example III', () => runTestCase('givenExampleThree'))
+  it('test for the given example III', () => runTestCase('givenExampleThree'))
 })
 
 function runTestCase(testName: string) {

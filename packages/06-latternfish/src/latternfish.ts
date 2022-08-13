@@ -1,5 +1,6 @@
 'use struct'
 import Debug from 'debug'
+import { temporaryFile } from 'tempy'
 
 const log = {
   info: Debug('latternfish:info'),
@@ -12,12 +13,13 @@ interface LatternfishConfig {
   initDayToSpawn: number
 }
 
-const MAX_BUFFER_LEN = 2**26
+const MAX_BUFFER_LEN = 2**31
 
 // opt 1: use Uint8Array
 // opt 2: write to two tmp files
 
 class Latternfish {
+
   static modeling(config: LatternfishConfig, days: number): Uint8Array {
     const { fishes, dayToSpawn, initDayToSpawn } = config
     let result = Uint8Array.of(...fishes)
@@ -42,7 +44,7 @@ class Latternfish {
       }
 
       result = mergeTypedArray(result, newSpawns, spawnLen)
-      log.info(`[day ${day}:] ${result.length},`, result)
+      log.info(`[day ${day}] len: ${result.length}`)
     }
 
     return result
