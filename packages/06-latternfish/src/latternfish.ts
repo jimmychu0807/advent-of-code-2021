@@ -4,7 +4,7 @@ import * as fsPromise from 'fs/promises'
 import * as fs from 'fs'
 
 const log = {
-  info: Debug('latternfish:info')
+  info: Debug('latternfish'),
 }
 
 interface LatternfishConfig {
@@ -14,13 +14,15 @@ interface LatternfishConfig {
   daySimulation: number
 }
 
-const CHUNK_SIZE = 50*1024*1024
+// const CHUNK_SIZE = 50*1024*1024
+const CHUNK_SIZE = 10*1024*1024
 
 // opt 1: use Uint8Array
 // opt 2: write to two tmp files
 
 class Latternfish {
-  static DEBUG = 1
+
+  static keepTmpFiles = true
 
   static async modeling(config: LatternfishConfig): Promise<number> {
     // Using dynamic import here to load es-module in commonjs
@@ -28,32 +30,29 @@ class Latternfish {
 
     const { fishes,  dayToSpawn, initDayToSpawn, daySimulation } = config
     let result = Uint8Array.of(...fishes)
+    let tmpFiles: string[] = []
 
     let resultFilePath = temporaryFile()
+    tmpFiles.push(resultFilePath)
+
     await fsPromise.writeFile(resultFilePath, result.join(''))
 
     for (let i = 0; i < daySimulation; i++) {
-      let newResultFilePath = await this.modelForOneDay(resultFilePath, dayToSpawn, initDayToSpawn)
-      await fsPromise.rm(resultFilePath)
-      resultFilePath = newResultFilePath
+      resultFilePath = await this.modelForOneDay(resultFilePath, dayToSpawn, initDayToSpawn)
+      tmpFiles.push(resultFilePath)
 
-      log.info(`[day ${i} ends]`)
-
-      if (this.DEBUG === 1) {
+      if (Debug.enabled('latternfish')) {
         const fstat = await fsPromise.stat(resultFilePath)
-        log.info(`fish size: ${fstat.size}`)
-      } else if (this.DEBUG === 2) {
-        const [len, out] = await this.fishOutStream(newResultFilePath)
-        log.info(`fishes size: ${len},`, out)
+        log.info(`[day ${i + 1} ends]: fish size: ${fstat.size}`)
       }
     }
-    const fstat = await fsPromise.stat(resultFilePath)
 
-    if (this.DEBUG >= 1) {
-      log.info(`output file path: ${resultFilePath}`)
-      log.info(`number of fish: ${fstat.size}`)
-    } else {
-      await fsPromise.rm(resultFilePath)
+    // Finish up, log, and clean up
+    const fstat = await fsPromise.stat(tmpFiles[tmpFiles.length - 1] as string)
+    log.info(`tmp file paths:\n${tmpFiles.map(t => `  ${t}\n`).join('')}`)
+
+    if (!this.keepTmpFiles) {
+      await Promise.allSettled(tmpFiles.map(f => fsPromise.rm(f)))
     }
 
     return fstat.size
@@ -75,8 +74,7 @@ class Latternfish {
       })
 
       readStream.on('error', err => {
-         console.log(`Error occur on reading result: ${err}`);
-         reject(err);
+        reject(err)
       })
     })
   }
@@ -94,53 +92,35 @@ class Latternfish {
         fs.createWriteStream(tmpFilePath, { encoding: 'utf8', highWaterMark: CHUNK_SIZE })
       let numSpawn = 0
 
-      let writeChunk = ''
-
       readStream.on('data', chunk => {
-        let fishes = (chunk as string).split('').map(c => Number(c))
+        let fishes = Uint8Array.from(chunk as Buffer)
 
-        fishes.forEach(fish => {
-          if (fish > 0) {
-            writeStream.write((fish - 1).toString())
-          } else {
-            writeStream.write(dayToSpawn.toString())
-            numSpawn += 1
-          }
+        fishes = fishes.map(fish => {
+          numSpawn += fish > 0 ? 0 : 1
+          return fish > 0 ? fish - 1 : dayToSpawn
         })
+
+        writeStream.write(fishes.join(''))
       })
 
       readStream.on('end', async () => {
-        let spawnChar = initDayToSpawn.toString()
-
+        // Write the spawn fishes in chunk size
         while (numSpawn > 0) {
           let toSpawn = Math.min(numSpawn, CHUNK_SIZE)
           // write the spawned fishes
-          writeStream.write(Array(toSpawn).fill(spawnChar).join(''))
+          writeStream.write(new Uint8Array(toSpawn).fill(initDayToSpawn).join(''))
           numSpawn -= toSpawn
         }
 
-        await closeWriteStream(writeStream)
-        resolve(tmpFilePath)
+        writeStream.close(err => err
+          ? reject(`Error on writing to stream: ${err.toString()}`)
+          : resolve(tmpFilePath)
+        )
       })
 
-      readStream.on('error', function(err) {
-       console.log(`Error occur on reading result: ${err}`);
-       reject(err);
-      });
+      readStream.on('error', err => reject(`Error on reading stream: ${err.toString()}`))
     })
   }
-}
-
-async function closeWriteStream(writeStream: fs.WriteStream) {
-  return new Promise<void>((resolve, reject) => {
-    writeStream.close((err) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve()
-      }
-    })
-  })
 }
 
 export { Latternfish as default, Latternfish, LatternfishConfig }
