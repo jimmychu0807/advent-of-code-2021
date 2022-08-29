@@ -22,7 +22,8 @@ const CHUNK_SIZE = 10*1024*1024
 
 class Latternfish {
 
-  static keepTmpFiles = true
+  static keepTmpFiles = false
+  static logInterval = 10
 
   static async modeling(config: LatternfishConfig): Promise<number> {
     // Using dynamic import here to load es-module in commonjs
@@ -41,7 +42,7 @@ class Latternfish {
       resultFilePath = await this.modelForOneDay(resultFilePath, dayToSpawn, initDayToSpawn)
       tmpFiles.push(resultFilePath)
 
-      if (Debug.enabled('latternfish')) {
+      if (Debug.enabled('latternfish') && i % this.logInterval == 0) {
         const fstat = await fsPromise.stat(resultFilePath)
         log.info(`[day ${i + 1} ends]: fish size: ${fstat.size}`)
       }
@@ -49,9 +50,10 @@ class Latternfish {
 
     // Finish up, log, and clean up
     const fstat = await fsPromise.stat(tmpFiles[tmpFiles.length - 1] as string)
-    log.info(`tmp file paths:\n${tmpFiles.map(t => `  ${t}\n`).join('')}`)
 
-    if (!this.keepTmpFiles) {
+    if (this.keepTmpFiles) {
+      log.info(`tmp file paths:\n${tmpFiles.map(t => `  ${t}\n`).join('')}`)
+    } else {
       await Promise.allSettled(tmpFiles.map(f => fsPromise.rm(f)))
     }
 
