@@ -2,7 +2,7 @@
 import Debug from 'debug'
 
 const log = {
-  info: Debug('latternfish'),
+  info: Debug('latternfish')
 }
 
 interface LatternfishConfig {
@@ -12,8 +12,7 @@ interface LatternfishConfig {
   daySimulation: number
 }
 
-const summation = (arr: Array<number>) =>
-  arr.reduce((sum, v) => sum + v, 0)
+const summation = (arr: Array<number>) => arr.reduce((sum, v) => sum + v, 0)
 
 class Latternfish {
   static modeling(config: LatternfishConfig): number {
@@ -21,16 +20,13 @@ class Latternfish {
     const size = Math.max(dayToSpawn, initDayToSpawn) + 1
     const insertion = Math.min(dayToSpawn, initDayToSpawn)
 
-    let result: Array<number> = fishes.reduce(
-      (memo, fish) => {
-        memo[fish] += 1
-        return memo
-      },
-      new Array(size).fill(0)
-    )
+    let result: Array<number> = fishes.reduce((memo, fish) => {
+      memo[fish] += 1
+      return memo
+    }, new Array(size).fill(0))
 
     for (let i = 0; i < daySimulation; i++) {
-      let newSpawn = result[0] as number
+      const newSpawn = result[0] as number
       result = result.slice(1, size)
 
       // Add back the fish to give birth again

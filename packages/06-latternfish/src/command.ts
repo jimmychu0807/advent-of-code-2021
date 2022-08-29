@@ -10,25 +10,21 @@ const command = new Command('latternfish')
   .action(async () => {
     const fishes = input.split(',').map((v) => Number(v))
 
-    const result1 = await Latternfish.modeling(
-      {
-        fishes,
-        dayToSpawn: 6,
-        initDayToSpawn: 8,
-        daySimulation: 80
-      },
-    )
+    const result1 = await Latternfish.modeling({
+      fishes,
+      dayToSpawn: 6,
+      initDayToSpawn: 8,
+      daySimulation: 80
+    })
 
     console.log('Part I result is:', result1)
 
-    const result2 = Latternfish.modeling(
-      {
-        fishes,
-        dayToSpawn: 6,
-        initDayToSpawn: 8,
-        daySimulation: 256
-      },
-    )
+    const result2 = Latternfish.modeling({
+      fishes,
+      dayToSpawn: 6,
+      initDayToSpawn: 8,
+      daySimulation: 256
+    })
     console.log('Part II result is:', result2)
   })
 
