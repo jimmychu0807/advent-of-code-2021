@@ -8,7 +8,7 @@ const command = new Command('latternfish')
   .description('Day 06 - Latternfish')
   .showHelpAfterError()
   .action(async () => {
-    const fishes = Uint8Array.from(input.split(',').map((v) => Number(v)))
+    const fishes = input.split(',').map((v) => Number(v))
 
     const result1 = await Latternfish.modeling(
       {
@@ -26,7 +26,7 @@ const command = new Command('latternfish')
         fishes,
         dayToSpawn: 6,
         initDayToSpawn: 8,
-        daySimulation: 200
+        daySimulation: 256
       },
     )
     console.log('Part II result is:', result2)
