@@ -1,4 +1,4 @@
-import { strict as assert } from 'node:assert'
+import { expect } from 'chai'
 import * as path from 'path'
 
 // local import
@@ -20,26 +20,26 @@ describe('Day 05 - Hydrothermal Venture', () => {
   describe('Part I', () => {
     it('test a simple case no overlap', () => {
       const hv = new HydrothermalVenture(tests.simpleNoOverlap)
-      assert.equal(hv.countOverlap(), 0)
+      expect(hv.countOverlap()).eq(0)
     })
 
     it('test a simple case with overlap', () => {
       const hv = new HydrothermalVenture(tests.simpleWithOverlap)
-      assert.equal(hv.countOverlap(), 1)
+      expect(hv.countOverlap()).eq(1)
     })
 
     it('test the given example', () => {
       const inputs = readInput(testFilePath, { type: 'string' }) as string[]
       const hv = new HydrothermalVenture(inputs)
-      assert.equal(hv.countOverlap(), 5)
+      expect(hv.countOverlap()).eq(5)
     })
   })
 
   describe('Part II', () => {
     it('test a simple case no overlap', () => {
       const hv = new HydrothermalVenture(tests.simpleDiagonalNoOverlap, fullOpts)
-      assert.equal(hv.countOverlap(), 0)
-      assert.deepEqual(hv.board, [
+      expect(hv.countOverlap()).eq(0)
+      expect(hv.board).eql([
         [1, 0, 0],
         [0, 1, 0],
         [0, 0, 1]
@@ -48,8 +48,8 @@ describe('Day 05 - Hydrothermal Venture', () => {
 
     it('test a simple case with overlap', () => {
       const hv = new HydrothermalVenture(tests.simpleDiagonalWithOverlap, fullOpts)
-      assert.equal(hv.countOverlap(), 1)
-      assert.deepEqual(hv.board, [
+      expect(hv.countOverlap()).eq(1)
+      expect(hv.board).eql([
         [1, 0, 1],
         [0, 2, 0],
         [1, 0, 1]
@@ -59,7 +59,7 @@ describe('Day 05 - Hydrothermal Venture', () => {
     it('test the given example', () => {
       const inputs = readInput(testFilePath, { type: 'string' }) as string[]
       const hv = new HydrothermalVenture(inputs, fullOpts)
-      assert.equal(hv.countOverlap(), 12)
+      expect(hv.countOverlap()).eq(12)
     })
   })
 })

@@ -15,7 +15,4 @@ describe('@aoc-2021/utils', () => {
     expect(capitalize('quick brown fox')).to.equal('Quick Brown Fox')
     expect(capitalize('QUICK')).to.equal('QUICK')
   })
-
-  // pending test
-  it('test readInput()')
 })
