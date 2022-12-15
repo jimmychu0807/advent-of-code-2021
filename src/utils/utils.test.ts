@@ -1,21 +1,18 @@
-import { strict as assert } from 'node:assert'
+import { expect } from 'chai'
 import { isNotNullOrUndefined, capitalize } from './utils'
 
 describe('@aoc-2021/utils', () => {
   it('test isNotNullOrUndefined()', () => {
-    assert.strictEqual(isNotNullOrUndefined(null), false)
-    assert.strictEqual(isNotNullOrUndefined(undefined), false)
-    assert.strictEqual(isNotNullOrUndefined(0), true)
-    assert.strictEqual(isNotNullOrUndefined(false), true)
-    assert.strictEqual(isNotNullOrUndefined(''), true)
+    expect(isNotNullOrUndefined(null)).to.be.false
+    expect(isNotNullOrUndefined(undefined)).to.be.false
+    expect(isNotNullOrUndefined(0)).to.be.true
+    expect(isNotNullOrUndefined(false)).to.be.true
+    expect(isNotNullOrUndefined('')).to.be.true
   })
 
   it('test capitalize()', () => {
-    assert.strictEqual(capitalize(''), '')
-    assert.strictEqual(capitalize('quick brown fox'), 'Quick Brown Fox')
-    assert.strictEqual(capitalize('QUICK'), 'QUICK')
+    expect(capitalize('')).to.equal('')
+    expect(capitalize('quick brown fox')).to.equal('Quick Brown Fox')
+    expect(capitalize('QUICK')).to.equal('QUICK')
   })
-
-  // pending test
-  it('test readInput()')
 })

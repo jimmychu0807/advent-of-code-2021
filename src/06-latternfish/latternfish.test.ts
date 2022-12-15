@@ -1,4 +1,6 @@
-import { strict as assert } from 'node:assert'
+import { expect } from 'chai'
+
+// local import
 import { Latternfish, Config } from './latternfish'
 
 interface TestCase {
@@ -67,9 +69,9 @@ describe('Day 06 - Latternfish', () => {
 
 async function runTestCase(testName: string) {
   if (Object.keys(testCases).includes(testName)) {
-    const { config, expect } = testCases[testName] as TestCase
+    const { config, expect: expectedResult } = testCases[testName] as TestCase
     const result = Latternfish.modeling(config)
-    assert.deepEqual(result, expect)
+    expect(result).eql(expectedResult)
   } else {
     throw new Error(`Test case "${testName}" not found.`)
   }

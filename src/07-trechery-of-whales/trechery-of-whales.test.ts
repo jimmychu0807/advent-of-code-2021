@@ -1,4 +1,4 @@
-import { strict as assert } from 'node:assert'
+import { expect } from 'chai'
 
 // local import
 import TrecheryOfWhales from './trechery-of-whales'
@@ -12,8 +12,8 @@ describe('Day 07 - The Trechery of Whales', () => {
       distCal: 'normal'
     })
 
-    assert.equal(pos, 2)
-    assert.equal(value, 37)
+    expect(pos).eq(2)
+    expect(value).eq(37)
   })
 
   it('test for the given example - Part II', () => {
@@ -22,7 +22,7 @@ describe('Day 07 - The Trechery of Whales', () => {
       distCal: 'incremental'
     })
 
-    assert.equal(pos, 5)
-    assert.equal(value, 168)
+    expect(pos).eq(5)
+    expect(value).eq(168)
   })
 })
