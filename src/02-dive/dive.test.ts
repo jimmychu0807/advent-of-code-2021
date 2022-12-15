@@ -41,7 +41,6 @@ describe('Day 02 - Dive', () => {
     it('test for forward', () => {
       const dive = new Dive(['forward 10'])
       expect(dive.execute({ op: 'aim' })).eql([10, 0])
-
     })
 
     it('test for down', () => {
