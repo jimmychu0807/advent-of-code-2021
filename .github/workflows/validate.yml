@@ -1,5 +1,8 @@
 name: Yarn Validate
-on: [pull_request]
+on:
+  pull_request:
+  push:
+    branches: [master]
 
 jobs:
   yarn-validate:
@@ -13,6 +16,11 @@ jobs:
       with:
         lfs: true
         submodules: 'recursive'
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: lts/hydrogen
+
     - name: ${{ matrix.step }}
       run: |
         yarn install --immutable | grep -v 'YN0013'
