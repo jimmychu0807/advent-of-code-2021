@@ -12,7 +12,6 @@ interface CommandOptions {
 }
 
 const QUEST_INPUT_PATH = resolve_path(__dirname, '..', 'input', 'input.dat')
-// const TEST_INPUT = '16,1,2,0,4,2,7,1,2,14'
 
 const command = new Command('trechery-of-whales')
   .description('Day 07 - The Trechery of Whales')
