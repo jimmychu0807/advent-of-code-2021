@@ -1,5 +1,7 @@
-import { strict as assert } from 'node:assert'
+import { expect } from 'chai'
 import * as path from 'path'
+
+// local import
 import { GiantSquid } from './giant-squid'
 
 const testCases = {
@@ -35,12 +37,12 @@ describe('Day 04 - Giant Squid', () => {
   describe('Part I', () => {
     it('test for one board no winning', () => {
       const gs = new GiantSquid(testCases.oneBoardNoWinning)
-      assert.deepEqual(gs.findWinningBoardAndCondition(), null)
+      expect(gs.findWinningBoardAndCondition()).is.null
     })
 
     it('test for one board with winning', () => {
       const gs = new GiantSquid(testCases.oneBoardWithWinning)
-      assert.deepEqual(gs.findWinningBoardAndCondition(), {
+      expect(gs.findWinningBoardAndCondition()).eql({
         winningInd: 0,
         markedBoard: [
           [true, false],
@@ -53,12 +55,12 @@ describe('Day 04 - Giant Squid', () => {
 
     it('test for two boards no winning', () => {
       const gs = new GiantSquid(testCases.twoBoardsNoWinning)
-      assert.deepEqual(gs.findWinningBoardAndCondition(), null)
+      expect(gs.findWinningBoardAndCondition()).is.null
     })
 
     it('test for two boards with winning', () => {
       const gs = new GiantSquid(testCases.twoBoardsWithWinning)
-      assert.deepEqual(gs.findWinningBoardAndCondition(), {
+      expect(gs.findWinningBoardAndCondition()).eql({
         winningInd: 1,
         markedBoard: [
           [true, false, false],
@@ -73,9 +75,9 @@ describe('Day 04 - Giant Squid', () => {
     it('test for the given example', () => {
       const gs = new GiantSquid(testFilePath)
       const cond = gs.findWinningBoardAndCondition()
-      assert.deepEqual(cond?.winningInd, 2)
-      assert.deepEqual(cond?.score, 4512)
-      assert.deepEqual(cond?.inputStreamRead, 12)
+      expect(cond).have.property('winningInd', 2)
+      expect(cond).have.property('score', 4512)
+      expect(cond).have.property('inputStreamRead', 12)
     })
   })
 
@@ -83,8 +85,8 @@ describe('Day 04 - Giant Squid', () => {
     it('test for the given example', () => {
       const gs = new GiantSquid(testFilePath)
       const cond = gs.findLastWinningBoardAndCondition()
-      assert.deepEqual(cond?.winningInd, 1)
-      assert.deepEqual(cond?.score, 1924)
+      expect(cond).have.property('winningInd', 1)
+      expect(cond).have.property('score', 1924)
     })
   })
 })
