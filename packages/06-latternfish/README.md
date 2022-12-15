@@ -3,6 +3,8 @@
 - [Original problem statement](https://adventofcode.com/2021/day/6)
 - [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/packages/06-latternfish)
 
+## Part One
+
 The sea floor is getting steeper. Maybe the sleigh keys got carried this way?
 
 A massive school of glowing [lanternfish](https://en.wikipedia.org/wiki/Lanternfish) swims past. They must spawn quickly to reach such large numbers - maybe **exponentially** quickly? You should model their growth rate to be sure.

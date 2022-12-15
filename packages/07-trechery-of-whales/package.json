@@ -1,20 +1,24 @@
 {
-  "author": "Jimmy chu <jimmychu0807@gmail.com>",
-  "name": "@aoc-2021/utils",
-  "description": "Shared utilities for @aoc-2021 monorepo",
-  "homepage": "https://jimmychu0807.github.io/advent-of-code-2021/",
+  "author": "Jimmy Chu <jimmychu0807@gmail.com>",
+  "name": "@aoc-2021/trechery-of-whales",
+  "description": "Day 07 - The Treachery of Whales",
+  "homepage": "https://github.com/jimmychu0807/advent-of-code-2021/blob/main/packages/07-trechery-of-whales/README.md",
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
   "main": "dist/index.js",
   "version": "0.0.5",
   "scripts": {
-    "clean": "del -f dist node_modules tsconfig.tsbuildinfo",
     "build": "tsc -p .",
+    "clean": "del -f dist node_modules tsconfig.tsbuildinfo",
     "lint": "eslint 'src/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'src/**/*.ts'",
     "lint:test": "eslint 'src/**/*.ts' --ext .ts --max-warnings 0 && prettier --check --config .prettierrc 'src/**/*.ts'",
-    "test": "ts-mocha 'src/**/*.test.ts'",
+    "test": "exit 0",
+    "cli": "ts-node src/cli.ts",
+    "cli:debug": "DEBUG=trecheryOfWhales ts-node src/cli.ts",
     "validate": "yarn build && yarn test && yarn lint:test"
   },
   "dependencies": {
+    "@aoc-2021/utils": "^0.0.5",
+    "commander": "^9.4.0",
     "debug": "^4.3.4"
   },
   "devDependencies": {

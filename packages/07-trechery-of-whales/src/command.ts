@@ -2,7 +2,7 @@ import { resolve as resolve_path } from 'path'
 import { Command, Option } from 'commander'
 import { exit } from 'process'
 
-import { Latternfish } from './latternfish'
+import TrecheryOfWhales from './trechery-of-whales'
 import { readInput } from '@aoc-2021/utils'
 
 interface CommandOptions {
@@ -11,14 +11,11 @@ interface CommandOptions {
   defaultQuestData: boolean
 }
 
-const DAY_TO_SPAWN = 6
-const INIT_DAY_TO_SPAWN = 8
-const SIMULATION_DAY_1 = 80
-const SIMULATION_DAY_2 = 256
 const QUEST_INPUT_PATH = resolve_path(__dirname, '..', 'input', 'input.dat')
+// const TEST_INPUT = '16,1,2,0,4,2,7,1,2,14'
 
-const command = new Command('latternfish')
-  .description('Day 06 - Latternfish')
+const command = new Command('trechery-of-whales')
+  .description('Day 07 - The Trechery of Whales')
   .addOption(
     new Option('-i, --input <string>', 'comma separated value of input (e.g. 1,2,3)').conflicts([
       'file',
@@ -37,29 +34,16 @@ const command = new Command('latternfish')
       .conflicts(['input', 'file'])
   )
   .showHelpAfterError()
-  .action(async (options: CommandOptions) => {
-    const fishes = parseArgs(options)
+  .action((options: CommandOptions) => {
+    const input = parseArgs(options)
       .split(',')
       .map((v) => Number(v.trim()))
 
-    console.log('input:', fishes)
+    const [pos1, value1] = TrecheryOfWhales.getMinFuelPos({ input, distCal: 'normal' })
+    console.log(`Part I: pos: ${pos1}, cost: ${value1}`)
 
-    const result1 = await Latternfish.modeling({
-      fishes,
-      dayToSpawn: DAY_TO_SPAWN,
-      initDayToSpawn: INIT_DAY_TO_SPAWN,
-      daySimulation: SIMULATION_DAY_1
-    })
-
-    console.log('Part I result is:', result1)
-
-    const result2 = Latternfish.modeling({
-      fishes,
-      dayToSpawn: DAY_TO_SPAWN,
-      initDayToSpawn: INIT_DAY_TO_SPAWN,
-      daySimulation: SIMULATION_DAY_2
-    })
-    console.log('Part II result is:', result2)
+    const [pos2, value2] = TrecheryOfWhales.getMinFuelPos({ input, distCal: 'incremental' })
+    console.log(`Part II: pos: ${pos2}, cost: ${value2}`)
   })
 
 function parseArgs(options: CommandOptions): string {
