@@ -20,9 +20,10 @@ function capitalize(input: string): string {
   return arr.map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
 }
 
-async function genDocContent(contentPrefix: string, problemLinkFn: (name: string) => string):
-  Promise<string>
-{
+async function genDocContent(
+  contentPrefix: string,
+  problemLinkFn: (name: string) => string
+): Promise<string> {
   const dirs = await packageDirs()
 
   const problemList = dirs.map((dir) => {
@@ -37,14 +38,16 @@ async function genDocContent(contentPrefix: string, problemLinkFn: (name: string
 async function symlinkProblemReadmes() {
   const dirs = await packageDirs()
 
-  const promises = dirs.map(async dir => {
+  const promises = dirs.map(async (dir) => {
     const targetPath = `../src/${dir.name}/README.md`
     const symlinkPath = `${DOCS_PATH}/${dir.name}.md`
 
     try {
       const fstat = await fsPromises.stat(symlinkPath)
       if (fstat) await fsPromises.rm(symlinkPath)
-    } catch (err) {}
+    } catch (err) {
+      // if reaching here most likely `symlinkPath` doesn't exist.
+    }
 
     await fsPromises.symlink(targetPath, symlinkPath, 'file')
   })
@@ -53,7 +56,7 @@ async function symlinkProblemReadmes() {
 }
 
 async function main() {
-  const readmeTpl = await fsPromises.readFile(README_TPL_PATH, { encoding: 'utf-8' }) + '\n'
+  const readmeTpl = (await fsPromises.readFile(README_TPL_PATH, { encoding: 'utf-8' })) + '\n'
 
   console.log('1. Generate root README.md...')
   const rootReadmeContent = await genDocContent(readmeTpl, (dirName) => `./src/${dirName}`)
