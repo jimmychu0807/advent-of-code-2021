@@ -22,7 +22,9 @@
     "@aoc-2021/dive": "^0.0.5",
     "@aoc-2021/giant-squid": "^0.0.5",
     "@aoc-2021/hydrothermal-venture": "^0.0.5",
+    "@aoc-2021/latternfish": "^0.0.5",
     "@aoc-2021/sonar-sweep": "^0.0.5",
+    "@aoc-2021/trechery-of-whales": "^0.0.5",
     "@aoc-2021/utils": "^0.0.5",
     "commander": "^9.3.0",
     "debug": "^4.3.4"

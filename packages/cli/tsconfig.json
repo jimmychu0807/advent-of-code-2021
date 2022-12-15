@@ -13,6 +13,8 @@
     { "path": "../03-binary-diagnostic" },
     { "path": "../04-giant-squid" },
     { "path": "../05-hydrothermal-venture" },
+    { "path": "../06-latternfish" },
+    { "path": "../07-trechery-of-whales" },
     { "path": "../utils" }
   ]
 }

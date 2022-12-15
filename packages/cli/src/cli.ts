@@ -4,6 +4,8 @@ import { DiveCommand } from '@aoc-2021/dive'
 import { BinaryDiagnosticCommand } from '@aoc-2021/binary-diagnostic'
 import { GiantSquidCommand } from '@aoc-2021/giant-squid'
 import { HydrothermalVentureCommand } from '@aoc-2021/hydrothermal-venture'
+import { LatternfishCommand } from '@aoc-2021/latternfish'
+import { TrecheryOfWhalesCommand } from '@aoc-2021/trechery-of-whales'
 
 // Read the package.json info
 const name = process.env['npm_package_name'] ?? ''
@@ -22,5 +24,7 @@ program
   .addCommand(BinaryDiagnosticCommand)
   .addCommand(GiantSquidCommand)
   .addCommand(HydrothermalVentureCommand)
+  .addCommand(LatternfishCommand)
+  .addCommand(TrecheryOfWhalesCommand)
 
 program.parse()
