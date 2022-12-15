@@ -34,7 +34,9 @@ __metadata:
     "@aoc-2021/dive": ^0.0.5
     "@aoc-2021/giant-squid": ^0.0.5
     "@aoc-2021/hydrothermal-venture": ^0.0.5
+    "@aoc-2021/latternfish": ^0.0.5
     "@aoc-2021/sonar-sweep": ^0.0.5
+    "@aoc-2021/trechery-of-whales": ^0.0.5
     "@aoc-2021/utils": ^0.0.5
     "@types/debug": ^4
     "@types/node": ^16.11.43
@@ -120,7 +122,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/latternfish@workspace:packages/06-latternfish":
+"@aoc-2021/latternfish@^0.0.5, @aoc-2021/latternfish@workspace:packages/06-latternfish":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/latternfish@workspace:packages/06-latternfish"
   dependencies:
@@ -184,7 +186,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aoc-2021/trechery-of-whales@workspace:packages/07-trechery-of-whales":
+"@aoc-2021/trechery-of-whales@^0.0.5, @aoc-2021/trechery-of-whales@workspace:packages/07-trechery-of-whales":
   version: 0.0.0-use.local
   resolution: "@aoc-2021/trechery-of-whales@workspace:packages/07-trechery-of-whales"
   dependencies:
