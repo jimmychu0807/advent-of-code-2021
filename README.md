@@ -4,13 +4,13 @@
 
 This is my attempt on [Advent of Code 2021](https://adventofcode.com/2021) :rocket:
 
-- [Day 01 - Sonar Sweep](./packages/01-sonar-sweep)
-- [Day 02 - Dive](./packages/02-dive)
-- [Day 03 - Binary Diagnostic](./packages/03-binary-diagnostic)
-- [Day 04 - Giant Squid](./packages/04-giant-squid)
-- [Day 05 - Hydrothermal Venture](./packages/05-hydrothermal-venture)
-- [Day 06 - Latternfish](./packages/06-latternfish)
-- [Day 07 - Trechery Of Whales](./packages/07-trechery-of-whales)
+- [Day 01 - Sonar Sweep](./src/01-sonar-sweep)
+- [Day 02 - Dive](./src/02-dive)
+- [Day 03 - Binary Diagnostic](./src/03-binary-diagnostic)
+- [Day 04 - Giant Squid](./src/04-giant-squid)
+- [Day 05 - Hydrothermal Venture](./src/05-hydrothermal-venture)
+- [Day 06 - Latternfish](./src/06-latternfish)
+- [Day 07 - Trechery Of Whales](./src/07-trechery-of-whales)
 
 ## Workflow
 
@@ -21,9 +21,7 @@ yarn install
 # More help text will be displayed
 yarn cli <sub-command> <input argument>
 # Example
-yarn cli sonar-sweep -i packages/01-sonar-sweep/input/input.dat
-# Can also run it inside the workspace
-yarn workspace @aoc-2021/sonar-sweep cli -i packages/01-sonar-sweep/input/input.dat
+yarn cli sonar-sweep -i src/01-sonar-sweep/input/input.dat
 ```
 
 **For CI**
@@ -65,13 +63,4 @@ git push --follow-tags
 ```
 
 For detail refer to: <https://github.com/changesets/changesets/blob/main/packages/cli/README.md>
-
-**Running the command in your own package**
-
-```bash
-yarn add -D @aoc-2021/cli
-yarn aoc-2021
-# or
-yarn dlx @aoc-2021/cli
-```
 

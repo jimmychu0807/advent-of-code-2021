@@ -1,1 +1,1 @@
-../packages/02-dive/README.md
+../src/02-dive/README.md
