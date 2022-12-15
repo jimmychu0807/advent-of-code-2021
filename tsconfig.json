@@ -1,16 +1,11 @@
 {
   "extends": "./tsconfig-base.json",
   "include": [
+    "src/**/*.ts",
     "scripts/**/*.ts"
   ],
-  "references": [
-    { "path": "./packages/01-sonar-sweep" },
-    { "path": "./packages/02-dive" },
-    { "path": "./packages/03-binary-diagnostic" },
-    { "path": "./packages/04-giant-squid" },
-    { "path": "./packages/05-hydrothermal-venture" },
-    { "path": "./packages/06-latternfish" },
-    { "path": "./packages/cli" },
-    { "path": "./packages/utils" }
-  ],
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "outDir": "dist",
+  }
 }

@@ -1,1 +1,1 @@
-../packages/01-sonar-sweep/README.md
+../src/01-sonar-sweep/README.md

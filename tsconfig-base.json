@@ -1,8 +1,5 @@
 {
   "extends": "@tsconfig/node16-strictest/tsconfig.json",
-  "include": [
-    "src/**/*.ts",
-  ],
   "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "composite": true,
@@ -12,8 +9,6 @@
     "inlineSourceMap": true,
     "module": "nodenext",
     "moduleResolution": "nodenext",
-    "rootDir": "src",
-    "outDir": "dist",
     "resolveJsonModule": true,
     "strict": true,
     "target": "es2021",

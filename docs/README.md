@@ -21,9 +21,7 @@ yarn install
 # More help text will be displayed
 yarn cli <sub-command> <input argument>
 # Example
-yarn cli sonar-sweep -i packages/01-sonar-sweep/input/input.dat
-# Can also run it inside the workspace
-yarn workspace @aoc-2021/sonar-sweep cli -i packages/01-sonar-sweep/input/input.dat
+yarn cli sonar-sweep -i src/01-sonar-sweep/input/input.dat
 ```
 
 **For CI**
@@ -65,13 +63,4 @@ git push --follow-tags
 ```
 
 For detail refer to: <https://github.com/changesets/changesets/blob/main/packages/cli/README.md>
-
-**Running the command in your own package**
-
-```bash
-yarn add -D @aoc-2021/cli
-yarn aoc-2021
-# or
-yarn dlx @aoc-2021/cli
-```
 
