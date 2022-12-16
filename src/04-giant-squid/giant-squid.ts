@@ -1,4 +1,4 @@
-import { readInput } from 'utils'
+import { readInput } from '../utils/index.js'
 import Debug from 'debug'
 
 type MarkedBoard = boolean[][]
@@ -20,7 +20,7 @@ class GiantSquid {
   private _inputStream: string
   private _boards: BingoBoard[]
 
-  constructor(rawInput: string[] | string) {
+  constructor(rawInput: string[] | string | URL) {
     const input = Array.isArray(rawInput)
       ? Object.assign([], rawInput)
       : (readInput(rawInput, { type: 'string' }) as string[])

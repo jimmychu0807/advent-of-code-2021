@@ -1,4 +1,4 @@
-import { isNotNullOrUndefined } from 'utils'
+import { isNotNullOrUndefined } from '../utils/index.js'
 
 interface CountDeltaType {
   increasing: number

@@ -1,8 +1,8 @@
 import { Command } from 'commander'
 
 // local import
-import { readInput } from 'utils'
-import Dive from './dive'
+import { readInput } from '../utils/index.js'
+import Dive from './dive.js'
 
 const command = new Command('dive')
   .description('Day 02 - Dive!')

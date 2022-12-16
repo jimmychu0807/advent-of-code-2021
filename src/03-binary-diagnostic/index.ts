@@ -1,4 +1,4 @@
-import command from './command'
-import * as BinaryDiagnostic from './binary-diagnostic'
+import command from './command.js'
+import * as BinaryDiagnostic from './binary-diagnostic.js'
 
 export { BinaryDiagnostic as default, command }

@@ -1,11 +1,10 @@
 import { expect } from 'chai'
-import * as path from 'path'
 
 // local import
-import { readInput } from 'utils'
-import { HydrothermalVenture } from './hydrothermal-venture'
+import { readInput } from '../utils/index.js'
+import { HydrothermalVenture } from './hydrothermal-venture.js'
 
-const testFilePath = path.join(__dirname, 'input', 'test.dat')
+const QUEST_INPUT_URL = new URL('input/test.dat', import.meta.url)
 
 const tests = {
   simpleNoOverlap: ['0,0 -> 0,1', '1,0 -> 1,1'],
@@ -29,7 +28,7 @@ describe('Day 05 - Hydrothermal Venture', () => {
     })
 
     it('test the given example', () => {
-      const inputs = readInput(testFilePath, { type: 'string' }) as string[]
+      const inputs = readInput(QUEST_INPUT_URL, { type: 'string' }) as string[]
       const hv = new HydrothermalVenture(inputs)
       expect(hv.countOverlap()).eq(5)
     })
@@ -57,7 +56,7 @@ describe('Day 05 - Hydrothermal Venture', () => {
     })
 
     it('test the given example', () => {
-      const inputs = readInput(testFilePath, { type: 'string' }) as string[]
+      const inputs = readInput(QUEST_INPUT_URL, { type: 'string' }) as string[]
       const hv = new HydrothermalVenture(inputs, fullOpts)
       expect(hv.countOverlap()).eq(12)
     })

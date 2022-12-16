@@ -1,8 +1,7 @@
 import { expect } from 'chai'
-import * as path from 'path'
 
 // local import
-import { GiantSquid } from './giant-squid'
+import { GiantSquid } from './giant-squid.js'
 
 const testCases = {
   oneBoardNoWinning: ['10, 11', '', '10 9', '8 11'],
@@ -31,7 +30,7 @@ const testCases = {
   ]
 }
 
-const testFilePath = path.join(__dirname, 'input', 'test.dat')
+const QUEST_INPUT_URL = new URL('input/test.dat', import.meta.url)
 
 describe('Day 04 - Giant Squid', () => {
   describe('Part I', () => {
@@ -73,7 +72,7 @@ describe('Day 04 - Giant Squid', () => {
     })
 
     it('test for the given example', () => {
-      const gs = new GiantSquid(testFilePath)
+      const gs = new GiantSquid(QUEST_INPUT_URL)
       const cond = gs.findWinningBoardAndCondition()
       expect(cond).have.property('winningInd', 2)
       expect(cond).have.property('score', 4512)
@@ -83,7 +82,7 @@ describe('Day 04 - Giant Squid', () => {
 
   describe('Part II', () => {
     it('test for the given example', () => {
-      const gs = new GiantSquid(testFilePath)
+      const gs = new GiantSquid(QUEST_INPUT_URL)
       const cond = gs.findLastWinningBoardAndCondition()
       expect(cond).have.property('winningInd', 1)
       expect(cond).have.property('score', 1924)

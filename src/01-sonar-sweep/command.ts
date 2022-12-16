@@ -1,8 +1,8 @@
 import { Command } from 'commander'
 
 // local import
-import { readInput } from 'utils'
-import SonarSweep from './sonar-sweep'
+import { readInput } from '../utils/index.js'
+import SonarSweep from './sonar-sweep.js'
 
 const command = new Command('sonar-sweep')
   .description('Day 01 - Sonar Sweep')

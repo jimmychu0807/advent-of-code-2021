@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 
 // local import
-import { Dive } from './dive'
+import { Dive } from './dive.js'
 
 describe('Day 02 - Dive', () => {
   describe('Part I', () => {

@@ -1,10 +1,9 @@
-import { resolve as resolve_path } from 'path'
 import { Command, Option } from 'commander'
 import { exit } from 'process'
 
 // local import
-import { readInput } from 'utils'
-import { Latternfish } from './latternfish'
+import { readInput } from '../utils/index.js'
+import { Latternfish } from './latternfish.js'
 
 interface CommandOptions {
   input: string | undefined
@@ -16,7 +15,7 @@ const DAY_TO_SPAWN = 6
 const INIT_DAY_TO_SPAWN = 8
 const SIMULATION_DAY_1 = 80
 const SIMULATION_DAY_2 = 256
-const QUEST_INPUT_PATH = resolve_path(__dirname, 'input', 'input.dat')
+const QUEST_INPUT_URL = new URL('input/input.dat', import.meta.url)
 
 const command = new Command('latternfish')
   .description('Day 06 - Latternfish')
@@ -71,7 +70,7 @@ function parseArgs(options: CommandOptions): string {
   }
 
   if (options.input) return options.input as string
-  return readInput(options.file || QUEST_INPUT_PATH, { type: 'string' })[0] as string
+  return readInput(options.file || QUEST_INPUT_URL, { type: 'string' })[0] as string
 }
 
 export { command as default }

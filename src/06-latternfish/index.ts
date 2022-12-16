@@ -1,4 +1,4 @@
-import command from './command'
-import * as Latternfish from './latternfish'
+import command from './command.js'
+import * as Latternfish from './latternfish.js'
 
 export { Latternfish as default, command }

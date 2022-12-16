@@ -1,23 +1,23 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import Debug from 'debug'
 
 interface ReadInputOpts {
   type: 'string' | 'number'
 }
 
-const debug = Debug('utils')
+function readInput(inputPathOrUrl: string | URL, opts: ReadInputOpts): string[] | number[] {
+  let absPathOrUrl: string | URL = ''
 
-// This is to handle when calling as workspace command, paths are resolved inside the workspace
-//   rather than from the root
-const cwd = process.env['PROJECT_CWD'] || process.cwd()
-
-function readInput(inputPath: string, opts: ReadInputOpts): string[] | number[] {
-  const absPath = path.isAbsolute(inputPath) ? inputPath : path.resolve(cwd, inputPath)
-  debug(`Reading input from: ${absPath}`)
+  if (typeof inputPathOrUrl === 'string') {
+    absPathOrUrl = path.isAbsolute(inputPathOrUrl)
+      ? inputPathOrUrl
+      : path.resolve(process.cwd(), inputPathOrUrl)
+  } else {
+    absPathOrUrl = inputPathOrUrl
+  }
 
   const reducedResult = fs
-    .readFileSync(absPath, { encoding: 'utf-8' })
+    .readFileSync(absPathOrUrl, { encoding: 'utf-8' })
     .split('\n')
     .map((l) => l.trim())
     .reduce<[string[], string[], boolean]>(

@@ -1,17 +1,21 @@
 import type { Dirent } from 'fs'
 import * as fsPromises from 'fs/promises'
-import * as path from 'path'
+import { join } from 'path'
+import { fileURLToPath } from 'url'
 
-const PACKAGES_PATH = path.join(__dirname, '..', 'src')
-const README_TPL_PATH = path.join(__dirname, 'templates', 'README.md.tpl')
-const ROOT_README_PATH = path.join(__dirname, '..', 'README.md')
-const DOCS_PATH = path.join(__dirname, '..', 'docs')
-const DOCS_README_PATH = path.join(DOCS_PATH, 'README.md')
-const DOCS_SIDEBAR_PATH = path.join(DOCS_PATH, '_sidebar.md')
+const PACKAGES_FILEURL = new URL('../src', import.meta.url)
+const README_TPL_FILEURL = new URL('templates/README.md.tpl', import.meta.url)
+const ROOT_README_FILEURL = new URL('../README.md', import.meta.url)
+const DOCS_PATH = fileURLToPath(new URL('../docs', import.meta.url))
+const DOCS_README_PATH = join(DOCS_PATH, 'README.md')
+const DOCS_SIDEBAR_PATH = join(DOCS_PATH, '_sidebar.md')
 
 // dirs are filtered to be the problem set in aoc 2021
 async function packageDirs(): Promise<Dirent[]> {
-  const dirs = await fsPromises.readdir(PACKAGES_PATH, { encoding: 'utf-8', withFileTypes: true })
+  const dirs = await fsPromises.readdir(PACKAGES_FILEURL, {
+    encoding: 'utf-8',
+    withFileTypes: true
+  })
   return dirs.filter((dir) => dir.isDirectory() && dir.name.match(/^\d+-.+$/))
 }
 
@@ -56,11 +60,11 @@ async function symlinkProblemReadmes() {
 }
 
 async function main() {
-  const readmeTpl = (await fsPromises.readFile(README_TPL_PATH, { encoding: 'utf-8' })) + '\n'
+  const readmeTpl = (await fsPromises.readFile(README_TPL_FILEURL, { encoding: 'utf-8' })) + '\n'
 
   console.log('1. Generate root README.md...')
   const rootReadmeContent = await genDocContent(readmeTpl, (dirName) => `./src/${dirName}`)
-  await fsPromises.writeFile(ROOT_README_PATH, rootReadmeContent)
+  await fsPromises.writeFile(ROOT_README_FILEURL, rootReadmeContent)
 
   console.log('2. Generate docs/README.md...')
   const docsReadmeContent = await genDocContent(readmeTpl, (dirName) => `/${dirName}.md`)

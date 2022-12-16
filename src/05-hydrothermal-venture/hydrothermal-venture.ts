@@ -1,7 +1,7 @@
 import Debug from 'debug'
 
 // local import
-import { Coordinate } from 'utils'
+import { Coordinate } from '../utils/index.js'
 
 const log = {
   info: Debug('hydrothermal:info'),

@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 
 // local import
-import { SonarSweep, CountDeltaType } from './sonar-sweep'
+import { SonarSweep, CountDeltaType } from './sonar-sweep.js'
 
 function cntObjHelper(obj?: unknown): CountDeltaType {
   if (!obj) return { increasing: 0, noChange: 0, decreasing: 0 }
