@@ -1,5 +1,0 @@
-{
-  "yarn": false,
-  "contents": "dist",
-  "testScript": "validate"
-}
