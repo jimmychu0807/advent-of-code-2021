@@ -3,8 +3,15 @@
   "name": "@jimmychu0807/aoc-2021",
   "description": "Advent of Code 2021",
   "homepage": "https://jimmychu0807.github.io/advent-of-code-2021/",
+  "bugs": {
+    "url": "https://jimmychu0807.github.io/advent-of-code-2021/issues"
+  },
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
-  "version": "0.0.5",
+  "keywords": [
+    "advent-of-code",
+    "2021"
+  ],
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "build": "tsc -p .",
@@ -14,7 +21,7 @@
     "lint": "eslint 'src/**/*.ts' 'scripts/**/*.ts' --ext .ts --max-warnings 0 && prettier --check --config .prettierrc 'src/**/*.ts' 'scripts/**/*.ts'",
     "lint:fix": "eslint 'src/**/*.ts' 'scripts/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'src/**/*.ts' 'scripts/**/*.ts'",
     "test": "ts-mocha -p ./tsconfig.json -r tsconfig-paths/register 'src/**/*.test.ts'",
-    "cli": "ts-node -r tsconfig-paths/register src/cli.ts",
+    "cli": "ts-node -r tsconfig-paths/register src/index.ts",
     "validate": "yarn build && yarn test && yarn lint",
     "docs:update": "ts-node scripts/docs-update.ts",
     "docs:serve": "yarn docsify serve docs -o"
@@ -43,6 +50,17 @@
     "ts-node": "^10.8.1",
     "tsconfig-paths": "^4.1.1",
     "typescript": "^4.7.3"
+  },
+  "exports": "src/index.ts",
+  "main": "src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org",
+    "bin": "dist/index.js",
+    "main": "dist/index.js"
   },
   "license": "MIT",
   "packageManager": "yarn@3.2.1"
