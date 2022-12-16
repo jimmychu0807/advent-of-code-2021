@@ -6,6 +6,7 @@ import { command as GiantSquidCommand } from './04-giant-squid/index.js'
 import { command as HydrothermalVentureCommand } from './05-hydrothermal-venture/index.js'
 import { command as LatternfishCommand } from './06-latternfish/index.js'
 import { command as TrecheryOfWhalesCommand } from './07-trechery-of-whales/index.js'
+import { command as SevenSegmentSearchCommand } from './08-seven-segment-search/index.js'
 
 // Read the package.json info
 const name = process.env['npm_package_name'] ?? ''
@@ -26,5 +27,6 @@ program
   .addCommand(HydrothermalVentureCommand)
   .addCommand(LatternfishCommand)
   .addCommand(TrecheryOfWhalesCommand)
+  .addCommand(SevenSegmentSearchCommand)
 
 export { program as default }
