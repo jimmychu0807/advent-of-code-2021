@@ -5,11 +5,12 @@
   "homepage": "https://jimmychu0807.github.io/advent-of-code-2021/",
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
   "version": "0.0.5",
-  "main": "dist/index.js",
+  "type": "module",
   "scripts": {
     "build": "tsc -p .",
     "postinstall": "yarn build",
     "clean": "yarn del-cli -f dist tsconfig.tsbuildinfo",
+    "build:clean": "yarn clean && yarn build",
     "lint": "eslint 'src/**/*.ts' 'scripts/**/*.ts' --ext .ts --max-warnings 0 && prettier --check --config .prettierrc 'src/**/*.ts' 'scripts/**/*.ts'",
     "lint:fix": "eslint 'src/**/*.ts' 'scripts/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'src/**/*.ts' 'scripts/**/*.ts'",
     "test": "ts-mocha -p ./tsconfig.json -r tsconfig-paths/register 'src/**/*.test.ts'",

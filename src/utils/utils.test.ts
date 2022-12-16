@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { isNotNullOrUndefined, capitalize } from './utils'
+import { isNotNullOrUndefined, capitalize } from './utils.js'
 
 describe('@aoc-2021/utils', () => {
   it('test isNotNullOrUndefined()', () => {

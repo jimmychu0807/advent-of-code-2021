@@ -7,11 +7,14 @@
     "esModuleInterop": true,
     "inlineSources": true,
     "inlineSourceMap": true,
-    "module": "nodenext",
+    "module": "es2020",
     "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "strict": true,
     "target": "es2021",
     "types": ["mocha", "node"]
+  },
+  "ts-node": {
+    "esm": true
   }
 }

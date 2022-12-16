@@ -1,5 +1,5 @@
 import { Command } from 'commander'
-import GiantSquid from './giant-squid'
+import GiantSquid from './giant-squid.js'
 
 const command = new Command('giant-squid')
   .description('Day 04 - Giant Squid')

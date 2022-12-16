@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 
 // local import
-import { BinaryDiagnostic } from './binary-diagnostic'
+import { BinaryDiagnostic } from './binary-diagnostic.js'
 
 const testInput = [
   '00100',

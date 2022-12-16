@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 
 // local import
-import TrecheryOfWhales from './trechery-of-whales'
+import TrecheryOfWhales from './trechery-of-whales.js'
 
 const TEST_INPUT = '16,1,2,0,4,2,7,1,2,14'
 

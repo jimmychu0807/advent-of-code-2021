@@ -1,6 +1,8 @@
 import { Command } from 'commander'
-import { readInput } from 'utils'
-import BinaryDiagnostic from './binary-diagnostic'
+
+// local import
+import { readInput } from '../utils/index.js'
+import BinaryDiagnostic from './binary-diagnostic.js'
 
 const command = new Command('binary-diagnostic')
   .description('Day 03 - Binary Diagnostic')

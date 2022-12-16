@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 
 // local import
-import { Latternfish, Config } from './latternfish'
+import { Latternfish, Config } from './latternfish.js'
 
 interface TestCase {
   config: Config

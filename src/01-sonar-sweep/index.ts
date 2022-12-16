@@ -1,4 +1,4 @@
-import command from './command'
-import * as SonarSweep from './sonar-sweep'
+import command from './command.js'
+import * as SonarSweep from './sonar-sweep.js'
 
 export { SonarSweep as default, command }

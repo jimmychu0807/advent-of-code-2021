@@ -1,6 +1,6 @@
 import { Command } from 'commander'
-import { readInput } from 'utils'
-import { HydrothermalVenture } from './hydrothermal-venture'
+import { readInput } from '../utils/index.js'
+import { HydrothermalVenture } from './hydrothermal-venture.js'
 
 const command = new Command('hydrothermal-venture')
   .description('Day 05 - Hydrothermal Venture')

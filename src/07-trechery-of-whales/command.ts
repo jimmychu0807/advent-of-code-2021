@@ -1,10 +1,9 @@
-import { resolve as resolve_path } from 'path'
 import { Command, Option } from 'commander'
 import { exit } from 'process'
 
 // local import
-import { readInput } from 'utils'
-import TrecheryOfWhales from './trechery-of-whales'
+import { readInput } from '../utils/index.js'
+import TrecheryOfWhales from './trechery-of-whales.js'
 
 interface CommandOptions {
   input: string | undefined
@@ -12,7 +11,7 @@ interface CommandOptions {
   defaultQuestData: boolean
 }
 
-const QUEST_INPUT_PATH = resolve_path(__dirname, 'input', 'input.dat')
+const QUEST_INPUT_URL = new URL('input/input.dat', import.meta.url)
 
 const command = new Command('trechery-of-whales')
   .description('Day 07 - The Trechery of Whales')
@@ -54,7 +53,7 @@ function parseArgs(options: CommandOptions): string {
   }
 
   if (options.input) return options.input as string
-  return readInput(options.file || QUEST_INPUT_PATH, { type: 'string' })[0] as string
+  return readInput(options.file || QUEST_INPUT_URL, { type: 'string' })[0] as string
 }
 
 export { command as default }
