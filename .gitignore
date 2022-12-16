@@ -9,7 +9,10 @@
 
 node_modules
 .DS_Store
-dist
 *.log
+
+# build artifact
+dist
+package.tgz
 
 **/tsconfig.tsbuildinfo
