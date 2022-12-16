@@ -6,9 +6,12 @@
   "bugs": {
     "url": "https://jimmychu0807.github.io/advent-of-code-2021/issues"
   },
-  "keywords": ["advent-of-code", "2021"],
   "repository": "https://github.com/jimmychu0807/advent-of-code-2021",
-  "version": "0.0.5",
+  "keywords": [
+    "advent-of-code",
+    "2021"
+  ],
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "build": "tsc -p .",
@@ -51,7 +54,9 @@
   },
   "exports": "src/index.ts",
   "main": "src/index.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org",
