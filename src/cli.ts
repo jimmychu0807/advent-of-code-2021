@@ -27,4 +27,4 @@ program
   .addCommand(LatternfishCommand)
   .addCommand(TrecheryOfWhalesCommand)
 
-program.parse()
+export { program as default }

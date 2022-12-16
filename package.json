@@ -14,7 +14,7 @@
     "lint": "eslint 'src/**/*.ts' 'scripts/**/*.ts' --ext .ts --max-warnings 0 && prettier --check --config .prettierrc 'src/**/*.ts' 'scripts/**/*.ts'",
     "lint:fix": "eslint 'src/**/*.ts' 'scripts/**/*.ts' --ext .ts --fix && prettier -w --config .prettierrc 'src/**/*.ts' 'scripts/**/*.ts'",
     "test": "ts-mocha -p ./tsconfig.json -r tsconfig-paths/register 'src/**/*.test.ts'",
-    "cli": "ts-node -r tsconfig-paths/register src/cli.ts",
+    "cli": "ts-node -r tsconfig-paths/register src/index.ts",
     "validate": "yarn build && yarn test && yarn lint",
     "docs:update": "ts-node scripts/docs-update.ts",
     "docs:serve": "yarn docsify serve docs -o"
@@ -38,11 +38,17 @@
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
     "mocha": "^10.2.0",
+    "np": "^7.6.2",
     "prettier": "^2.7.1",
     "ts-mocha": "^10.0.0",
     "ts-node": "^10.8.1",
     "tsconfig-paths": "^4.1.1",
     "typescript": "^4.7.3"
+  },
+  "exports": "src/index.js",
+  "main": "src/index.js",
+  "publishConfig": {
+    "access": "public"
   },
   "license": "MIT",
   "packageManager": "yarn@3.2.1"
