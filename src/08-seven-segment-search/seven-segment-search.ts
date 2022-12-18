@@ -1,7 +1,8 @@
 import Debug from 'debug'
 
 const log = {
-  info: Debug('sss')
+  info: Debug('sss'),
+  infoRecursion: Debug('sss:recursion')
 }
 
 const UNIQ_CNTS = [2, 3, 4, 7]
@@ -81,20 +82,28 @@ const reduceSpace = (space: string[], idx: number, c: string): string[] =>
   space.map((str, i) => (i === idx ? c : removeChars(str, c)))
 
 function getPossibleSols(space: string[]): string[][] {
+  log.infoRecursion('space:', space)
+
+  if (isSolved(space)) return [space]
+
   let result: string[][] = []
-
-  console.log('space:', space)
-
-  for (let segment = 0; segment < space.length; segment++) {
-    if ((space[segment] as string).length > 0) {
-      space[segment]?.split('').forEach((c, idx) => {
-        result = result.concat(getPossibleSols(reduceSpace([...space], idx, c)))
+  for (let segmentIdx = 0; segmentIdx < space.length; segmentIdx++) {
+    if ((space[segmentIdx] as string).length > 1) {
+      space[segmentIdx]?.split('').forEach((c) => {
+        const reduced = reduceSpace([...space], segmentIdx, c)
+        const possible = getPossibleSols(reduced)
+        result = possible.reduce(
+          (memo, one) =>
+            // They are two arraies, so we do a join() op to stringify them.
+            // Before merging the result, we check if it existed already.
+            memo.find((el) => el.join('') === one.join('')) ? memo : memo.concat([one]),
+          result
+        )
       })
     }
   }
 
-  console.log('returning:', result)
-
+  log.infoRecursion('returning result:', result)
   return result
 }
 
@@ -145,7 +154,7 @@ class SevenSegmentSearch {
     return totalCnt
   }
 
-  static solveSevenSegment(input: string): Array<string> | null {
+  static solveConfig(input: string): Array<string> | null {
     let segmentSpace: Array<string> = initSegmentSpace()
 
     // Also sort the word content on the line of `.split('').sort().join('')`.
@@ -182,6 +191,26 @@ class SevenSegmentSearch {
     }
 
     return isSolved(segmentSpace) ? segmentSpace : null
+  }
+
+  static getDigitsFromLine(input: string): number {
+    const solvedConfig = this.solveConfig(input)
+    if (solvedConfig === null) throw new Error(`Unsolvable segment config from: ${input}`)
+
+    const lastPart = (input.split('|')[1] as string)
+      .split(' ')
+      .map((w) => w.trim())
+      .filter((w) => w.length > 0)
+
+    const digitArr = lastPart.map((str) => getDigit(solvedConfig, str))
+    if (digitArr.some((d) => d === null)) throw new Error(`Contain unsolvable digit segment.`)
+
+    return Number(digitArr.join(''))
+  }
+
+  static getSumFromMultilineInput(input: string[]): number {
+    const values = input.map((ln) => this.getDigitsFromLine(ln))
+    return values.reduce((memo, val) => memo + val, 0)
   }
 }
 

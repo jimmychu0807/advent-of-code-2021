@@ -27,7 +27,10 @@ const command = new Command('seven-segment-search')
     const input = parseArgs(options)
 
     const cnt = SevenSegmentSearch.cntOutputUniqueValue(input)
-    console.log(`The output unique value count is: ${cnt}`)
+    console.log(`Part I - times that 1, 4, 7, 8 appear: ${cnt}`)
+
+    const sum = SevenSegmentSearch.getSumFromMultilineInput(input)
+    console.log(`Part II - sum of the input digits: ${sum}`)
   })
 
 function parseArgs(options: CommandOptions): string[] {

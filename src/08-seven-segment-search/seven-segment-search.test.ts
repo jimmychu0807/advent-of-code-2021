@@ -8,26 +8,61 @@ import SevenSegmentSearch, {
 } from './seven-segment-search.js'
 
 // Example given from the question
-const ONE_LINE_SAMPLE =
-  'acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf'
+const ONE_LINE_SAMPLE = {
+  input: 'acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf',
+  configSol: ['d', 'e', 'a', 'f', 'g', 'b', 'c'],
+  digits: 5353
+}
 
 const TEST_SAMPLE = [
-  'be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe',
-  'edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc',
-  'fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef | cg cg fdcagb cbg',
-  'fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega | efabcd cedba gadfec cb',
-  'aecbfdg fbg gf bafeg dbefa fcge gcbea fcaegb dgceab fcbdga | gecf egdcabf bgf bfgea',
-  'fgeab ca afcebg bdacfeg cfaedg gcfdb baec bfadeg bafgc acf | gebdcfa ecba ca fadegcb',
-  'dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf | cefg dcbef fcge gbcadfe',
-  'bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef',
-  'egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb',
-  'gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce'
+  {
+    input: 'be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe',
+    digits: 8394
+  },
+  {
+    input: 'edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc',
+    digits: 9781
+  },
+  {
+    input: 'fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef | cg cg fdcagb cbg',
+    digits: 1197
+  },
+  {
+    input: 'fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega | efabcd cedba gadfec cb',
+    digits: 9361
+  },
+  {
+    input: 'aecbfdg fbg gf bafeg dbefa fcge gcbea fcaegb dgceab fcbdga | gecf egdcabf bgf bfgea',
+    digits: 4873
+  },
+  {
+    input: 'fgeab ca afcebg bdacfeg cfaedg gcfdb baec bfadeg bafgc acf | gebdcfa ecba ca fadegcb',
+    digits: 8418
+  },
+  {
+    input: 'dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf | cefg dcbef fcge gbcadfe',
+    digits: 4548
+  },
+  {
+    input: 'bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef',
+    digits: 1625
+  },
+  {
+    input: 'egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb',
+    digits: 8717
+  },
+  {
+    input: 'gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce',
+    digits: 4315
+  }
 ]
+
+const TEST_SAMPLE_INPUT = TEST_SAMPLE.map((en) => en.input)
 
 describe('Day 08 - Seven Segment Search', () => {
   describe('Part I', () => {
     it('test TEST_SAMPLE for part one works', () => {
-      const cnt = SevenSegmentSearch.cntOutputUniqueValue(TEST_SAMPLE)
+      const cnt = SevenSegmentSearch.cntOutputUniqueValue(TEST_SAMPLE_INPUT)
       expect(cnt).eq(26)
     })
   })
@@ -46,6 +81,29 @@ describe('Day 08 - Seven Segment Search', () => {
         ['a', 'd'],
         ['b', 'c'],
         ['b', 'd']
+      ])
+
+      const space2 = ['ab', 'bd']
+      expect(getPossibleSols(space2)).eql([
+        ['a', 'b'],
+        ['a', 'd'],
+        ['b', 'd']
+      ])
+
+      const space3 = ['ab', 'cd', 'efg']
+      expect(getPossibleSols(space3)).eql([
+        ['a', 'c', 'e'],
+        ['a', 'c', 'f'],
+        ['a', 'c', 'g'],
+        ['a', 'd', 'e'],
+        ['a', 'd', 'f'],
+        ['a', 'd', 'g'],
+        ['b', 'c', 'e'],
+        ['b', 'c', 'f'],
+        ['b', 'c', 'g'],
+        ['b', 'd', 'e'],
+        ['b', 'd', 'f'],
+        ['b', 'd', 'g']
       ])
     })
 
@@ -88,9 +146,24 @@ describe('Day 08 - Seven Segment Search', () => {
       expect(getDigit(config, noVal)).be.null
     })
 
-    it('test solveSevenSegmentSearch', () => {
-      const ss = SevenSegmentSearch.solveSevenSegment(ONE_LINE_SAMPLE)
-      console.log(ss)
+    it('test SSS solveConfig() with ONE_LINE_SAMPLE', () => {
+      const ss = SevenSegmentSearch.solveConfig(ONE_LINE_SAMPLE.input)
+      expect(ss).to.eql(ONE_LINE_SAMPLE.configSol)
+    })
+
+    it('test SSS getDigitsFromLine()', () => {
+      const digits1 = SevenSegmentSearch.getDigitsFromLine(ONE_LINE_SAMPLE.input)
+      expect(digits1).eq(ONE_LINE_SAMPLE.digits)
+
+      TEST_SAMPLE.forEach(({ input, digits }) => {
+        const result = SevenSegmentSearch.getDigitsFromLine(input)
+        expect(result).eq(digits)
+      })
+    })
+
+    it('test SSS getSumFromMultilineInput()', () => {
+      const sum = SevenSegmentSearch.getSumFromMultilineInput(TEST_SAMPLE_INPUT)
+      expect(sum).eq(61229)
     })
   })
 })
