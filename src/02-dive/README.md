@@ -3,6 +3,8 @@
 - [Original problem statement](https://adventofcode.com/2021/day/2)
 - [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/packages/02-dive)
 
+## Part One
+
 Now, you need to figure out how to pilot this thing.
 
 It seems like the submarine can take a series of commands like `forward 1`, `down 2`, or `up 3`:

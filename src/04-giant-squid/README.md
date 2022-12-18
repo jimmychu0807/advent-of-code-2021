@@ -3,6 +3,8 @@
 - [Original problem statement](https://adventofcode.com/2021/day/4)
 - [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/packages/04-giant-squid)
 
+## Part One
+
 You're already almost 1.5km (almost a mile) below the surface of the ocean, already so deep that you can't see any sunlight. What you **can** see, however, is a giant squid that has attached itself to the outside of your submarine.
 
 Maybe it wants to play bingo?
