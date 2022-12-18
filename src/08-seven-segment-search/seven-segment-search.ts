@@ -5,7 +5,6 @@ const log = {
 }
 
 const UNIQ_CNTS = [2, 3, 4, 7]
-const TOTAL_SEGMENTS = 7
 
 // 7-segment display:
 //       0
@@ -27,24 +26,23 @@ const DIGIT_SEGMENTS = {
   6: newSet([0, 1, 3, 4, 5, 6]),
   7: newSet([0, 2, 5]),
   8: newSet([0, 1, 2, 3, 4, 5, 6]),
-  9: newSet([0, 1, 2, 3, 5, 6]),
+  9: newSet([0, 1, 2, 3, 5, 6])
 }
 
 const initSegmentSpace = (): Array<string> => Array(7).fill('abcdefg')
-const isSolved = (segmentSpace: string[]): boolean => segmentSpace.every(seg => seg.length === 1)
+const isSolved = (segmentSpace: string[]): boolean => segmentSpace.every((seg) => seg.length === 1)
 
 // Remove all characters in `chars` from `str`.
 const removeChars = (str: string, chars: string): string =>
   chars.split('').reduce((memo: string, c: string) => memo.replaceAll(c, ''), str)
 
 const intersectionChars = (str: string, chars: string): string =>
-  chars.split('').reduce((memo: string, c: string) => str.indexOf(c) >= 0 ? memo.concat(c) : memo, '')
+  chars
+    .split('')
+    .reduce((memo: string, c: string) => (str.indexOf(c) >= 0 ? memo.concat(c) : memo), '')
 
 function newSet<T>(arr: T[]): Set<T> {
-  return arr.reduce(
-    (memo: Set<T>, el: T) => memo.add(el),
-    new Set()
-  )
+  return arr.reduce((memo: Set<T>, el: T) => memo.add(el), new Set())
 }
 
 function processEasyCases(segmentSpace: string[], word: string): void {
@@ -73,45 +71,47 @@ function processEasyCases(segmentSpace: string[], word: string): void {
     segmentSpace[5] = intersectionChars(segmentSpace[5] || '', word)
     segmentSpace[6] = removeChars(segmentSpace[6] || '', word)
   } else {
-    throw new Error(`Unexpected word: ${word} for easy cases. Word should have length of 2, 3, or 4`)
+    throw new Error(
+      `Unexpected word: ${word} for easy cases. Word should have length of 2, 3, or 4`
+    )
   }
 }
 
-function reduceSpace(space: string[], idx: number, c: string): string[] {
-  space[idx] = c
-  for (const i = 0; i < TOTAL_SEGMENTS; i++) {
-    if (i === idx) break
-    removeChars(space[i], c)
-  }
-  return space
-}
+const reduceSpace = (space: string[], idx: number, c: string): string[] =>
+  space.map((str, i) => (i === idx ? c : removeChars(str, c)))
 
 function getPossibleSols(space: string[]): string[][] {
   let result: string[][] = []
-  for(let segment = 0; segment < TOTAL_SEGMENTS; segment++) {
-    if (space[segment].length > 0) {
-      space[segment].split('').forEach((c, idx) => {
+
+  console.log('space:', space)
+
+  for (let segment = 0; segment < space.length; segment++) {
+    if ((space[segment] as string).length > 0) {
+      space[segment]?.split('').forEach((c, idx) => {
         result = result.concat(getPossibleSols(reduceSpace([...space], idx, c)))
       })
     }
   }
 
+  console.log('returning:', result)
+
   return result
 }
 
-function diffSet(setA: Set<number>, setB: Set<number>): Set<number> {
-  const diff = new Set(setA)
-  for (const el of setB) {
-    diff.has(el) ? diff.delete(el) : diff.add(el)
-  }
-  return diff
+function diffSet<T>(setA: Set<T>, setB: Set<T>): Set<T> {
+  return [...setB].reduce((memo, el) => {
+    memo.has(el) ? memo.delete(el) : memo.add(el)
+    return memo
+  }, new Set(setA))
 }
 
 function getDigit(config: string[], subject: string): number | null {
-  let reverseLookup: {[key: string]: number} = {}
-  config.forEach((val, idx) => reverseLookup[val] = idx)
+  const reverseLookup: { [key: string]: number } = {}
+  config.forEach((val, idx) => (reverseLookup[val] = idx))
 
-  let reverseSubjectSet = newSet(subject.split('').map(c => reverseLookup[c]))
+  const reverseSubjectSet: Set<number> = newSet(
+    subject.split('').map((c) => reverseLookup[c] as number)
+  )
 
   let digit: number | null = null
 
@@ -128,15 +128,16 @@ function getDigit(config: string[], subject: string): number | null {
 class SevenSegmentSearch {
   static cntOutputUniqueValue(input: string[]): number {
     const totalCnt = input.reduce((memo: number, line: string) => {
-
       const backPath = line.split('|')[1]
       if (backPath === undefined) return 0
 
-      const outputTokens = backPath.trim().split(' ').map(v => v.trim())
+      const outputTokens = backPath
+        .trim()
+        .split(' ')
+        .map((v) => v.trim())
       const cnt = outputTokens
-        .map(t => t.length)
-        .filter(val => UNIQ_CNTS.indexOf(val) >= 0)
-        .length
+        .map((t) => t.length)
+        .filter((val) => UNIQ_CNTS.indexOf(val) >= 0).length
 
       return memo + cnt
     }, 0)
@@ -148,34 +149,34 @@ class SevenSegmentSearch {
     let segmentSpace: Array<string> = initSegmentSpace()
 
     // Also sort the word content on the line of `.split('').sort().join('')`.
-    const words = input
-      .split('|')
-      .map(phrase => phrase.split(' ').filter(w => w.length > 0).map(w =>
-        w.trim().split('').sort().join('')
-      ))
-      .flat()
-
-    log.info(words)
+    const words: Set<string> = newSet(
+      input
+        .split('|')
+        .map((phrase) => phrase.split(' '))
+        .flat()
+        .filter((w) => w.length > 0)
+        .map((w) => w.trim()) as string[]
+    )
+    log.info('words provided:', words)
 
     // let's go for the easy cases first, (len of 2, 3, 4)
-    words
-      .filter(w => w.length === 2 || w.length === 3 || w.length === 4)
-      .forEach(word => processEasyCases(segmentSpace, word))
+    ;[...words]
+      .filter((w) => w.length === 2 || w.length === 3 || w.length === 4)
+      .forEach((word) => processEasyCases(segmentSpace, word))
 
     if (isSolved(segmentSpace)) return segmentSpace
 
     // These are hard cases, and do a brute force search below
-    const subjects = words.reduce(
-      (memo: Set<string>, w: string) =>
-        (w.length === 5 || w.length === 6) ? memo.add(w) : memo,
+    const subjects = [...words].reduce(
+      (memo: Set<string>, w: string) => (w.length === 5 || w.length === 6 ? memo.add(w) : memo),
       new Set()
     )
 
     const pSols = getPossibleSols(segmentSpace)
 
     for (let idx = 0; idx < pSols.length; idx++) {
-      if ([...subjects].every(subject => getDigit(pSols[idx], subject) !== null)) {
-        segmentSpace = pSols[idx]
+      if ([...subjects].every((subject) => getDigit(pSols[idx] || [], subject) !== null)) {
+        segmentSpace = pSols[idx] as string[]
         break
       }
     }
@@ -184,4 +185,4 @@ class SevenSegmentSearch {
   }
 }
 
-export { SevenSegmentSearch as default }
+export { SevenSegmentSearch as default, reduceSpace, getPossibleSols, getDigit }

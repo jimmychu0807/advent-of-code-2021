@@ -15,8 +15,7 @@ const QUEST_INPUT_URL = new URL('input/input.dat', import.meta.url)
 const command = new Command('seven-segment-search')
   .description('Day 08 - Seven Segment Search')
   .addOption(
-    new Option('-f, --file <inputPath>', 'path to input data')
-      .conflicts(['defaultQuestData'])
+    new Option('-f, --file <inputPath>', 'path to input data').conflicts(['defaultQuestData'])
   )
   .addOption(
     new Option('-d, --defaultQuestData', 'using default quest data')
@@ -27,7 +26,7 @@ const command = new Command('seven-segment-search')
   .action((options: CommandOptions) => {
     const input = parseArgs(options)
 
-    const cnt = SevenSegmentSearch.cntOutputUniqueValue(input);
+    const cnt = SevenSegmentSearch.cntOutputUniqueValue(input)
     console.log(`The output unique value count is: ${cnt}`)
   })
 
