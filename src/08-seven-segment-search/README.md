@@ -1,5 +1,8 @@
 # Day 08: Seven Segment Search
 
+- [Original problem statement](https://adventofcode.com/2021/day/8)
+- [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/packages/08-seven-segment-search)
+
 ## Part One
 
 You barely reach the safety of the cave when the whale smashes into the cave mouth, collapsing it. Sensors indicate another exit to this cave at a much greater depth, so you have no choice but to press on.
