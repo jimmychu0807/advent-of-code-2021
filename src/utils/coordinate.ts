@@ -12,4 +12,18 @@ class Coordinate {
   }
 }
 
-export { Coordinate as default }
+class CoordinateRC {
+  row: number
+  col: number
+
+  constructor(row: number, col: number) {
+    this.row = row
+    this.col = col
+  }
+
+  public toString(): string {
+    return `(${this.row}, ${this.col})`
+  }
+}
+
+export { Coordinate as default, CoordinateRC }
