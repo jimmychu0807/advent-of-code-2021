@@ -1,6 +1,6 @@
 # Advent of Code 2021
 
-[![Known Vulnerabilities](https://snyk.io/test/github/jimmychu0807/advent-of-code-2021/badge.svg)](https://snyk.io/test/github/jimmychu0807/advent-of-code-2021) [![npm version](https://badge.fury.io/js/@aoc-2021%2Fcli.svg)](https://badge.fury.io/js/@aoc-2021%2Fcli)
+[![Known Vulnerabilities](https://snyk.io/test/github/jimmychu0807/advent-of-code-2021/badge.svg)](https://snyk.io/test/github/jimmychu0807/advent-of-code-2021) [![npm version](https://badge.fury.io/js/@jimmychu0807%2Faoc-2021.svg)](https://badge.fury.io/js/@jimmychu0807%2Faoc-2021)
 
 This is my attempt on [Advent of Code 2021](https://adventofcode.com/2021) :rocket:
 
@@ -12,6 +12,7 @@ This is my attempt on [Advent of Code 2021](https://adventofcode.com/2021) :rock
 - [Day 06 - Latternfish](./src/06-latternfish)
 - [Day 07 - Trechery Of Whales](./src/07-trechery-of-whales)
 - [Day 08 - Seven Segment Search](./src/08-seven-segment-search)
+- [Day 09 - Smoke Basin](./src/09-smoke-basin)
 
 ## Workflow
 

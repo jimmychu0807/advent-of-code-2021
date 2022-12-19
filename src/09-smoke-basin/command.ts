@@ -3,25 +3,19 @@ import { exit } from 'process'
 
 // local import
 import { CommandOptionsDF, decorateCommand, parseArgsDF } from '../utils/index.js'
-import SevenSegmentSearch from './seven-segment-search.js'
+import SmokeBasin from './smoke-basin.js'
 
 const QUEST_INPUT_URL = new URL('input/input.dat', import.meta.url)
 
-const command = new Command('seven-segment-search')
-  .description('Day 08 - Seven Segment Search')
-  .showHelpAfterError()
+const command = new Command('smoke-basin').description('Day 09 - Smoke Basin').showHelpAfterError()
 
 decorateCommand(command, { file: true, default: true, input: false })
 
 command.action((options: CommandOptionsDF) => {
   try {
     const input = parseArgsDF(options, QUEST_INPUT_URL)
-
-    const cnt = SevenSegmentSearch.cntOutputUniqueValue(input)
-    console.log(`Part I - times that 1, 4, 7, 8 appear: ${cnt}`)
-
-    const sum = SevenSegmentSearch.getSumFromMultilineInput(input)
-    console.log(`Part II - sum of the input digits: ${sum}`)
+    const part1Res = SmokeBasin.getTotalRiskLevel(input)
+    console.log(`Part I result: ${part1Res}`)
   } catch (err) {
     console.log((err as Error).message)
     command.help()

@@ -7,6 +7,7 @@ import { command as HydrothermalVentureCommand } from './05-hydrothermal-venture
 import { command as LatternfishCommand } from './06-latternfish/index.js'
 import { command as TrecheryOfWhalesCommand } from './07-trechery-of-whales/index.js'
 import { command as SevenSegmentSearchCommand } from './08-seven-segment-search/index.js'
+import { command as SmokeBasinCommand } from './09-smoke-basin/index.js'
 
 // Read the package.json info
 const name = process.env['npm_package_name'] ?? ''
@@ -28,5 +29,6 @@ program
   .addCommand(LatternfishCommand)
   .addCommand(TrecheryOfWhalesCommand)
   .addCommand(SevenSegmentSearchCommand)
+  .addCommand(SmokeBasinCommand)
 
 export { program as default }
