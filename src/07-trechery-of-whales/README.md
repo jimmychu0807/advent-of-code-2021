@@ -1,7 +1,7 @@
 # Day 07: The Treachery of Whales
 
 - [Original problem statement](https://adventofcode.com/2021/day/7)
-- [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/packages/07-trechery-of-whales)
+- [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/src/07-trechery-of-whales)
 
 ## Part One
 

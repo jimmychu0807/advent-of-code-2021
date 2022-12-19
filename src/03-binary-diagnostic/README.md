@@ -1,7 +1,7 @@
 # Day 3: Binary Diagnostic
 
 - [Original problem statement](https://adventofcode.com/2021/day/3)
-- [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/packages/03-binary-diagnostic)
+- [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/src/03-binary-diagnostic)
 
 ## Part One
 

@@ -1,7 +1,7 @@
 # Day 02 - Dive!
 
 - [Original problem statement](https://adventofcode.com/2021/day/2)
-- [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/packages/02-dive)
+- [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/src/packages/02-dive)
 
 ## Part One
 

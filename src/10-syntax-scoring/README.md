@@ -1,5 +1,8 @@
 # Day 10: Syntax Scoring
 
+- [Original problem statement](https://adventofcode.com/2021/day/10)
+- [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/src/10-syntax-scoring)
+
 ## Part One
 
 You ask the submarine to determine the best route out of the deep-sea cave, but it only replies:
