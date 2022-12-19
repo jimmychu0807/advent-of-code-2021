@@ -1,46 +1,32 @@
-import { Command, Option } from 'commander'
+import { Command } from 'commander'
 import { exit } from 'process'
 
 // local import
-import { readInput } from '../utils/index.js'
+import { CommandOptionsDF, decorateCommand, parseArgsDF } from '../utils/index.js'
 import SevenSegmentSearch from './seven-segment-search.js'
-
-interface CommandOptions {
-  file: string | undefined
-  defaultQuestData: boolean
-}
 
 const QUEST_INPUT_URL = new URL('input/input.dat', import.meta.url)
 
 const command = new Command('seven-segment-search')
   .description('Day 08 - Seven Segment Search')
-  .addOption(
-    new Option('-f, --file <inputPath>', 'path to input data').conflicts(['defaultQuestData'])
-  )
-  .addOption(
-    new Option('-d, --defaultQuestData', 'using default quest data')
-      .default(false)
-      .conflicts(['file'])
-  )
   .showHelpAfterError()
-  .action((options: CommandOptions) => {
-    const input = parseArgs(options)
+
+decorateCommand(command, { file: true, default: true, input: false })
+
+command.action((options: CommandOptionsDF) => {
+  try {
+    const input = parseArgsDF(options, QUEST_INPUT_URL)
 
     const cnt = SevenSegmentSearch.cntOutputUniqueValue(input)
     console.log(`Part I - times that 1, 4, 7, 8 appear: ${cnt}`)
 
     const sum = SevenSegmentSearch.getSumFromMultilineInput(input)
     console.log(`Part II - sum of the input digits: ${sum}`)
-  })
-
-function parseArgs(options: CommandOptions): string[] {
-  if (!options.file && !options.defaultQuestData) {
-    console.log('Please specify one argument from below.')
+  } catch (err) {
+    console.log((err as Error).message)
     command.help()
     exit(1)
   }
-
-  return readInput(options.file || QUEST_INPUT_URL, { type: 'string' }) as string[]
-}
+})
 
 export { command as default }
