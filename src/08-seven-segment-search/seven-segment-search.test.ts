@@ -1,16 +1,12 @@
 import { expect } from 'chai'
 
 // local import
-import SevenSegmentSearch, {
-  reduceSpace,
-  getPossibleSols,
-  getDigit
-} from './seven-segment-search.js'
+import SevenSegmentSearch, { getDigit, permutate } from './seven-segment-search.js'
 
 // Example given from the question
 const ONE_LINE_SAMPLE = {
   input: 'acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf',
-  configSol: ['d', 'e', 'a', 'f', 'g', 'b', 'c'],
+  configSol: 'deafgbc',
   digits: 5353
 }
 
@@ -68,46 +64,20 @@ describe('Day 08 - Seven Segment Search', () => {
   })
 
   describe('Part II', () => {
-    it('test for SSS reduceSpace()', () => {
-      const input = ['a', 'bc', 'bc', 'acde']
-      const result = reduceSpace(input, 1, 'b')
-      expect(result).eql(['a', 'b', 'c', 'acde'])
+    it('test SSS permutate()', () => {
+      expect(permutate('abc')).to.eql(new Set(['abc', 'acb', 'bac', 'bca', 'cab', 'cba']))
+      expect(permutate('abcd')).to.eql(
+        // prettier-ignore
+        new Set([
+          'abcd', 'abdc', 'acbd', 'acdb', 'adcb', 'adbc',
+          'bacd', 'badc', 'bcad', 'bcda', 'bdac', 'bdca',
+          'cabd', 'cadb', 'cbad', 'cbda', 'cdab', 'cdba',
+          'dabc', 'dacb', 'dbac', 'dbca', 'dcab', 'dcba',
+        ])
+      )
     })
 
-    it('test for SSS getPossibleSols()', () => {
-      const space1 = ['ab', 'cd']
-      expect(getPossibleSols(space1)).eql([
-        ['a', 'c'],
-        ['a', 'd'],
-        ['b', 'c'],
-        ['b', 'd']
-      ])
-
-      const space2 = ['ab', 'bd']
-      expect(getPossibleSols(space2)).eql([
-        ['a', 'b'],
-        ['a', 'd'],
-        ['b', 'd']
-      ])
-
-      const space3 = ['ab', 'cd', 'efg']
-      expect(getPossibleSols(space3)).eql([
-        ['a', 'c', 'e'],
-        ['a', 'c', 'f'],
-        ['a', 'c', 'g'],
-        ['a', 'd', 'e'],
-        ['a', 'd', 'f'],
-        ['a', 'd', 'g'],
-        ['b', 'c', 'e'],
-        ['b', 'c', 'f'],
-        ['b', 'c', 'g'],
-        ['b', 'd', 'e'],
-        ['b', 'd', 'f'],
-        ['b', 'd', 'g']
-      ])
-    })
-
-    it('test for SSS getDigit()', () => {
+    it('test SSS getDigit()', () => {
       // 7-segment display:
       //       0                d
       //     ────             ────
@@ -118,7 +88,7 @@ describe('Day 08 - Seven Segment Search', () => {
       //   4│    │5         g│    │b
       //     ────             ────
       //       6                c
-      const config = ['d', 'e', 'a', 'f', 'g', 'b', 'c']
+      const config = 'deafgbc'
       const one1 = 'ab'
       const one2 = 'ba'
       const two = 'cgfad'
@@ -143,12 +113,12 @@ describe('Day 08 - Seven Segment Search', () => {
       expect(getDigit(config, eight)).eq(8)
       expect(getDigit(config, nine)).eq(9)
       expect(getDigit(config, zero)).eq(0)
-      expect(getDigit(config, noVal)).be.null
+      expect(getDigit(config, noVal)).be.undefined
     })
 
     it('test SSS solveConfig() with ONE_LINE_SAMPLE', () => {
-      const ss = SevenSegmentSearch.solveConfig(ONE_LINE_SAMPLE.input)
-      expect(ss).to.eql(ONE_LINE_SAMPLE.configSol)
+      const sol = SevenSegmentSearch.solveConfig(ONE_LINE_SAMPLE.input)
+      expect(sol).to.eq(ONE_LINE_SAMPLE.configSol)
     })
 
     it('test SSS getDigitsFromLine()', () => {
