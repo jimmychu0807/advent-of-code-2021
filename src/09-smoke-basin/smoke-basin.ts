@@ -20,17 +20,17 @@ class SmokeBasin {
     const basin: number[][] = toBasinMap(input)
     const lowPts: Point[] = []
 
-    const colMaxIdx = (basin[0] as number[]).length - 1
+    const colMaxIdx = basin[0]!.length - 1
     const rowMaxIdx = basin.length - 1
 
     basin.forEach((row, rowIdx) => {
       row.forEach((value, colIdx) => {
         // prettier-ignore
         if (
-          (rowIdx === 0 || basin[rowIdx - 1]?.[colIdx] as number > value) &&
-          (colIdx === 0 || basin[rowIdx]?.[colIdx - 1] as number > value) &&
-          (rowIdx === rowMaxIdx || basin[rowIdx + 1]?.[colIdx] as number > value) &&
-          (colIdx === colMaxIdx || basin[rowIdx]?.[colIdx + 1] as number > value)
+          (rowIdx === 0 || basin[rowIdx - 1]![colIdx]! > value) &&
+          (colIdx === 0 || basin[rowIdx]![colIdx - 1]! > value) &&
+          (rowIdx === rowMaxIdx || basin[rowIdx + 1]![colIdx]! > value) &&
+          (colIdx === colMaxIdx || basin[rowIdx]![colIdx + 1]! > value)
         ) {
           lowPts.push({ value, loc: new CoordinateRC(rowIdx, colIdx) })
         }
@@ -50,7 +50,7 @@ class SmokeBasin {
     const lowPts = this.getLowPoints(input)
 
     const basinHeight = basin.length
-    const basinWidth = basin[0]?.length as number
+    const basinWidth = basin[0]!.length
     const nextScanColor = initScanColor()
 
     // Initialize basinScanMap
@@ -59,7 +59,7 @@ class SmokeBasin {
       .map(() => Array(basinWidth).fill(undefined))
 
     lowPts.forEach((pt) => {
-      ;(basinScanMap[pt.loc.row] as number[])[pt.loc.col] = nextScanColor()
+      ;basinScanMap[pt.loc.row]![pt.loc.col] = nextScanColor()
     })
 
     let expanded = true
@@ -68,41 +68,41 @@ class SmokeBasin {
 
       basin.forEach((row, rowIdx) => {
         row.forEach((value, colIdx) => {
-          if (basinScanMap[rowIdx]?.[colIdx] !== undefined) return
+          if (basinScanMap[rowIdx]![colIdx] !== undefined) return
 
           // prettier-ignore
           if (colIdx !== 0  && value !== 9 // check left
-            && basinScanMap[rowIdx]?.[colIdx - 1] !== undefined
-            && (basin[rowIdx]?.[colIdx] || 0) > (basin[rowIdx]?.[colIdx - 1] || 0)
+            && basinScanMap[rowIdx]![colIdx - 1] !== undefined
+            && basin[rowIdx]![colIdx]! > basin[rowIdx]![colIdx - 1]!
           ) {
-            (basinScanMap[rowIdx] as NumberOrUndefined[])[colIdx] = basinScanMap[rowIdx]?.[colIdx - 1]
+            basinScanMap[rowIdx]![colIdx] = basinScanMap[rowIdx]![colIdx - 1]
             expanded = true
           }
 
           // prettier-ignore
           if (colIdx !== basinWidth - 1 && value !== 9 // check right
-            && basinScanMap[rowIdx]?.[colIdx + 1] !== undefined
-            && (basin[rowIdx]?.[colIdx] || 0) > (basin[rowIdx]?.[colIdx + 1] || 0)
+            && basinScanMap[rowIdx]![colIdx + 1] !== undefined
+            && basin[rowIdx]![colIdx]! > basin[rowIdx]![colIdx + 1]!
           ) {
-            (basinScanMap[rowIdx] as NumberOrUndefined[])[colIdx] = basinScanMap[rowIdx]?.[colIdx + 1]
+            basinScanMap[rowIdx]![colIdx] = basinScanMap[rowIdx]![colIdx + 1]
             expanded = true
           }
 
           // prettier-ignore
           if (rowIdx !== 0 && value !== 9 // check above
-            && basinScanMap[rowIdx - 1]?.[colIdx] !== undefined
-            && (basin[rowIdx]?.[colIdx] || 0) > (basin[rowIdx - 1]?.[colIdx] || 0)
+            && basinScanMap[rowIdx - 1]![colIdx] !== undefined
+            && basin[rowIdx]![colIdx]! > basin[rowIdx - 1]![colIdx]!
           ) {
-            (basinScanMap[rowIdx] as NumberOrUndefined[])[colIdx] = basinScanMap[rowIdx - 1]?.[colIdx]
+            basinScanMap[rowIdx]![colIdx] = basinScanMap[rowIdx - 1]![colIdx]
             expanded = true
           }
 
           // prettier-ignore
           if (rowIdx !== basinHeight - 1 && value !== 9 // check below
-            && basinScanMap[rowIdx + 1]?.[colIdx] !== undefined
-            && (basin[rowIdx]?.[colIdx] || 0) > (basin[rowIdx + 1]?.[colIdx] || 0)
+            && basinScanMap[rowIdx + 1]![colIdx] !== undefined
+            && basin[rowIdx]![colIdx]! > basin[rowIdx + 1]![colIdx]!
           ) {
-            (basinScanMap[rowIdx] as NumberOrUndefined[])[colIdx] = basinScanMap[rowIdx + 1]?.[colIdx]
+            basinScanMap[rowIdx]![colIdx] = basinScanMap[rowIdx + 1]![colIdx]
             expanded = true
           }
         })
@@ -131,7 +131,7 @@ class SmokeBasin {
     }
 
     const sorted = basinSizes.sort((a, b) => b - a)
-    return (sorted[0] as number) * (sorted[1] as number) * (sorted[2] as number)
+    return sorted[0]! * sorted[1]! * sorted[2]!
   }
 }
 
