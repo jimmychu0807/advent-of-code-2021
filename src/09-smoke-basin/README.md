@@ -79,6 +79,8 @@ The bottom-right basin, size `9`:
 98999<b>65678</b>
 </pre>
 
-Find the three largest basins and multiply their sizes together. In the above example, this is <pre>9 * 14 * 9 = <b>1134</b></pre>.
+Find the three largest basins and multiply their sizes together. In the above example, this is <pre>9 * 14 * 9 = <b>1134</b></pre>
 
 **What do you get if you multiply together the sizes of the three largest basins?**
+
+Your puzzle answer was `959136`.

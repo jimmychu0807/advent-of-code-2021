@@ -13,14 +13,22 @@ const TEST_SAMPLE = {
     '9899965678',
   ],
   lowPoints: [1, 0, 5, 5],
-  riskLevel: 15
+  riskLevel: 15,
+  basinScanMap: [
+    [0, 0, undefined, undefined, undefined, 1, 1, 1, 1, 1],
+    [0, undefined, 2, 2, 2, undefined, 1, undefined, 1, 1],
+    [undefined, 2, 2, 2, 2, 2, undefined, 3, undefined, 1],
+    [2, 2, 2, 2, 2, undefined, 3, 3, 3, undefined],
+    [undefined, 2, undefined, undefined, undefined, 3, 3, 3, 3, 3],
+  ],
+  product: 1134
 }
 
 describe('Day 09 - Smoke Basin', () => {
   describe('Part I', () => {
     it('test smoke-basin getLowPoints()', () => {
       const lowPts = SmokeBasin.getLowPoints(TEST_SAMPLE.input)
-      expect(lowPts).to.eql(TEST_SAMPLE.lowPoints)
+      expect(lowPts.map((el) => el.value)).eql(TEST_SAMPLE.lowPoints)
     })
 
     it('test smoke-basin getTotalRiskLevel()', () => {
@@ -30,6 +38,14 @@ describe('Day 09 - Smoke Basin', () => {
   })
 
   describe('Part II', () => {
-    it('test for Part II')
+    it('test smoke-basin scanBasin()', () => {
+      const scanMap = SmokeBasin.scanBasin(TEST_SAMPLE.input)
+      expect(scanMap).to.eql(TEST_SAMPLE.basinScanMap)
+    })
+
+    it('test smoke-basin threeLargestBasinSizeProduct()', () => {
+      const value = SmokeBasin.threeLargestBasinSizeProduct(TEST_SAMPLE.input)
+      expect(value).eq(TEST_SAMPLE.product)
+    })
   })
 })
