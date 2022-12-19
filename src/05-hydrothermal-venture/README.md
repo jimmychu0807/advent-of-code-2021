@@ -1,7 +1,7 @@
 # Day 05: Hydrothermal Venture
 
 - [Original problem statement](https://adventofcode.com/2021/day/5)
-- [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/packages/05-hydrothermal-venture)
+- [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/src/05-hydrothermal-venture)
 
 ## Part One
 

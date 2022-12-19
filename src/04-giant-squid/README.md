@@ -1,7 +1,7 @@
 # Day 04: Giant Squid
 
 - [Original problem statement](https://adventofcode.com/2021/day/4)
-- [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/packages/04-giant-squid)
+- [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/src/04-giant-squid)
 
 ## Part One
 

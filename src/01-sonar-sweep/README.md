@@ -1,7 +1,7 @@
 # Day 01 - Sonar Sweep
 
 - [Original problem statement](https://adventofcode.com/2021/day/1)
-- [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/packages/01-sonar-sweep)
+- [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/src/01-sonar-sweep)
 
 ## Part One
 
