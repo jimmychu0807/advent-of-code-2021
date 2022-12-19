@@ -12,6 +12,7 @@ This is my attempt on [Advent of Code 2021](https://adventofcode.com/2021) :rock
 - [Day 06 - Latternfish](./src/06-latternfish)
 - [Day 07 - Trechery Of Whales](./src/07-trechery-of-whales)
 - [Day 08 - Seven Segment Search](./src/08-seven-segment-search)
+- [Day 09 - Smoke Basin](./src/09-smoke-basin)
 
 ## Workflow
 

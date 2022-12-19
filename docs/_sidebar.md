@@ -7,3 +7,4 @@
 - [Day 06 - Latternfish](06-latternfish.md)
 - [Day 07 - Trechery Of Whales](07-trechery-of-whales.md)
 - [Day 08 - Seven Segment Search](08-seven-segment-search.md)
+- [Day 09 - Smoke Basin](09-smoke-basin.md)
