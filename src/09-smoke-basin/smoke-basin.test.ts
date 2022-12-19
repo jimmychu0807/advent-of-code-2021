@@ -20,7 +20,8 @@ const TEST_SAMPLE = {
     [undefined, 2, 2, 2, 2, 2, undefined, 3, undefined, 1],
     [2, 2, 2, 2, 2, undefined, 3, 3, 3, undefined],
     [undefined, 2, undefined, undefined, undefined, 3, 3, 3, 3, 3],
-  ]
+  ],
+  product: 1134
 }
 
 describe('Day 09 - Smoke Basin', () => {
@@ -40,6 +41,11 @@ describe('Day 09 - Smoke Basin', () => {
     it('test smoke-basin scanBasin()', () => {
       const scanMap = SmokeBasin.scanBasin(TEST_SAMPLE.input)
       expect(scanMap).to.eql(TEST_SAMPLE.basinScanMap)
+    })
+
+    it('test smoke-basin threeLargestBasinSizeProduct()', () => {
+      const value = SmokeBasin.threeLargestBasinSizeProduct(TEST_SAMPLE.input)
+      expect(value).eq(TEST_SAMPLE.product)
     })
   })
 })

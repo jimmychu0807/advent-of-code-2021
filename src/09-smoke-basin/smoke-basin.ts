@@ -51,8 +51,6 @@ class SmokeBasin {
 
     const basinHeight = basin.length
     const basinWidth = basin[0]?.length as number
-
-    // TODO
     const nextScanColor = initScanColor()
 
     // Initialize basinScanMap
@@ -112,6 +110,28 @@ class SmokeBasin {
     }
 
     return basinScanMap
+  }
+
+  static threeLargestBasinSizeProduct(input: string[]): number {
+    const basinScanMap = this.scanBasin(input)
+    const basinSizes = []
+
+    let findNextBasinSize = true
+    let basinColor = 0
+
+    while (findNextBasinSize) {
+      findNextBasinSize = false
+      const size = basinScanMap.flat().filter((el) => el === basinColor).length
+
+      if (size > 0) {
+        basinSizes[basinColor] = size
+        findNextBasinSize = true
+        basinColor++
+      }
+    }
+
+    const sorted = basinSizes.sort((a, b) => b - a)
+    return (sorted[0] as number) * (sorted[1] as number) * (sorted[2] as number)
   }
 }
 
