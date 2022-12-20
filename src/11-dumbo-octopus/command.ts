@@ -3,12 +3,12 @@ import { exit } from "process";
 
 // local import
 import { CommandOptionsDF, decorateCommand, parseArgsDF } from "../utils/index.js";
-import SevenSegmentSearch from "./seven-segment-search.js";
+import DumboOctopus from "./dumbo-octopus.js";
 
 const QUEST_INPUT_URL = new URL("input/input.dat", import.meta.url);
 
-const command = new Command("seven-segment-search")
-  .description("Day 08 - Seven Segment Search")
+const command = new Command("dumbo-octopus")
+  .description("Day 11 - Dumbo Octopus")
   .showHelpAfterError();
 
 decorateCommand(command, { file: true, default: true, input: false });
@@ -16,12 +16,11 @@ decorateCommand(command, { file: true, default: true, input: false });
 command.action((options: CommandOptionsDF) => {
   try {
     const input = parseArgsDF(options, QUEST_INPUT_URL);
+    const part1Res = DumboOctopus.modeling(input, 100);
+    console.log(`Part I result: ${part1Res[0]!}`);
 
-    const cnt = SevenSegmentSearch.cntOutputUniqueValue(input);
-    console.log(`Part I - times that 1, 4, 7, 8 appear: ${cnt}`);
-
-    const sum = SevenSegmentSearch.getSumFromMultilineInput(input);
-    console.log(`Part II - sum of the input digits: ${sum}`);
+    const part2Res = DumboOctopus.findSyncStep(input);
+    console.log(`Part II result: ${part2Res}`);
   } catch (err) {
     console.log((err as Error).message);
     command.help();

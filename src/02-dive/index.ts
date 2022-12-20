@@ -1,4 +1,4 @@
-import command from './command.js'
-import * as Dive from './dive.js'
+import command from "./command.js";
+import * as Dive from "./dive.js";
 
-export { Dive as default, command }
+export { Dive as default, command };
