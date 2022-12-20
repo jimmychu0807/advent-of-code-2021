@@ -50,10 +50,11 @@ const LARGE_SAMPLE = {
     "4846848554",
     "5283751526",
   ],
+  syncStep: 195,
   result: [
     {
       step: 1,
-      map:[
+      map: [
         "6594254334",
         "3856965822",
         "6375667284",
@@ -65,7 +66,7 @@ const LARGE_SAMPLE = {
         "5957959665",
         "6394862637",
       ],
-      flashes: 0
+      flashes: 0,
     },
     {
       step: 2,
@@ -81,7 +82,7 @@ const LARGE_SAMPLE = {
         "9000000876",
         "8700006848",
       ],
-      flashes: 35
+      flashes: 35,
     },
     {
       step: 3,
@@ -97,7 +98,7 @@ const LARGE_SAMPLE = {
         "0421125000",
         "0021119000",
       ],
-      flashes: 70
+      flashes: 80,
     },
     {
       step: 4,
@@ -113,7 +114,7 @@ const LARGE_SAMPLE = {
         "1532247211",
         "1132230211",
       ],
-      flashes: 86
+      flashes: 96,
     },
     {
       step: 5,
@@ -129,7 +130,7 @@ const LARGE_SAMPLE = {
         "2643358322",
         "2243341322",
       ],
-      flashes: 94
+      flashes: 104,
     },
     {
       step: 10,
@@ -145,7 +146,7 @@ const LARGE_SAMPLE = {
         "0532250600",
         "0032240000",
       ],
-      flashes: 204
+      flashes: 204,
     },
     {
       step: 100,
@@ -168,24 +169,31 @@ const LARGE_SAMPLE = {
 
 describe("Day 11 - Dumbo Octopus", () => {
   describe("Part I", () => {
-    it("dumbo-octopus modeling SMALL_SAMPLE", () => {
+    it("dumbo-octopus modeling() SMALL_SAMPLE", () => {
       SMALL_SAMPLE.result.forEach((res, idx) => {
         const { step, map, flashes } = res;
-        expect(DumboOctopus.modeling(SMALL_SAMPLE.inputMap, step))
-          .eql([flashes, map], `Case ${idx + 1} fails`);
-      })
+        expect(DumboOctopus.modeling(SMALL_SAMPLE.inputMap, step)).eql(
+          [flashes, map],
+          `Case ${idx + 1} fails`,
+        );
+      });
     });
 
-    it("dumbo-octopus modeling LARGE_SAMPLE", () => {
+    it("dumbo-octopus modeling() LARGE_SAMPLE", () => {
       LARGE_SAMPLE.result.forEach((res, idx) => {
         const { step, map, flashes } = res;
-        expect(DumboOctopus.modeling(LARGE_SAMPLE.inputMap, step))
-          .eql([flashes, map], `Case ${idx + 1} fails`);
-      })
+        expect(DumboOctopus.modeling(LARGE_SAMPLE.inputMap, step)).eql(
+          [flashes, map],
+          `Case ${idx + 1} fails`,
+        );
+      });
     });
   });
 
   describe("Part II", () => {
-    it("pending test");
+    it("dumbo-octopus findSyncStep() LARGE_SAMPLE", () => {
+      const { inputMap, syncStep } = LARGE_SAMPLE;
+      expect(DumboOctopus.findSyncStep(inputMap)).eq(syncStep);
+    });
   });
 });
