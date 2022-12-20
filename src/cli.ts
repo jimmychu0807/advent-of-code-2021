@@ -9,6 +9,7 @@ import { command as TrecheryOfWhalesCommand } from './07-trechery-of-whales/inde
 import { command as SevenSegmentSearchCommand } from './08-seven-segment-search/index.js'
 import { command as SmokeBasinCommand } from './09-smoke-basin/index.js'
 import { command as SyntaxScoringCommand } from './10-syntax-scoring/index.js'
+import { command as DumboOctopusCommand } from './11-dumbo-octopus/index.js'
 
 // Read the package.json info
 const name = process.env['npm_package_name'] ?? ''
@@ -32,5 +33,6 @@ program
   .addCommand(SevenSegmentSearchCommand)
   .addCommand(SmokeBasinCommand)
   .addCommand(SyntaxScoringCommand)
+  .addCommand(DumboOctopusCommand)
 
 export { program as default }
