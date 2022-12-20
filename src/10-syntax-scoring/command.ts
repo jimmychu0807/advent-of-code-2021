@@ -18,6 +18,9 @@ command.action((options: CommandOptionsDF) => {
     const input = parseArgsDF(options, QUEST_INPUT_URL)
     const part1Res = SyntaxScoring.totalSyntaxErrorScore(input)
     console.log(`Part I result: ${part1Res}`)
+
+    const part2Res = SyntaxScoring.middleIncompleteScore(input)
+    console.log(`Part II result: ${part2Res}`)
   } catch (err) {
     console.log((err as Error).message)
     command.help()

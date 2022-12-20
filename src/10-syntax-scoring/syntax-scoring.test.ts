@@ -17,29 +17,33 @@ const TEST_SAMPLE = {
     '<{([{{}}[<[[[<>{}]]]>[]]',
   ],
   analyses: [
-    { result: 'incomplete', char: '' },
-    { result: 'incomplete', char: '' },
-    { result: 'corrupted', char: '}' },
-    { result: 'incomplete', char: '' },
-    { result: 'corrupted', char: ')' },
-    { result: 'corrupted', char: ']' },
-    { result: 'incomplete', char: '' },
-    { result: 'corrupted', char: ')' },
-    { result: 'corrupted', char: '>' },
-    { result: 'incomplete', char: '' },
+    { result: 'incomplete', char: '}}]])})]', score: 288957 },
+    { result: 'incomplete', char: ')}>]})', score: 5566 },
+    { result: 'corrupted', char: '}', score: 1197 },
+    { result: 'incomplete', char: '}}>}>))))', score: 1480781 },
+    { result: 'corrupted', char: ')', score: 3 },
+    { result: 'corrupted', char: ']', score: 57 },
+    { result: 'incomplete', char: ']]}}]}]}>', score: 995444 },
+    { result: 'corrupted', char: ')', score: 3 },
+    { result: 'corrupted', char: '>', score: 25137 },
+    { result: 'incomplete', char: '])}>', score: 294 },
   ],
-  syntaxErrorScore: 26397
+  syntaxErrorScore: 26397,
+  middleIncompleteScore: 288957
 }
 
 describe('Day 10 - Syntax Scoring', () => {
   describe('Part I', () => {
-    it('analysis is correct for TEST_SAMPLE', () => {
+    it('syntax-scoring analysis for corrupted cases are correct for TEST_SAMPLE', () => {
       TEST_SAMPLE.input.forEach((ln, idx) => {
-        expect(SyntaxScoring.analyseOneLine(ln)).eql(TEST_SAMPLE.analyses[idx])
+        const analysis = SyntaxScoring.analyseOneLine(ln)
+        if (analysis.result !== 'corrupted') return
+
+        expect(analysis).eql(TEST_SAMPLE.analyses[idx])
       })
     })
 
-    it('syntax score is computed correctly for TEST_SAMPLE', () => {
+    it('syntax-scoring is computed correctly for TEST_SAMPLE', () => {
       expect(SyntaxScoring.totalSyntaxErrorScore(TEST_SAMPLE.input)).eq(
         TEST_SAMPLE.syntaxErrorScore
       )
@@ -47,6 +51,19 @@ describe('Day 10 - Syntax Scoring', () => {
   })
 
   describe('Part II', () => {
-    it('pending test')
+    it('syntax-scoring analysis for incomplete cases are correct for TEST_SAMPLE', () => {
+      TEST_SAMPLE.input.forEach((ln, idx) => {
+        const analysis = SyntaxScoring.analyseOneLine(ln)
+        if (analysis.result !== 'incomplete') return
+
+        expect(analysis).eql(TEST_SAMPLE.analyses[idx])
+      })
+    })
+
+    it('syntax-scoring middle-incomplete-score is computed correctly for TEST_SAMPLE', () => {
+      expect(SyntaxScoring.middleIncompleteScore(TEST_SAMPLE.input)).eq(
+        TEST_SAMPLE.middleIncompleteScore
+      )
+    })
   })
 })
