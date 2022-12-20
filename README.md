@@ -14,6 +14,7 @@ This is my attempt on [Advent of Code 2021](https://adventofcode.com/2021) :rock
 - [Day 08 - Seven Segment Search](./src/08-seven-segment-search)
 - [Day 09 - Smoke Basin](./src/09-smoke-basin)
 - [Day 10 - Syntax Scoring](./src/10-syntax-scoring)
+- [Day 11 - Dumbo Octopus](./src/11-dumbo-octopus)
 
 ## Workflow
 
