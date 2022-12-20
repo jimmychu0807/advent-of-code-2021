@@ -59,7 +59,7 @@ class SmokeBasin {
       .map(() => Array(basinWidth).fill(undefined))
 
     lowPts.forEach((pt) => {
-      ;basinScanMap[pt.loc.row]![pt.loc.col] = nextScanColor()
+      basinScanMap[pt.loc.row]![pt.loc.col] = nextScanColor()
     })
 
     let expanded = true
