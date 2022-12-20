@@ -1,11 +1,11 @@
-import Coordinate, { CoordinateRC } from './coordinate.js'
-import { readInput, isNotNullOrUndefined, capitalize } from './utils.js'
+import Coordinate, { CoordinateRC } from "./coordinate.js";
+import { readInput, isNotNullOrUndefined, capitalize } from "./utils.js";
 import {
   CommandOptionsDF,
   CommandOptionsDFI,
   decorateCommand,
-  parseArgsDF
-} from './decorateCommand.js'
+  parseArgsDF,
+} from "./decorateCommand.js";
 
 export {
   Coordinate,
@@ -16,5 +16,5 @@ export {
   decorateCommand,
   CommandOptionsDF,
   CommandOptionsDFI,
-  parseArgsDF
-}
+  parseArgsDF,
+};

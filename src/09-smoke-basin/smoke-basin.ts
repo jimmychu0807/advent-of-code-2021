@@ -1,27 +1,27 @@
-import { CoordinateRC } from '../utils/index.js'
+import { CoordinateRC } from "../utils/index.js";
 
 interface Point {
-  loc: CoordinateRC
-  value: number
+  loc: CoordinateRC;
+  value: number;
 }
 
-type NumberOrUndefined = number | undefined
+type NumberOrUndefined = number | undefined;
 
 const toBasinMap = (input: string[]): number[][] =>
-  input.map((ln) => ln.split('').map((c) => Number(c)))
+  input.map((ln) => ln.split("").map((c) => Number(c)));
 
 function initScanColor(): () => number {
-  let scanColor = 0
-  return (): number => scanColor++
+  let scanColor = 0;
+  return (): number => scanColor++;
 }
 
 class SmokeBasin {
   static getLowPoints(input: string[]): Point[] {
-    const basin: number[][] = toBasinMap(input)
-    const lowPts: Point[] = []
+    const basin: number[][] = toBasinMap(input);
+    const lowPts: Point[] = [];
 
-    const colMaxIdx = basin[0]!.length - 1
-    const rowMaxIdx = basin.length - 1
+    const colMaxIdx = basin[0]!.length - 1;
+    const rowMaxIdx = basin.length - 1;
 
     basin.forEach((row, rowIdx) => {
       row.forEach((value, colIdx) => {
@@ -34,41 +34,41 @@ class SmokeBasin {
         ) {
           lowPts.push({ value, loc: new CoordinateRC(rowIdx, colIdx) })
         }
-      })
-    })
+      });
+    });
 
-    return lowPts
+    return lowPts;
   }
 
   static getTotalRiskLevel(input: string[]): number {
-    const lowPts = this.getLowPoints(input)
-    return lowPts.reduce((memo, el) => memo + el.value, lowPts.length)
+    const lowPts = this.getLowPoints(input);
+    return lowPts.reduce((memo, el) => memo + el.value, lowPts.length);
   }
 
   static scanBasin(input: string[]): NumberOrUndefined[][] {
-    const basin: number[][] = toBasinMap(input)
-    const lowPts = this.getLowPoints(input)
+    const basin: number[][] = toBasinMap(input);
+    const lowPts = this.getLowPoints(input);
 
-    const basinHeight = basin.length
-    const basinWidth = basin[0]!.length
-    const nextScanColor = initScanColor()
+    const basinHeight = basin.length;
+    const basinWidth = basin[0]!.length;
+    const nextScanColor = initScanColor();
 
     // Initialize basinScanMap
     const basinScanMap: NumberOrUndefined[][] = Array(basinHeight)
       .fill(0)
-      .map(() => Array(basinWidth).fill(undefined))
+      .map(() => Array(basinWidth).fill(undefined));
 
     lowPts.forEach((pt) => {
-      basinScanMap[pt.loc.row]![pt.loc.col] = nextScanColor()
-    })
+      basinScanMap[pt.loc.row]![pt.loc.col] = nextScanColor();
+    });
 
-    let expanded = true
+    let expanded = true;
     while (expanded) {
-      expanded = false
+      expanded = false;
 
       basin.forEach((row, rowIdx) => {
         row.forEach((value, colIdx) => {
-          if (basinScanMap[rowIdx]![colIdx] !== undefined) return
+          if (basinScanMap[rowIdx]![colIdx] !== undefined) return;
 
           // prettier-ignore
           if (colIdx !== 0  && value !== 9 // check left
@@ -105,34 +105,34 @@ class SmokeBasin {
             basinScanMap[rowIdx]![colIdx] = basinScanMap[rowIdx + 1]![colIdx]
             expanded = true
           }
-        })
-      })
+        });
+      });
     }
 
-    return basinScanMap
+    return basinScanMap;
   }
 
   static threeLargestBasinSizeProduct(input: string[]): number {
-    const basinScanMap = this.scanBasin(input)
-    const basinSizes = []
+    const basinScanMap = this.scanBasin(input);
+    const basinSizes = [];
 
-    let findNextBasinSize = true
-    let basinColor = 0
+    let findNextBasinSize = true;
+    let basinColor = 0;
 
     while (findNextBasinSize) {
-      findNextBasinSize = false
-      const size = basinScanMap.flat().filter((el) => el === basinColor).length
+      findNextBasinSize = false;
+      const size = basinScanMap.flat().filter((el) => el === basinColor).length;
 
       if (size > 0) {
-        basinSizes[basinColor] = size
-        findNextBasinSize = true
-        basinColor++
+        basinSizes[basinColor] = size;
+        findNextBasinSize = true;
+        basinColor++;
       }
     }
 
-    const sorted = basinSizes.sort((a, b) => b - a)
-    return sorted[0]! * sorted[1]! * sorted[2]!
+    const sorted = basinSizes.sort((a, b) => b - a);
+    return sorted[0]! * sorted[1]! * sorted[2]!;
   }
 }
 
-export { SmokeBasin as default }
+export { SmokeBasin as default };

@@ -1,4 +1,4 @@
-import command from './command.js'
-import * as GiantSquid from './giant-squid.js'
+import command from "./command.js";
+import * as GiantSquid from "./giant-squid.js";
 
-export { GiantSquid as default, command }
+export { GiantSquid as default, command };

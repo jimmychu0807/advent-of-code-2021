@@ -1,6 +1,6 @@
-import { expect } from 'chai'
+import { expect } from "chai";
 
-import SyntaxScoring from './syntax-scoring.js'
+import SyntaxScoring from "./syntax-scoring.js";
 
 // prettier-ignore
 const TEST_SAMPLE = {
@@ -32,38 +32,38 @@ const TEST_SAMPLE = {
   middleIncompleteScore: 288957
 }
 
-describe('Day 10 - Syntax Scoring', () => {
-  describe('Part I', () => {
-    it('syntax-scoring analysis for corrupted cases are correct for TEST_SAMPLE', () => {
+describe("Day 10 - Syntax Scoring", () => {
+  describe("Part I", () => {
+    it("syntax-scoring analysis for corrupted cases are correct for TEST_SAMPLE", () => {
       TEST_SAMPLE.input.forEach((ln, idx) => {
-        const analysis = SyntaxScoring.analyseOneLine(ln)
-        if (analysis.result !== 'corrupted') return
+        const analysis = SyntaxScoring.analyseOneLine(ln);
+        if (analysis.result !== "corrupted") return;
 
-        expect(analysis).eql(TEST_SAMPLE.analyses[idx])
-      })
-    })
+        expect(analysis).eql(TEST_SAMPLE.analyses[idx]);
+      });
+    });
 
-    it('syntax-scoring is computed correctly for TEST_SAMPLE', () => {
+    it("syntax-scoring is computed correctly for TEST_SAMPLE", () => {
       expect(SyntaxScoring.totalSyntaxErrorScore(TEST_SAMPLE.input)).eq(
-        TEST_SAMPLE.syntaxErrorScore
-      )
-    })
-  })
+        TEST_SAMPLE.syntaxErrorScore,
+      );
+    });
+  });
 
-  describe('Part II', () => {
-    it('syntax-scoring analysis for incomplete cases are correct for TEST_SAMPLE', () => {
+  describe("Part II", () => {
+    it("syntax-scoring analysis for incomplete cases are correct for TEST_SAMPLE", () => {
       TEST_SAMPLE.input.forEach((ln, idx) => {
-        const analysis = SyntaxScoring.analyseOneLine(ln)
-        if (analysis.result !== 'incomplete') return
+        const analysis = SyntaxScoring.analyseOneLine(ln);
+        if (analysis.result !== "incomplete") return;
 
-        expect(analysis).eql(TEST_SAMPLE.analyses[idx])
-      })
-    })
+        expect(analysis).eql(TEST_SAMPLE.analyses[idx]);
+      });
+    });
 
-    it('syntax-scoring middle-incomplete-score is computed correctly for TEST_SAMPLE', () => {
+    it("syntax-scoring middle-incomplete-score is computed correctly for TEST_SAMPLE", () => {
       expect(SyntaxScoring.middleIncompleteScore(TEST_SAMPLE.input)).eq(
-        TEST_SAMPLE.middleIncompleteScore
-      )
-    })
-  })
-})
+        TEST_SAMPLE.middleIncompleteScore,
+      );
+    });
+  });
+});

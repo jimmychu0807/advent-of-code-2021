@@ -1,4 +1,4 @@
-import command from './command.js'
-import SyntaxScoring from './syntax-scoring.js'
+import command from "./command.js";
+import SyntaxScoring from "./syntax-scoring.js";
 
-export { SyntaxScoring, command }
+export { SyntaxScoring, command };

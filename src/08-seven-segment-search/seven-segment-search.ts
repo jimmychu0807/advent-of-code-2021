@@ -1,4 +1,4 @@
-const UNIQ_CNTS = [2, 3, 4, 7]
+const UNIQ_CNTS = [2, 3, 4, 7];
 
 // 7-segment display:
 //       0
@@ -25,84 +25,84 @@ const DIGIT_SEGMENTS = [
 ]
 
 const permutate = (input: string): Set<string> => {
-  const inputChars = input.split('')
-  if (inputChars.length <= 1) return new Set([input])
+  const inputChars = input.split("");
+  if (inputChars.length <= 1) return new Set([input]);
   return inputChars.reduce((memo: Set<string>, char: string) => {
-    ;[...permutate(input.replaceAll(char, ''))]
+    [...permutate(input.replaceAll(char, ""))]
       .map((el) => `${char}${el}`)
-      .forEach((el) => memo.add(el))
-    return memo
-  }, new Set())
-}
+      .forEach((el) => memo.add(el));
+    return memo;
+  }, new Set());
+};
 
 const setEq = <T>(setA: Set<T>, setB: Set<T>): boolean =>
-  setA.size === setB.size && [...setA].every((el) => setB.has(el))
+  setA.size === setB.size && [...setA].every((el) => setB.has(el));
 
 function getDigit(config: string, subject: string): number | undefined {
   const configMap = config
-    .split('')
+    .split("")
     .reduce((memo: { [key: string]: number }, c: string, idx: number) => {
-      memo[c] = idx
-      return memo
-    }, {})
+      memo[c] = idx;
+      return memo;
+    }, {});
 
-  const subjectSet = new Set(subject.split('').map((c) => configMap[c]))
-  const result = DIGIT_SEGMENTS.findIndex((set) => setEq(set, subjectSet))
-  return result >= 0 ? result : undefined
+  const subjectSet = new Set(subject.split("").map((c) => configMap[c]));
+  const result = DIGIT_SEGMENTS.findIndex((set) => setEq(set, subjectSet));
+  return result >= 0 ? result : undefined;
 }
 
 class SevenSegmentSearch {
   static cntOutputUniqueValue(input: string[]): number {
     const totalCnt = input.reduce((memo: number, line: string) => {
-      const backPath = line.split('|')[1]
-      if (backPath === undefined) return 0
+      const backPath = line.split("|")[1];
+      if (backPath === undefined) return 0;
 
       const outputTokens = backPath
         .trim()
-        .split(' ')
-        .map((v) => v.trim())
+        .split(" ")
+        .map((v) => v.trim());
       const cnt = outputTokens
         .map((t) => t.length)
-        .filter((val) => UNIQ_CNTS.indexOf(val) >= 0).length
-      return memo + cnt
-    }, 0)
-    return totalCnt
+        .filter((val) => UNIQ_CNTS.indexOf(val) >= 0).length;
+      return memo + cnt;
+    }, 0);
+    return totalCnt;
   }
 
   static solveConfig(input: string): string | undefined {
     const words: Array<string> = input
-      .split('|')
-      .map((phrase) => phrase.split(' '))
+      .split("|")
+      .map((phrase) => phrase.split(" "))
       .flat()
       .filter((w) => w.length > 0)
-      .map((w) => w.trim()) as string[]
+      .map((w) => w.trim()) as string[];
 
-    const solSpace = permutate('abcdefg')
+    const solSpace = permutate("abcdefg");
 
     return [...solSpace].find((config) =>
-      [...words].every((word) => getDigit(config, word) !== undefined)
-    )
+      [...words].every((word) => getDigit(config, word) !== undefined),
+    );
   }
 
   static getDigitsFromLine(input: string): number {
-    const solvedConfig = this.solveConfig(input)
-    if (!solvedConfig) throw new Error(`Unsolvable segment config from: ${input}`)
+    const solvedConfig = this.solveConfig(input);
+    if (!solvedConfig) throw new Error(`Unsolvable segment config from: ${input}`);
 
-    const lastPart = (input.split('|')[1] as string)
-      .split(' ')
+    const lastPart = (input.split("|")[1] as string)
+      .split(" ")
       .map((w) => w.trim())
-      .filter((w) => w.length > 0)
+      .filter((w) => w.length > 0);
 
-    const digitArr = lastPart.map((str) => getDigit(solvedConfig, str))
-    if (digitArr.some((d) => d === undefined)) throw new Error(`Contain unsolvable digit segment.`)
+    const digitArr = lastPart.map((str) => getDigit(solvedConfig, str));
+    if (digitArr.some((d) => d === undefined)) throw new Error(`Contain unsolvable digit segment.`);
 
-    return Number(digitArr.join(''))
+    return Number(digitArr.join(""));
   }
 
   static getSumFromMultilineInput(input: string[]): number {
-    const values = input.map((ln) => this.getDigitsFromLine(ln))
-    return values.reduce((memo, val) => memo + val, 0)
+    const values = input.map((ln) => this.getDigitsFromLine(ln));
+    return values.reduce((memo, val) => memo + val, 0);
   }
 }
 
-export { SevenSegmentSearch as default, getDigit, permutate }
+export { SevenSegmentSearch as default, getDigit, permutate };

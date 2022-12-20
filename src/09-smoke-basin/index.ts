@@ -1,4 +1,4 @@
-import command from './command.js'
-import SmokeBasin from './smoke-basin.js'
+import command from "./command.js";
+import SmokeBasin from "./smoke-basin.js";
 
-export { SmokeBasin, command }
+export { SmokeBasin, command };

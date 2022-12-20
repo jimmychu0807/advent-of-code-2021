@@ -1,7 +1,7 @@
-import { expect } from 'chai'
+import { expect } from "chai";
 
 // local import
-import SmokeBasin from './smoke-basin.js'
+import SmokeBasin from "./smoke-basin.js";
 
 // prettier-ignore
 const TEST_SAMPLE = {
@@ -24,28 +24,28 @@ const TEST_SAMPLE = {
   product: 1134
 }
 
-describe('Day 09 - Smoke Basin', () => {
-  describe('Part I', () => {
-    it('test smoke-basin getLowPoints()', () => {
-      const lowPts = SmokeBasin.getLowPoints(TEST_SAMPLE.input)
-      expect(lowPts.map((el) => el.value)).eql(TEST_SAMPLE.lowPoints)
-    })
+describe("Day 09 - Smoke Basin", () => {
+  describe("Part I", () => {
+    it("test smoke-basin getLowPoints()", () => {
+      const lowPts = SmokeBasin.getLowPoints(TEST_SAMPLE.input);
+      expect(lowPts.map((el) => el.value)).eql(TEST_SAMPLE.lowPoints);
+    });
 
-    it('test smoke-basin getTotalRiskLevel()', () => {
-      const riskLevel = SmokeBasin.getTotalRiskLevel(TEST_SAMPLE.input)
-      expect(riskLevel).to.eql(TEST_SAMPLE.riskLevel)
-    })
-  })
+    it("test smoke-basin getTotalRiskLevel()", () => {
+      const riskLevel = SmokeBasin.getTotalRiskLevel(TEST_SAMPLE.input);
+      expect(riskLevel).to.eql(TEST_SAMPLE.riskLevel);
+    });
+  });
 
-  describe('Part II', () => {
-    it('test smoke-basin scanBasin()', () => {
-      const scanMap = SmokeBasin.scanBasin(TEST_SAMPLE.input)
-      expect(scanMap).to.eql(TEST_SAMPLE.basinScanMap)
-    })
+  describe("Part II", () => {
+    it("test smoke-basin scanBasin()", () => {
+      const scanMap = SmokeBasin.scanBasin(TEST_SAMPLE.input);
+      expect(scanMap).to.eql(TEST_SAMPLE.basinScanMap);
+    });
 
-    it('test smoke-basin threeLargestBasinSizeProduct()', () => {
-      const value = SmokeBasin.threeLargestBasinSizeProduct(TEST_SAMPLE.input)
-      expect(value).eq(TEST_SAMPLE.product)
-    })
-  })
-})
+    it("test smoke-basin threeLargestBasinSizeProduct()", () => {
+      const value = SmokeBasin.threeLargestBasinSizeProduct(TEST_SAMPLE.input);
+      expect(value).eq(TEST_SAMPLE.product);
+    });
+  });
+});
