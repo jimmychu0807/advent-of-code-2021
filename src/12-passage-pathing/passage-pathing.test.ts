@@ -77,7 +77,7 @@ describe("Day 12 - Passage Pathing", () => {
       });
     });
 
-    it("passage-pathing searchPaths() works for SMALL_SAMPLE", () => {
+    it("passage-pathing searchPaths() without repeat works for SMALL_SAMPLE", () => {
       const { input, paths1, numPath1 } = SMALL_SAMPLE;
       const res = PassagePathing.searchPaths(input);
 
@@ -85,7 +85,7 @@ describe("Day 12 - Passage Pathing", () => {
       paths1.forEach((path) => expect(res).include(path));
     });
 
-    it("passage-pathing searchPaths() works for LARGE_SAMPLE", () => {
+    it("passage-pathing searchPaths() without repeat works for LARGE_SAMPLE", () => {
       const { input, numPath1 } = LARGE_SAMPLE;
       const res = PassagePathing.searchPaths(input);
 
@@ -94,6 +94,16 @@ describe("Day 12 - Passage Pathing", () => {
   });
 
   describe("Part II", () => {
-    it("pending test");
+    it("passage-pathing searchPaths() with repeat works for SMALL_SAMPLE", () => {
+      const { input, numPath2 } = SMALL_SAMPLE;
+      const res = PassagePathing.searchPaths(input, true);
+      expect(res.length).to.eq(numPath2);
+    });
+
+    it("passage-pathing searchPaths() with repeat works for LARGE_SAMPLE", () => {
+      const { input, numPath2 } = LARGE_SAMPLE;
+      const res = PassagePathing.searchPaths(input, true);
+      expect(res.length).to.eq(numPath2);
+    });
   });
 });
