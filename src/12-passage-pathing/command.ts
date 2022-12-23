@@ -18,6 +18,9 @@ command.action((options: CommandOptionsDF) => {
     const input = parseArgsDF(options, QUEST_INPUT_URL);
     const part1Res = PassagePathing.searchPaths(input);
     console.log(`Part I result: ${part1Res.length}`);
+
+    const part2Res = PassagePathing.searchPaths(input, true);
+    console.log(`Part II result: ${part2Res.length}`);
   } catch (err) {
     console.log((err as Error).message);
     command.help();

@@ -1,7 +1,8 @@
 // Type guard for a valid path
-function validPath(path: (string | undefined)[]): path is string[] {
-  return path.every((el) => el);
-}
+const validPath = (path: (string | undefined)[]): path is string[] => path.every((el) => el);
+
+const countOccurrence = (arr: string[], target: string): number =>
+  arr.filter((el) => el === target).length;
 
 class PassagePathing {
   static mapCave(input: string[]): { [key: string]: string[] } {
@@ -34,13 +35,19 @@ class PassagePathing {
     caveMap: { [key: string]: string[] },
     node: string,
     noRepeat: string[],
+    repeatSmallCave = "",
   ): (string | undefined)[][] {
     if (node === "end") return [["end"]];
-    if (noRepeat.includes(node)) return [[undefined]];
+
+    const occur = countOccurrence(noRepeat, node);
+    if ((repeatSmallCave !== node && occur > 0) || (repeatSmallCave === node && occur > 1)) {
+      return [[undefined]];
+    }
+
     if (node.toLowerCase() === node) noRepeat.push(node);
 
     return caveMap[node]!.reduce((memo: (string | undefined)[][], child: string) => {
-      const paths = this.#recSearchPaths(caveMap, child, [...noRepeat])
+      const paths = this.#recSearchPaths(caveMap, child, [...noRepeat], repeatSmallCave)
         .filter(validPath) // filter out paths with `undefined` node
         .map((path) => [node, ...path]);
 
@@ -48,12 +55,27 @@ class PassagePathing {
     }, []);
   }
 
-  static searchPaths(input: string[]): string[] {
+  static searchPaths(input: string[], oneCaveRepeat = false): string[] {
     const caveMap = this.mapCave(input);
 
-    return this.#recSearchPaths(caveMap, "start", [])
-      .filter(validPath)
-      .map((path) => path.join(","));
+    if (!oneCaveRepeat) {
+      return this.#recSearchPaths(caveMap, "start", [])
+        .filter(validPath)
+        .map((path) => path.join(","));
+    } else {
+      // Small cave can repeat once
+      const smallCaves = Object.keys(caveMap).filter(
+        (cave) => cave === cave.toLowerCase() && cave !== "start" && cave !== "end",
+      );
+
+      return smallCaves.reduce((memo: string[], sc: string) => {
+        const paths = this.#recSearchPaths(caveMap, "start", [], sc)
+          .filter(validPath)
+          .map((path) => path.join(","));
+
+        return memo.concat(paths.filter((path) => !memo.includes(path)));
+      }, []);
+    }
   }
 }
 
