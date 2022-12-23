@@ -2,40 +2,21 @@ import { expect } from "chai";
 
 import DumboOctopus from "./dumbo-octopus.js";
 
-// prettier-ignore
 const SMALL_SAMPLE = {
-  inputMap: [
-    '11111',
-    '19991',
-    '19191',
-    '19991',
-    '11111',
-  ],
+  inputMap: ["11111", "19991", "19191", "19991", "11111"],
   result: [
     {
       step: 1,
-      map: [
-        '34543',
-        '40004',
-        '50005',
-        '40004',
-        '34543',
-      ],
-      flashes: 9
+      map: ["34543", "40004", "50005", "40004", "34543"],
+      flashes: 9,
     },
     {
       step: 2,
-      map: [
-        '45654',
-        '51115',
-        '61116',
-        '51115',
-        '45654',
-      ],
-      flashes: 9
-    }
-  ]
-}
+      map: ["45654", "51115", "61116", "51115", "45654"],
+      flashes: 9,
+    },
+  ],
+};
 
 const LARGE_SAMPLE = {
   inputMap: [

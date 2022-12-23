@@ -1,3 +1,5 @@
+import { isSetEq } from "../utils/index.js";
+
 const UNIQ_CNTS = [2, 3, 4, 7];
 
 // 7-segment display:
@@ -35,9 +37,6 @@ const permutate = (input: string): Set<string> => {
   }, new Set());
 };
 
-const setEq = <T>(setA: Set<T>, setB: Set<T>): boolean =>
-  setA.size === setB.size && [...setA].every((el) => setB.has(el));
-
 function getDigit(config: string, subject: string): number | undefined {
   const configMap = config
     .split("")
@@ -47,7 +46,7 @@ function getDigit(config: string, subject: string): number | undefined {
     }, {});
 
   const subjectSet = new Set(subject.split("").map((c) => configMap[c]));
-  const result = DIGIT_SEGMENTS.findIndex((set) => setEq(set, subjectSet));
+  const result = DIGIT_SEGMENTS.findIndex((set) => isSetEq(set, subjectSet));
   return result >= 0 ? result : undefined;
 }
 

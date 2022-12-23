@@ -46,4 +46,7 @@ function capitalize(input: string): string {
   return arr.map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
 }
 
-export { readInput, isNotNullOrUndefined, capitalize };
+const isSetEq = <T>(setA: Set<T>, setB: Set<T>): boolean =>
+  setA.size === setB.size && [...setA].every((el) => setB.has(el));
+
+export { readInput, isNotNullOrUndefined, capitalize, isSetEq };
