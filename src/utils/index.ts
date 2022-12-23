@@ -1,5 +1,5 @@
 import Coordinate, { CoordinateRC } from "./coordinate.js";
-import { readInput, isNotNullOrUndefined, capitalize } from "./utils.js";
+import { readInput, isNotNullOrUndefined, capitalize, isSetEq } from "./utils.js";
 import {
   CommandOptionsDF,
   CommandOptionsDFI,
@@ -17,4 +17,5 @@ export {
   CommandOptionsDF,
   CommandOptionsDFI,
   parseArgsDF,
+  isSetEq,
 };
