@@ -1,3 +1,8 @@
+// Type guard for a valid path
+function validPath(path: (string | undefined)[]): path is string[] {
+  return path.every((el) => el);
+}
+
 class PassagePathing {
   static mapCave(input: string[]): { [key: string]: string[] } {
     const caveMap: { [key: string]: string[] } = {};
@@ -30,25 +35,25 @@ class PassagePathing {
     node: string,
     noRepeat: string[],
   ): (string | undefined)[][] {
-    if (!Array.isArray(caveMap[node])) {
-      throw new Error(`Unknown ${node} passed in #recSearchPaths()`);
-    }
     if (node === "end") return [["end"]];
     if (noRepeat.includes(node)) return [[undefined]];
+    if (node.toLowerCase() === node) noRepeat.push(node);
 
-    return caveMap[node]!.reduce((memo: string[][], child: string) => {
-      if (child.toLowerCase() === child) noRepeat.push(child);
+    return caveMap[node]!.reduce((memo: (string | undefined)[][], child: string) => {
+      const paths = this.#recSearchPaths(caveMap, child, [...noRepeat])
+        .filter(validPath) // filter out paths with `undefined` node
+        .map((path) => [node, ...path]);
 
-      const paths = this.#recSearchPaths(caveMap, child, noRepeat)
-        .filter((path) => path.every((node) => node)) // filter out paths with `undefined` node
-        .map((path) => [node, ...path]) as string[][];
       return memo.concat(paths);
     }, []);
   }
 
-  static searchPaths(input: string[]): (string | undefined)[][] {
+  static searchPaths(input: string[]): string[] {
     const caveMap = this.mapCave(input);
-    return this.#recSearchPaths(caveMap, "start", ["start"]);
+
+    return this.#recSearchPaths(caveMap, "start", [])
+      .filter(validPath)
+      .map((path) => path.join(","));
   }
 }
 
