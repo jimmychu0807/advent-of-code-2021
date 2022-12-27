@@ -4,7 +4,7 @@ import TransparentOrigami, { sumPaperDots } from "./transparent-origami.js";
 
 const SMALL_SAMPLE = {
   // prettier-ignore
-  paperSetting: [
+  paperIns: [
     "6,10",
     "0,14",
     "9,10",
@@ -25,7 +25,7 @@ const SMALL_SAMPLE = {
     "9,0",
   ],
   // prettier-ignore
-  foldInstructions: [
+  foldIns: [
     "fold along y=7",
     "fold along x=5",
   ],
@@ -35,16 +35,27 @@ const SMALL_SAMPLE = {
 describe("Day 13 - Transparent Origami", () => {
   describe("Part I", () => {
     it("works for initial paper config", () => {
-      const { paperSetting, numDots } = SMALL_SAMPLE;
-      const paper = TransparentOrigami.initPaper(paperSetting);
+      const { paperIns, numDots } = SMALL_SAMPLE;
+      const paper = TransparentOrigami.initPaper(paperIns);
       expect(sumPaperDots(paper)).to.eq(numDots[0]);
     });
 
     it("works for the first fold", () => {
-      const { paperSetting, foldInstructions, numDots } = SMALL_SAMPLE;
-      const paper = TransparentOrigami.initPaper(paperSetting);
-      TransparentOrigami.parseFoldIns(paper, foldInstructions[0]!);
+      const { paperIns, foldIns, numDots } = SMALL_SAMPLE;
+      const paper = TransparentOrigami.initPaper(paperIns);
+      TransparentOrigami.parseFoldIns(paper, foldIns[0]!);
       expect(sumPaperDots(paper)).to.eq(numDots[1]);
+    });
+
+    it("works for the second fold", () => {
+      const { paperIns, foldIns, numDots } = SMALL_SAMPLE;
+      const paper = TransparentOrigami.initPaper(paperIns);
+      expect(sumPaperDots(paper)).to.eq(numDots[0]);
+
+      foldIns.forEach((oneIns, idx) => {
+        TransparentOrigami.parseFoldIns(paper, oneIns);
+        expect(sumPaperDots(paper)).to.eq(numDots[idx + 1]);
+      });
     });
   });
 });

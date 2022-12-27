@@ -11,3 +11,4 @@
 - [Day 10 - Syntax Scoring](10-syntax-scoring.md)
 - [Day 11 - Dumbo Octopus](11-dumbo-octopus.md)
 - [Day 12 - Passage Pathing](12-passage-pathing.md)
+- [Day 13 - Transparent Origami](13-transparent-origami.md)

@@ -11,6 +11,7 @@ import { command as SmokeBasinCommand } from "./09-smoke-basin/index.js";
 import { command as SyntaxScoringCommand } from "./10-syntax-scoring/index.js";
 import { command as DumboOctopusCommand } from "./11-dumbo-octopus/index.js";
 import { command as PassagePathingCommand } from "./12-passage-pathing/index.js";
+import { command as TransparentOrigamiCommand } from "./13-transparent-origami/index.js";
 
 // Read the package.json info
 const name = process.env["npm_package_name"] ?? "";
@@ -35,6 +36,7 @@ program
   .addCommand(SmokeBasinCommand)
   .addCommand(SyntaxScoringCommand)
   .addCommand(DumboOctopusCommand)
-  .addCommand(PassagePathingCommand);
+  .addCommand(PassagePathingCommand)
+  .addCommand(TransparentOrigamiCommand);
 
 export { program as default };

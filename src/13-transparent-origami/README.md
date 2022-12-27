@@ -1,5 +1,10 @@
 # Day 13: Transparent Origami
 
+- [Original problem statement](https://adventofcode.com/2021/day/13)
+- [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/src/13-transparent-origami)
+
+## Part One
+
 You reach another volcanically active part of the cave. It would be nice if you could do some kind of thermal imaging so you could tell ahead of time which caves are too hot to safely enter.
 
 Fortunately, the submarine seems to be equipped with a thermal camera! When you activate it, you are greeted with:
@@ -123,4 +128,12 @@ The transparent paper is pretty big, so for now, focus on just completing the fi
 
 **How many dots are visible after completing just the first fold instruction on your transparent paper?**
 
-To begin, get your puzzle input.
+Your puzzle answer was `631`.
+
+## Part Two
+
+Finish folding the transparent paper according to the instructions. The manual says the code is always **eight capital letters**.
+
+**What code do you use to activate the infrared thermal imaging camera system?**
+
+Your puzzle answer was `EFLFJGRF`.

@@ -2,7 +2,15 @@ type Direction = "row" | "col";
 type Paper = number[][];
 
 const sum = (a: number, b: number): number => a + b;
-const sumPaperDots = (paper: Paper): number => paper.map((row) => row.reduce(sum, 0)).reduce(sum, 0);
+const sumPaperDots = (paper: Paper): number =>
+  paper.map((row) => row.reduce(sum, 0)).reduce(sum, 0);
+
+const printPaperDots = (paper: Paper): string =>
+  paper
+    .map((ln) => ln.join(""))
+    .join("\n")
+    .replaceAll("0", " ")
+    .replaceAll("1", "#");
 
 class TransparentOrigami {
   static initPaper(input: string[]): Paper {
@@ -21,10 +29,10 @@ class TransparentOrigami {
   }
 
   static parseFoldIns(paper: Paper, ins: string): Paper {
-    let [dir, val] = ins.split('=');
-    dir = dir!.slice(-1);
-    const numVal = Number(val);
-    return this.fold(paper, dir === 'y' ? 'row' : 'col', numVal);
+    const [first, second] = ins.split("=");
+    const dir = first!.slice(-1);
+    const axis = Number(second);
+    return this.fold(paper, dir === "y" ? "row" : "col", axis);
   }
 
   // `paper` is modified in this function and it is returned also as a reference.
@@ -57,9 +65,8 @@ class TransparentOrigami {
           );
           dist += 2;
         }
-
         // cut the row of the paper and only keep the left half
-        paper[rowIdx] = paper[rowIdx]!.splice(axis);
+        paper[rowIdx]!.splice(axis);
       }
     }
 
@@ -67,4 +74,4 @@ class TransparentOrigami {
   }
 }
 
-export { TransparentOrigami as default, sumPaperDots };
+export { TransparentOrigami as default, sumPaperDots, printPaperDots };
