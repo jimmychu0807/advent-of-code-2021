@@ -23,7 +23,6 @@ command.action((options: CommandOptionsDF) => {
     const paper1 = TransparentOrigami.initPaper(paperIns);
     TransparentOrigami.parseFoldIns(paper1, foldIns[0]!);
     const part1Res = sumPaperDots(paper1);
-
     console.log(`Part I result: ${part1Res}`);
 
     const paper2 = TransparentOrigami.initPaper(paperIns);
