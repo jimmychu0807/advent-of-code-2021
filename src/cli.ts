@@ -12,6 +12,7 @@ import { command as SyntaxScoringCommand } from "./10-syntax-scoring/index.js";
 import { command as DumboOctopusCommand } from "./11-dumbo-octopus/index.js";
 import { command as PassagePathingCommand } from "./12-passage-pathing/index.js";
 import { command as TransparentOrigamiCommand } from "./13-transparent-origami/index.js";
+import { command as ExtendedPolymerizationCommand } from "./14-extended-polymerization/index.js";
 
 // Read the package.json info
 const name = process.env["npm_package_name"] ?? "";
@@ -37,6 +38,7 @@ program
   .addCommand(SyntaxScoringCommand)
   .addCommand(DumboOctopusCommand)
   .addCommand(PassagePathingCommand)
-  .addCommand(TransparentOrigamiCommand);
+  .addCommand(TransparentOrigamiCommand)
+  .addCommand(ExtendedPolymerizationCommand);
 
 export { program as default };
