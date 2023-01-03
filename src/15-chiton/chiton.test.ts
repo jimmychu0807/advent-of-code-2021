@@ -1,6 +1,17 @@
 import { expect } from "chai";
 
-import Chiton from "./chiton.js";
+import Chiton, { getRiskFromPath } from "./chiton.js";
+import { CoordinateRC } from "../utils/index.js";
+
+const TEST1_SAMPLE = {
+  // prettier-ignore
+  input: [
+    "639",
+    "521",
+    "581",
+  ],
+  topLeftBottomRightMinRisk: 7,
+};
 
 const SMALL_SAMPLE = {
   // prettier-ignore
@@ -21,13 +32,13 @@ const SMALL_SAMPLE = {
 
 describe("Day 15 - Chiton", () => {
   describe("Part I", () => {
-    it("works", () => {
-      const { input } = SMALL_SAMPLE;
-      const path = Chiton.searchMinPath(input);
-
-      console.log(path);
-
-      expect(1).to.eql(1);
+    it("works on test samples", () => {
+      [TEST1_SAMPLE, SMALL_SAMPLE].forEach(({ input, topLeftBottomRightMinRisk }) => {
+        const topLeft = new CoordinateRC(0, 0);
+        const minPath = Chiton.searchMinPath(input, topLeft);
+        const minRisk = getRiskFromPath(minPath);
+        expect(minRisk).to.eql(topLeftBottomRightMinRisk);
+      });
     });
   });
 });

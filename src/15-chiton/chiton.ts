@@ -1,3 +1,5 @@
+import { CoordinateRC } from "../utils/index.js";
+
 interface Step {
   dir: "U" | "R" | "L" | "D";
   risk: number;
@@ -6,34 +8,57 @@ interface Step {
 const toMap = (input: string[]): number[][] =>
   input.map((ln) => ln.split("").map((char) => Number(char)));
 
+const getRiskFromPath = (path: Step[]): number => path.reduce((memo, step) => memo + step.risk, 0);
+
 class Chiton {
-  static rightAndDownSteps(map: number[][]): Step[] {
-    const height = map.length,
-      width = (map[0] as number[]).length;
+  static recSearchMinPath(map: number[][], loc: CoordinateRC): [number, Step[]] {
+    const rowHeight = map.length;
+    const colWidth = map[0]!.length;
 
-    const path: Step[] = [];
+    const [destRow, destCol] = [rowHeight - 1, colWidth - 1];
+    if (loc.row === destRow && loc.col === destCol) return [0, []];
 
-    // We are already at (0, 0), so start from x = 1.
-    for (let x = 1; x < width; x++) {
-      path.push({ dir: "R", risk: map[0]![x] as number });
+    const pathDown =
+      loc.row < rowHeight - 1
+        ? this.recSearchMinPath(map, new CoordinateRC(loc.row + 1, loc.col))
+        : null;
+
+    const pathRight =
+      loc.col < colWidth - 1
+        ? this.recSearchMinPath(map, new CoordinateRC(loc.row, loc.col + 1))
+        : null;
+
+    if (pathDown && pathRight) {
+      const downRisk = map[loc.row + 1]![loc.col] as number;
+      const rightRisk = map[loc.row]![loc.col + 1] as number;
+
+      return pathDown[0] + downRisk < pathRight[0] + rightRisk
+        ? [pathDown[0] + downRisk, pathDown[1].concat({ dir: "D", risk: downRisk })]
+        : [pathRight[0] + rightRisk, pathRight[1].concat({ dir: "R", risk: rightRisk })];
+    } else if (pathDown) {
+      const risk = map[loc.row + 1]![loc.col] as number;
+      return [pathDown[0] + risk, pathDown[1].concat({ dir: "D", risk })];
     }
-
-    // We are already at (0, width - 1), so start from x = 1.
-    for (let y = 1; y < height; y++) {
-      path.push({ dir: "D", risk: map[y]![width - 1]! });
-    }
-
-    return path;
+    const risk = map[loc.row]![loc.col + 1] as number;
+    return [pathRight![0] + risk, pathRight![1].concat({ dir: "R", risk })];
   }
 
-  static searchMinPath(input: string[]): Step[] {
+  static searchMinPath(input: string[], start: CoordinateRC): Step[] {
     const floorMap = toMap(input);
 
-    // we get one path as a ref first
-    const minRiskPath = this.rightAndDownSteps(floorMap);
+    const pathDown = this.recSearchMinPath(floorMap, new CoordinateRC(start.row + 1, start.col));
+    const pathRight = this.recSearchMinPath(floorMap, new CoordinateRC(start.row, start.col + 1));
 
-    return minRiskPath;
+    const downRisk = floorMap[start.row + 1]![start.col]!;
+    const rightRisk = floorMap[start.row]![start.col + 1]!;
+
+    const stepsReversed =
+      pathDown[0] + downRisk < pathRight[0] + rightRisk
+        ? pathDown[1].concat({ dir: "D", risk: downRisk })
+        : pathRight[1].concat({ dir: "R", risk: rightRisk });
+
+    return stepsReversed.reverse();
   }
 }
 
-export { Chiton as default };
+export { Chiton as default, getRiskFromPath };
