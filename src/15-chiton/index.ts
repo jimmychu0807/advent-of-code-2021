@@ -1,4 +1,4 @@
 import command from "./command.js";
-import Chiton, { getRiskFromPath } from "./chiton.js";
+import Chiton from "./chiton.js";
 
-export { Chiton as default, getRiskFromPath, command };
+export { Chiton as default, command };

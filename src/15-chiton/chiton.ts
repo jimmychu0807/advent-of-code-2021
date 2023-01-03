@@ -1,64 +1,62 @@
 import { CoordinateRC } from "../utils/index.js";
 
-interface Step {
-  dir: "U" | "R" | "L" | "D";
-  risk: number;
+interface StepRecord {
+  dir: "U" | "R" | "L" | "D" | null;
+  minRisk: number;
 }
 
 const toMap = (input: string[]): number[][] =>
   input.map((ln) => ln.split("").map((char) => Number(char)));
 
-const getRiskFromPath = (path: Step[]): number => path.reduce((memo, step) => memo + step.risk, 0);
-
 class Chiton {
-  static recSearchMinPath(map: number[][], loc: CoordinateRC): [number, Step[]] {
-    const rowHeight = map.length;
-    const colWidth = map[0]!.length;
+  static getMinRiskMap(floorMap: number[][], start: CoordinateRC): StepRecord[][] {
+    const rowHeight = floorMap.length;
+    const colWidth = floorMap[0]!.length;
 
-    const [destRow, destCol] = [rowHeight - 1, colWidth - 1];
-    if (loc.row === destRow && loc.col === destCol) return [0, []];
+    const minRiskMap: StepRecord[][] = [];
 
-    const pathDown =
-      loc.row < rowHeight - 1
-        ? this.recSearchMinPath(map, new CoordinateRC(loc.row + 1, loc.col))
-        : null;
+    for (let rowIdx = start.row; rowIdx < rowHeight; rowIdx++) {
+      const minRiskRow: StepRecord[] = [];
 
-    const pathRight =
-      loc.col < colWidth - 1
-        ? this.recSearchMinPath(map, new CoordinateRC(loc.row, loc.col + 1))
-        : null;
+      for (let colIdx = start.col; colIdx < colWidth; colIdx++) {
+        if (rowIdx === start.row && colIdx === start.col) {
+          minRiskRow.push({ dir: null, minRisk: 0 });
+          continue;
+        }
 
-    if (pathDown && pathRight) {
-      const downRisk = map[loc.row + 1]![loc.col] as number;
-      const rightRisk = map[loc.row]![loc.col + 1] as number;
+        const riskFromTop = rowIdx > 0 ? minRiskMap[rowIdx - 1]![colIdx]!.minRisk : undefined;
+        const riskFromLeft = colIdx > 0 ? minRiskRow[colIdx - 1]!.minRisk : undefined;
 
-      return pathDown[0] + downRisk < pathRight[0] + rightRisk
-        ? [pathDown[0] + downRisk, pathDown[1].concat({ dir: "D", risk: downRisk })]
-        : [pathRight[0] + rightRisk, pathRight[1].concat({ dir: "R", risk: rightRisk })];
-    } else if (pathDown) {
-      const risk = map[loc.row + 1]![loc.col] as number;
-      return [pathDown[0] + risk, pathDown[1].concat({ dir: "D", risk })];
+        if (riskFromTop === undefined) {
+          minRiskRow.push({ dir: "L", minRisk: riskFromLeft! + floorMap[rowIdx]![colIdx]! });
+          continue;
+        }
+
+        if (riskFromLeft === undefined) {
+          minRiskRow.push({ dir: "U", minRisk: riskFromTop! + floorMap[rowIdx]![colIdx]! });
+          continue;
+        }
+
+        minRiskRow.push(
+          riskFromTop < riskFromLeft
+            ? { dir: "U", minRisk: riskFromTop + floorMap[rowIdx]![colIdx]! }
+            : { dir: "L", minRisk: riskFromLeft + floorMap[rowIdx]![colIdx]! },
+        );
+      }
+
+      minRiskMap.push(minRiskRow);
     }
-    const risk = map[loc.row]![loc.col + 1] as number;
-    return [pathRight![0] + risk, pathRight![1].concat({ dir: "R", risk })];
+
+    return minRiskMap;
   }
 
-  static searchMinPath(input: string[], start: CoordinateRC): Step[] {
+  static getMinRisk(input: string[]): number {
     const floorMap = toMap(input);
+    const minRiskMap = this.getMinRiskMap(floorMap, new CoordinateRC(0, 0));
 
-    const pathDown = this.recSearchMinPath(floorMap, new CoordinateRC(start.row + 1, start.col));
-    const pathRight = this.recSearchMinPath(floorMap, new CoordinateRC(start.row, start.col + 1));
-
-    const downRisk = floorMap[start.row + 1]![start.col]!;
-    const rightRisk = floorMap[start.row]![start.col + 1]!;
-
-    const stepsReversed =
-      pathDown[0] + downRisk < pathRight[0] + rightRisk
-        ? pathDown[1].concat({ dir: "D", risk: downRisk })
-        : pathRight[1].concat({ dir: "R", risk: rightRisk });
-
-    return stepsReversed.reverse();
+    // return the last row-th, col-th value
+    return minRiskMap[minRiskMap.length - 1]![minRiskMap[0]!.length - 1]!.minRisk;
   }
 }
 
-export { Chiton as default, getRiskFromPath };
+export { Chiton as default };
