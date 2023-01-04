@@ -13,6 +13,7 @@ import { command as DumboOctopusCommand } from "./11-dumbo-octopus/index.js";
 import { command as PassagePathingCommand } from "./12-passage-pathing/index.js";
 import { command as TransparentOrigamiCommand } from "./13-transparent-origami/index.js";
 import { command as ExtendedPolymerizationCommand } from "./14-extended-polymerization/index.js";
+import { command as ChitonCommand } from "./15-chiton/index.js";
 
 // Read the package.json info
 const name = process.env["npm_package_name"] ?? "";
@@ -39,6 +40,7 @@ program
   .addCommand(DumboOctopusCommand)
   .addCommand(PassagePathingCommand)
   .addCommand(TransparentOrigamiCommand)
-  .addCommand(ExtendedPolymerizationCommand);
+  .addCommand(ExtendedPolymerizationCommand)
+  .addCommand(ChitonCommand);
 
 export { program as default };
