@@ -14,8 +14,11 @@ decorateCommand(command, { file: true, default: true, input: false });
 command.action((options: CommandOptionsDF) => {
   try {
     const input = parseArgsDF(options, QUEST_INPUT_URL);
-    const part1Risk = Chiton.getMinRisk(input);
+    const part1Risk = Chiton.getMinRisk(input, 1);
     console.log(`Part I result: ${part1Risk}`);
+
+    const part2Risk = Chiton.getMinRisk(input, 5);
+    console.log(`Part II result: ${part2Risk}`);
   } catch (err) {
     console.log((err as Error).message);
     command.help();
