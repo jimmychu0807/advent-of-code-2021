@@ -19,6 +19,7 @@ This is my attempt on [Advent of Code 2021](https://adventofcode.com/2021) :rock
 - [Day 13 - Transparent Origami](/13-transparent-origami.md)
 - [Day 14 - Extended Polymerization](/14-extended-polymerization.md)
 - [Day 15 - Chiton](/15-chiton.md)
+- [Day 16 - Packet Decoder](/16-packet-decoder.md)
 
 ## Workflow
 
