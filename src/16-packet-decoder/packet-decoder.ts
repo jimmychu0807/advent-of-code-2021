@@ -152,6 +152,46 @@ class PacketDecoder {
     const [, packet] = this.parsePacketBitStr(toBitString(input), 0);
     return packet;
   }
+
+  static operateOnPacket(packet: Packet): number {
+    const { type, subPackets, literalVal } = packet;
+
+    switch (type) {
+      case 4:
+        if (literalVal !== undefined) return literalVal;
+        throw new Error(`packet type = ${type}, but literal value is undefined.`);
+
+      case 0:
+        if (Array.isArray(subPackets)) {
+          return subPackets.reduce((memo, sp) => memo + this.operateOnPacket(sp), 0 as number);
+        }
+        throw new Error("Unexpected packet type === 0 but has no sub-packets.");
+
+      case 1:
+        if (Array.isArray(subPackets)) {
+          return subPackets.reduce((memo, sp) => memo * this.operateOnPacket(sp), 1 as number);
+        }
+        throw new Error("Unexpected packet type === 1 but has no sub-packets.");
+
+      case 2:
+      case 3:
+        if (Array.isArray(subPackets)) {
+          const values = subPackets.map((sp) => this.operateOnPacket(sp));
+          return type === 2 ? Math.min(...values) : Math.max(...values);
+        }
+        throw new Error(`Unexpected packet type === ${type} but has no sub-packets.`);
+
+      case 5:
+      case 6:
+      case 7: {
+        const values = subPackets!.map((sp) => this.operateOnPacket(sp));
+        if (type === 5) return values[0]! > values[1]! ? 1 : 0;
+        if (type === 6) return values[0]! < values[1]! ? 1 : 0;
+        return values[0]! === values[1]! ? 1 : 0;
+      }
+    }
+    throw new Error(`Unexpected packet type: ${type}`);
+  }
 }
 
 export { PacketDecoder as default, Packet, toBitString, sumPacketVersions };

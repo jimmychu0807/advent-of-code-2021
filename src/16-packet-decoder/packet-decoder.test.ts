@@ -91,6 +91,25 @@ const TEST_SAMPLES = [
   },
 ];
 
+const OPERATE_SAMPLES = [
+  {
+    input: "C200B40A82",
+    result: 3,
+  },
+  {
+    input: "04005AC33890",
+    result: 54,
+  },
+  {
+    input: "880086C3E88112",
+    result: 7,
+  },
+  {
+    input: "9C0141080250320F1802104A08",
+    result: 1,
+  },
+];
+
 describe("Day 16 - Packet Decoder", () => {
   describe("Part I", () => {
     it("return the bits string correctly", () => {
@@ -127,6 +146,15 @@ describe("Day 16 - Packet Decoder", () => {
       TEST_SAMPLES.forEach(({ input, versionSum }) => {
         const packet = PacketDecoder.parsePacket(input);
         expect(sumPacketVersions(packet)).to.eql(versionSum);
+      });
+    });
+  });
+
+  describe("Part II", () => {
+    it("operateOnPacket() works", () => {
+      OPERATE_SAMPLES.forEach(({ input, result }) => {
+        const packet = PacketDecoder.parsePacket(input);
+        expect(PacketDecoder.operateOnPacket(packet)).to.eq(result);
       });
     });
   });

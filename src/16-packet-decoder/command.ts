@@ -19,6 +19,9 @@ command.action((options: CommandOptionsDF) => {
     const packet = PacketDecoder.parsePacket(input[0]!);
     const sum = sumPacketVersions(packet);
     console.log(`Part I result: ${sum}`);
+
+    const result = PacketDecoder.operateOnPacket(packet);
+    console.log(`Part II result: ${result}`);
   } catch (err) {
     console.log((err as Error).message);
     command.help();
