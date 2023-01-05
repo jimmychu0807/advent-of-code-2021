@@ -14,6 +14,7 @@ import { command as PassagePathingCommand } from "./12-passage-pathing/index.js"
 import { command as TransparentOrigamiCommand } from "./13-transparent-origami/index.js";
 import { command as ExtendedPolymerizationCommand } from "./14-extended-polymerization/index.js";
 import { command as ChitonCommand } from "./15-chiton/index.js";
+import { command as PacketDecoderCommand } from "./16-packet-decoder/index.js";
 
 // Read the package.json info
 const name = process.env["npm_package_name"] ?? "";
@@ -41,6 +42,7 @@ program
   .addCommand(PassagePathingCommand)
   .addCommand(TransparentOrigamiCommand)
   .addCommand(ExtendedPolymerizationCommand)
-  .addCommand(ChitonCommand);
+  .addCommand(ChitonCommand)
+  .addCommand(PacketDecoderCommand);
 
 export { program as default };
