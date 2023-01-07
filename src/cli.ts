@@ -15,6 +15,7 @@ import { command as TransparentOrigamiCommand } from "./13-transparent-origami/i
 import { command as ExtendedPolymerizationCommand } from "./14-extended-polymerization/index.js";
 import { command as ChitonCommand } from "./15-chiton/index.js";
 import { command as PacketDecoderCommand } from "./16-packet-decoder/index.js";
+import { command as TrickShotCommand } from "./17-trick-shot/index.js";
 
 // Read the package.json info
 const name = process.env["npm_package_name"] ?? "";
@@ -43,6 +44,7 @@ program
   .addCommand(TransparentOrigamiCommand)
   .addCommand(ExtendedPolymerizationCommand)
   .addCommand(ChitonCommand)
-  .addCommand(PacketDecoderCommand);
+  .addCommand(PacketDecoderCommand)
+  .addCommand(TrickShotCommand);
 
 export { program as default };
