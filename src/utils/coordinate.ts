@@ -26,4 +26,18 @@ class CoordinateRC {
   }
 }
 
-export { Coordinate as default, CoordinateRC };
+class Rect {
+  topLeft: CoordinateRC;
+  bottomRight: CoordinateRC;
+
+  constructor(topLeft: CoordinateRC, bottomRight: CoordinateRC) {
+    this.topLeft = topLeft;
+    this.bottomRight = bottomRight;
+  }
+
+  public toString(): string {
+    return `topLeft: ${this.topLeft}, bottomRight: ${this.bottomRight}`;
+  }
+}
+
+export { Coordinate as default, CoordinateRC, Rect };

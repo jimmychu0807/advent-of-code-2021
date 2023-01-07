@@ -1,4 +1,4 @@
-import Coordinate, { CoordinateRC } from "./coordinate.js";
+import Coordinate, { CoordinateRC, Rect } from "./coordinate.js";
 import { readInput, isNotNullOrUndefined, capitalize, isSetEq } from "./utils.js";
 import {
   CommandOptionsDF,
@@ -10,6 +10,7 @@ import {
 export {
   Coordinate,
   CoordinateRC,
+  Rect,
   readInput,
   isNotNullOrUndefined,
   capitalize,

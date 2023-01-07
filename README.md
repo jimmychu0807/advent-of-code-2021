@@ -20,6 +20,7 @@ This is my attempt on [Advent of Code 2021](https://adventofcode.com/2021) :rock
 - [Day 14 - Extended Polymerization](./src/14-extended-polymerization)
 - [Day 15 - Chiton](./src/15-chiton)
 - [Day 16 - Packet Decoder](./src/16-packet-decoder)
+- [Day 17 - Trick Shot](./src/17-trick-shot)
 
 ## Workflow
 
