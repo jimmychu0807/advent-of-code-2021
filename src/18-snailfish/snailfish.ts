@@ -10,7 +10,7 @@ const CharCode = {
 
 class Snailfish {
   static parseToTree(input: string): [Tree, number] {
-    let cursor = 0;
+    let cursor = 1;
     let bComma = false;
 
     let left: Tree | number | undefined;
@@ -20,19 +20,22 @@ class Snailfish {
     while (cursor < input.length) {
       if (input.charAt(cursor) === "[") {
         if (bComma) {
-          [right, endCursor] = this.parseToTree(input.slice(cursor + 1));
+          [right, endCursor] = this.parseToTree(input.slice(cursor));
         } else {
-          [left, endCursor] = this.parseToTree(input.slice(cursor + 1));
+          [left, endCursor] = this.parseToTree(input.slice(cursor));
         }
 
         cursor += endCursor;
         continue;
+        //
       } else if (input.charAt(cursor) === ",") {
         bComma = true;
         cursor += 1;
         continue;
+        //
       } else if (input.charAt(cursor) === "]") {
         return [{ left: left!, right: right! }, cursor + 1];
+        //
       } else {
         // handling numbers
         endCursor = cursor;
@@ -49,7 +52,7 @@ class Snailfish {
           left = Number(input.slice(cursor, endCursor));
         }
 
-        cursor = endCursor + 1;
+        cursor = endCursor;
       }
     }
 
