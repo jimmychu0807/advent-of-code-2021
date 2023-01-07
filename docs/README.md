@@ -21,6 +21,7 @@ This is my attempt on [Advent of Code 2021](https://adventofcode.com/2021) :rock
 - [Day 15 - Chiton](/15-chiton.md)
 - [Day 16 - Packet Decoder](/16-packet-decoder.md)
 - [Day 17 - Trick Shot](/17-trick-shot.md)
+- [Day 18 - Snailfish](/18-snailfish.md)
 
 ## Workflow
 
