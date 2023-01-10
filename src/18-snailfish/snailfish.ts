@@ -8,9 +8,11 @@ const CharCode = {
 const SPLIT_THRESHOLD = 10;
 const EXPLODE_DEPTH = 4;
 
+type Payload = [number, number] | undefined;
+
 class Node {
   private branches: [Node, Node] | undefined;
-  private value: number | undefined;
+  value: number | undefined;
 
   constructor(param1: number | string | Node, param2?: Node) {
     if ((typeof param1 === "number" || typeof param1 === "string") && param2 === undefined) {
@@ -34,12 +36,12 @@ class Node {
     return this.branches![1];
   }
 
-  isLeaf(): boolean {
+  isLeaf(): this is { value: number } {
     return this.value !== undefined;
   }
 
   magnitude(): number {
-    if (this.isLeaf()) return this.value as number;
+    if (this.isLeaf()) return this.value;
     return this.left.magnitude() * 3 + this.right.magnitude() * 2;
   }
 
@@ -49,7 +51,30 @@ class Node {
       : `[${this.left.toString()},${this.right.toString()}]`;
   }
 
+  // boolean result indicates if the tree has been updated. It will only split at most one node
+  //   per call.
+  split(): boolean {
+    if (typeof this.value === "number" && this.value >= SPLIT_THRESHOLD) {
+      const leftVal = Math.floor(this.value / 2);
+      const rightVal = this.value - leftVal;
+
+      // Update the node
+      this.branches = [new Node(leftVal), new Node(rightVal)];
+      this.value = undefined;
+      return true;
+    }
+
+    if(!this.isLeaf()) return this.left.split() || this.right.split();
+
+    return false;
+  }
+
   reduce(): Node {
+    function recExplode(node: Node, depth?: number = 0): [boolean, Payload] {
+      return [false, undefined];
+    }
+
+    // TODO
     return this;
   }
 
@@ -78,7 +103,6 @@ class Node {
 
 }
 
-// type Payload = [number, number] | undefined;
 
 // const enum Op {
 //   Split,
@@ -197,29 +221,6 @@ class Snailfish {
   //     dir === Direction.Left ? node.left as Node : node.right as Node,
   //     dir,
   //   );
-  // }
-
-  // static recSplit(node: Node): boolean {
-  //   let updated = false;
-
-  //   if (typeof node.left === "number" && node.left >= SPLIT_THRESHOLD) {
-  //     const left = Math.floor(node.left / 2);
-  //     node.left = { left, right: node.left - left };
-  //     return true;
-  //   }
-
-  //   if (typeof node.right === "number" && node.right >= SPLIT_THRESHOLD) {
-  //     const left = Math.floor(node.right / 2);
-  //     node.right = { left, right: node.right - left };
-  //     return true;
-  //   }
-
-  //   if (typeof node.left === "object" && typeof node.right === "object") {
-  //     updated = this.recSplit(node.left);
-  //     if (!updated) updated = this.recSplit(node.right);
-  //   }
-
-  //   return updated;
   // }
 }
 
