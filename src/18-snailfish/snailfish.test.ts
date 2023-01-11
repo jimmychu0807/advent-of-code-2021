@@ -1,6 +1,8 @@
 import { expect } from "chai";
-
+import Debug from "debug";
 import Snailfish from "./snailfish.js";
+
+const log = Debug("test:snailfish");
 
 const PARSE_TO_TREE_SAMPLE = {
   input: "[[1,2],[[3,4],5]]",
@@ -14,40 +16,49 @@ const SPLIT_SAMPLE = [
   "[[[[0,7],4],[[7,8],[0,[6,7]]]],[1,1]]",
 ];
 
-// const REDUCTION_SAMPLE = {
-//   input: "[[[[[4,3],4],4],[7,[[8,4],9]]],[1,1]]",
-//   reducedResult: "[[[[0,7],4],[[7,8],[6,0]]],[8,1]]",
-// };
+const REDUCTION_SAMPLE = {
+  input: "[[[[[4,3],4],4],[7,[[8,4],9]]],[1,1]]",
+  reducedResult: "[[[[0,7],4],[[7,8],[6,0]]],[8,1]]",
+};
 
-// const SUM_SAMPLE1 = {
-//   input: [
-//     "[1,1]",
-//     "[2,2]",
-//     "[3,3]",
-//     "[4,4]",
-//     "[5,5]",
-//     "[6,6]",
-//   ],
-//   sumString: "[[[[5,0],[7,4]],[5,5]],[6,6]]",
-//   magnitude: 1137,
-// };
+const SUM_SAMPLE1 = {
+  input: ["[1,1]", "[2,2]", "[3,3]", "[4,4]", "[5,5]", "[6,6]"],
+  result: [
+    "[[1,1],[2,2]]",
+    "[[[1,1],[2,2]],[3,3]]",
+    "[[[[1,1],[2,2]],[3,3]],[4,4]]",
+    "[[[[3,0],[5,3]],[4,4]],[5,5]]",
+    "[[[[5,0],[7,4]],[5,5]],[6,6]]",
+  ],
+  magnitude: 1137,
+};
 
-// const SUM_SAMPLE2 = {
-//   input: [
-//     "[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]",
-//     "[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]",
-//     // "[[2,[[0,8],[3,4]]],[[[6,7],1],[7,[1,6]]]]",
-//     // "[[[[2,4],7],[6,[0,5]]],[[[6,8],[2,8]],[[2,1],[4,5]]]]",
-//     // "[7,[5,[[3,8],[1,4]]]]",
-//     // "[[2,[2,2]],[8,[8,1]]]",
-//     // "[2,9]",
-//     // "[1,[[[9,3],9],[[9,0],[0,7]]]]",
-//     // "[[[5,[7,4]],7],1]",
-//     // "[[[[4,2],2],6],[8,7]]",
-//   ],
-//   sumString: "[[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]",
-//   magnitude: 3488,
-// };
+const SUM_SAMPLE2 = {
+  input: [
+    "[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]",
+    "[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]",
+    "[[2,[[0,8],[3,4]]],[[[6,7],1],[7,[1,6]]]]",
+    "[[[[2,4],7],[6,[0,5]]],[[[6,8],[2,8]],[[2,1],[4,5]]]]",
+    "[7,[5,[[3,8],[1,4]]]]",
+    "[[2,[2,2]],[8,[8,1]]]",
+    "[2,9]",
+    "[1,[[[9,3],9],[[9,0],[0,7]]]]",
+    "[[[5,[7,4]],7],1]",
+    "[[[[4,2],2],6],[8,7]]",
+  ],
+  result: [
+    "[[[[4,0],[5,4]],[[7,7],[6,0]]],[[8,[7,7]],[[7,9],[5,0]]]]",
+    "[[[[6,7],[6,7]],[[7,7],[0,7]]],[[[8,7],[7,7]],[[8,8],[8,0]]]]",
+    "[[[[7,0],[7,7]],[[7,7],[7,8]]],[[[7,7],[8,8]],[[7,7],[8,7]]]]",
+    "[[[[7,7],[7,8]],[[9,5],[8,7]]],[[[6,8],[0,8]],[[9,9],[9,0]]]]",
+    "[[[[6,6],[6,6]],[[6,0],[6,7]]],[[[7,7],[8,9]],[8,[8,1]]]]",
+    "[[[[6,6],[7,7]],[[0,7],[7,7]]],[[[5,5],[5,6]],9]]",
+    "[[[[7,8],[6,7]],[[6,8],[0,8]]],[[[7,7],[5,0]],[[5,5],[5,6]]]]",
+    "[[[[7,7],[7,7]],[[8,7],[8,7]]],[[[7,0],[7,7]],9]]",
+    "[[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]",
+  ],
+  magnitude: 3488,
+};
 
 describe("Day 18 - Snailfish", () => {
   describe("Part I", () => {
@@ -63,7 +74,7 @@ describe("Day 18 - Snailfish", () => {
       expect(node.magnitude()).to.eq(magnitude);
     });
 
-    it ("Node.split() works", () => {
+    it("Node.split() works", () => {
       SPLIT_SAMPLE.reduce((memo, currVal) => {
         const node = Snailfish.parse(memo);
         const updated = node.split();
@@ -72,34 +83,37 @@ describe("Day 18 - Snailfish", () => {
         expect(node.toString()).to.eq(currVal);
 
         return currVal;
-      })
+      });
     });
 
-    // it("Snailfish.reduceTree() works", () => {
-    //   const { input, reducedResult } = REDUCTION_SAMPLE;
-    //   const result = Snailfish.reduce(Snailfish.parse(input));
-    //   expect(result).to.eql(Snailfish.parse(reducedResult));
-    // });
+    it("Node.reduce() works", () => {
+      const { input, reducedResult } = REDUCTION_SAMPLE;
+      const node = Snailfish.parse(input);
+      expect(node.reduce().toString()).to.eq(reducedResult);
+    });
 
-    // it("Snailfish.sum() and Snailfish.magnitide() works for SUM_SAMPLES", () => {
-    //   [SUM_SAMPLE2].forEach((sample, idx) => {
-    //     console.log(`SUM_SAMPLE${idx + 1} test.`);
-    //     const { input, sumString, magnitude } = sample;
-    //     const sumNode = input.slice(1).reduce((memo, ln) => {
-    //       const res = Snailfish.sum(memo, ln);
+    it("Node.sum() and Node.magnitide() works for SUM_SAMPLE1", () => {
+      const { input, result, magnitude } = SUM_SAMPLE1;
 
-    //       console.log(`final`);
-    //       console.dir(res, { depth: null });
+      const node = input.slice(1).reduce((node, ln, idx) => {
+        log(`${idx}: summing ${node.toString()} and ${ln}`);
+        const sum = node.sum(ln);
+        expect(sum.toString()).to.eq(result[idx]);
+        return sum;
+      }, Snailfish.parse(input[0]!));
+      expect(node.magnitude()).to.eq(magnitude);
+    });
 
-    //       return res;
-    //     }, Snailfish.parse(input[0]!));
+    it("Node.sum() and Node.magnitide() works for SUM_SAMPLE2", () => {
+      const { input, magnitude, result } = SUM_SAMPLE2;
 
-    //     expect(sumNode).to.eql(
-    //       Snailfish.parse(sumString),
-    //       `SUM_SAMPLE${idx + 1} don't match with expected`,
-    //     );
-    //     expect(Snailfish.magnitude(sumNode)).to.eq(magnitude);
-    //   });
-    // });
+      const node = input.slice(1).reduce((node, ln, idx) => {
+        log(`${idx}: summing ${node.toString()} and ${ln}`);
+        const sum = node.sum(ln);
+        expect(sum.toString()).to.eq(result[idx]);
+        return sum;
+      }, Snailfish.parse(input[0]!));
+      expect(node.magnitude()).to.eq(magnitude);
+    });
   });
 });
