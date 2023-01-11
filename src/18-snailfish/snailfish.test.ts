@@ -7,6 +7,13 @@ const PARSE_TO_TREE_SAMPLE = {
   magnitude: 143,
 };
 
+const SPLIT_SAMPLE = [
+  "[[[[0,7],4],[15,[0,13]]],[1,1]]",
+  "[[[[0,7],4],[[7,8],[0,13]]],[1,1]]",
+  "[[[[0,7],4],[[7,8],[0,[6,7]]]],[1,1]]",
+  "[[[[0,7],4],[[7,8],[0,[6,7]]]],[1,1]]",
+];
+
 // const REDUCTION_SAMPLE = {
 //   input: "[[[[[4,3],4],4],[7,[[8,4],9]]],[1,1]]",
 //   reducedResult: "[[[[0,7],4],[[7,8],[6,0]]],[8,1]]",
@@ -54,6 +61,18 @@ describe("Day 18 - Snailfish", () => {
       const { input, magnitude } = PARSE_TO_TREE_SAMPLE;
       const node = Snailfish.parse(input);
       expect(node.magnitude()).to.eq(magnitude);
+    });
+
+    it ("Node.split() works", () => {
+      SPLIT_SAMPLE.reduce((memo, currVal) => {
+        const node = Snailfish.parse(memo);
+        const updated = node.split();
+
+        expect(updated).to.eq(memo !== currVal);
+        expect(node.toString()).to.eq(currVal);
+
+        return currVal;
+      })
     });
 
     // it("Snailfish.reduceTree() works", () => {

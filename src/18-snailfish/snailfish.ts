@@ -1,4 +1,4 @@
-import { Direction } from "../utils/index.js";
+// import { Direction } from "../utils/index.js";
 
 const CharCode = {
   "0": "0".charCodeAt(0),
@@ -6,12 +6,12 @@ const CharCode = {
 };
 
 const SPLIT_THRESHOLD = 10;
-const EXPLODE_DEPTH = 4;
+// const EXPLODE_DEPTH = 4;
 
-type Payload = [number, number] | undefined;
+// type Payload = [number, number] | undefined;
 
 class Node {
-  private branches: [Node, Node] | undefined;
+  branches: [Node, Node] | undefined;
   value: number | undefined;
 
   constructor(param1: number | string | Node, param2?: Node) {
@@ -40,6 +40,10 @@ class Node {
     return this.value !== undefined;
   }
 
+  isNode(): this is { branches: [Node, Node] } {
+    return !this.isLeaf();
+  }
+
   magnitude(): number {
     if (this.isLeaf()) return this.value;
     return this.left.magnitude() * 3 + this.right.magnitude() * 2;
@@ -54,27 +58,34 @@ class Node {
   // boolean result indicates if the tree has been updated. It will only split at most one node
   //   per call.
   split(): boolean {
-    if (typeof this.value === "number" && this.value >= SPLIT_THRESHOLD) {
-      const leftVal = Math.floor(this.value / 2);
-      const rightVal = this.value - leftVal;
+    if (this.isNode()) return this.left.split() || this.right.split();
 
+    // Reaching here means the node is a leaf node.
+    const nodeVal = this.value as number;
+    if (nodeVal >= SPLIT_THRESHOLD) {
+      const leftVal = Math.floor(nodeVal / 2);
+      const rightVal = nodeVal - leftVal;
       // Update the node
       this.branches = [new Node(leftVal), new Node(rightVal)];
       this.value = undefined;
       return true;
     }
-
-    if(!this.isLeaf()) return this.left.split() || this.right.split();
-
     return false;
   }
 
   reduce(): Node {
-    function recExplode(node: Node, depth?: number = 0): [boolean, Payload] {
-      return [false, undefined];
-    }
+    // function recExplode(node: Node, depth?: number = 0): [boolean, Payload] {
+    //   return [false, undefined];
+    // }
 
-    // TODO
+    // // logic starts
+    // let updated = true;
+
+    // while (updated) {
+    //   [updated] = recExplode(this);
+    //   if (!updated) updated = this.split();
+    // }
+
     return this;
   }
 
@@ -84,25 +95,22 @@ class Node {
     const inputNode = typeof input === "string" ? Snailfish.parse(input) : input;
     return new Node(this, inputNode).reduce();
   }
-
-  // static reduce(tree: Node): Node {
-  //   let updated = true;
-
-  //   while (updated) {
-  //     updated = this.recExplode(tree)[0] !== Op.Null;
-  //     // If there is no explode, we start to handle split
-  //     // ref: https://www.reddit.com/r/adventofcode/comments/rjqekd/2021_day_18_not_able_to_find_where_my_logic_goes/
-  //     if (!updated) updated = this.recSplit(tree);
-
-  //     console.dir(tree, {depth: null});
-
-  //   }
-  //   return tree;
-  // }
-
-
 }
 
+// static reduce(tree: Node): Node {
+//   let updated = true;
+
+//   while (updated) {
+//     updated = this.recExplode(tree)[0] !== Op.Null;
+//     // If there is no explode, we start to handle split
+//     // ref: https://www.reddit.com/r/adventofcode/comments/rjqekd/2021_day_18_not_able_to_find_where_my_logic_goes/
+//     if (!updated) updated = this.recSplit(tree);
+
+//     console.dir(tree, {depth: null});
+
+//   }
+//   return tree;
+// }
 
 // const enum Op {
 //   Split,
