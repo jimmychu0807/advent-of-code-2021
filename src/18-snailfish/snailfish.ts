@@ -125,11 +125,11 @@ class Node {
     return this;
   }
 
-  sum(input: string | Node): Node {
-    if (this.isLeaf()) throw new Error("Cannot perform sum() operation on a leaf node.");
-
-    const inputNode = typeof input === "string" ? Snailfish.parse(input) : input;
-    return new Node(this, inputNode).reduce();
+  add(input: string | Node): Node {
+    if (this.isLeaf()) throw new Error("Cannot perform add() operation on a leaf node.");
+    const input1 = Snailfish.parse(this.toString());
+    const input2 = Snailfish.parse(typeof input === "string" ? input : input.toString());
+    return new Node(input1, input2).reduce();
   }
 }
 
@@ -187,6 +187,22 @@ class Snailfish {
 
   static parse(input: string): Node {
     return this.recParse(input)[0];
+  }
+
+  static findBiggestSum(input: string[]): number {
+    const nodes: Node[] = input.map(ln => Snailfish.parse(ln));
+    const sumArray: number[][] = new Array(input.length)
+      .fill(0)
+      .map(() => new Array(input.length).fill(0));
+
+    const height = sumArray.length;
+    for (let ri = 0; ri < height; ri++) {
+      for (let ci = 0; ci < height; ci++) {
+        sumArray[ri]![ci] = ri !== ci ? nodes[ri]!.add(nodes[ci]!).magnitude() : -1;
+      }
+    }
+
+    return Math.max(...sumArray.map((row) => Math.max(...row)));
   }
 }
 

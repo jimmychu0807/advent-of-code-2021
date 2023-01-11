@@ -60,6 +60,24 @@ const SUM_SAMPLE2 = {
   magnitude: 3488,
 };
 
+const SUM_SAMPLE3 = {
+  input: [
+    "[[[0,[5,8]],[[1,7],[9,6]]],[[4,[1,2]],[[1,4],2]]]",
+    "[[[5,[2,8]],4],[5,[[9,9],0]]]",
+    "[6,[[[6,2],[5,6]],[[7,6],[4,7]]]]",
+    "[[[6,[0,7]],[0,9]],[4,[9,[9,0]]]]",
+    "[[[7,[6,4]],[3,[1,3]]],[[[5,5],1],9]]",
+    "[[6,[[7,3],[3,2]]],[[[3,8],[5,7]],4]]",
+    "[[[[5,4],[7,7]],8],[[8,3],8]]",
+    "[[9,3],[[9,9],[6,[4,9]]]]",
+    "[[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]]",
+    "[[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]]",
+  ],
+  sumStr: "[[[[6,6],[7,6]],[[7,7],[7,0]]],[[[7,7],[7,7]],[[7,8],[9,9]]]]",
+  magnitude: 4140,
+  biggestSum: 3993,
+};
+
 describe("Day 18 - Snailfish", () => {
   describe("Part I", () => {
     it("Snailfish.parse() works", () => {
@@ -92,28 +110,42 @@ describe("Day 18 - Snailfish", () => {
       expect(node.reduce().toString()).to.eq(reducedResult);
     });
 
-    it("Node.sum() and Node.magnitide() works for SUM_SAMPLE1", () => {
+    it("Node.add() and Node.magnitide() works for SUM_SAMPLE1", () => {
       const { input, result, magnitude } = SUM_SAMPLE1;
 
       const node = input.slice(1).reduce((node, ln, idx) => {
         log(`${idx}: summing ${node.toString()} and ${ln}`);
-        const sum = node.sum(ln);
+        const sum = node.add(ln);
         expect(sum.toString()).to.eq(result[idx]);
         return sum;
       }, Snailfish.parse(input[0]!));
       expect(node.magnitude()).to.eq(magnitude);
     });
 
-    it("Node.sum() and Node.magnitide() works for SUM_SAMPLE2", () => {
+    it("Node.add() and Node.magnitide() works for SUM_SAMPLE2", () => {
       const { input, magnitude, result } = SUM_SAMPLE2;
 
       const node = input.slice(1).reduce((node, ln, idx) => {
         log(`${idx}: summing ${node.toString()} and ${ln}`);
-        const sum = node.sum(ln);
+        const sum = node.add(ln);
         expect(sum.toString()).to.eq(result[idx]);
         return sum;
       }, Snailfish.parse(input[0]!));
       expect(node.magnitude()).to.eq(magnitude);
+    });
+
+    it("Node.add() and Node.magnitide() works for SUM_SAMPLE3", () => {
+      const { input, magnitude, sumStr } = SUM_SAMPLE3;
+      const node = input.slice(1).reduce((node, ln) => node.add(ln), Snailfish.parse(input[0]!));
+      expect(node.magnitude()).to.eq(magnitude);
+      expect(node.toString()).to.eq(sumStr);
+    });
+  });
+
+  describe("Part II", () => {
+    it("Snailfish.findBiggestSum() works", () => {
+      const { input, biggestSum } = SUM_SAMPLE3;
+      expect(Snailfish.findBiggestSum(input)).to.eq(biggestSum);
     });
   });
 });
