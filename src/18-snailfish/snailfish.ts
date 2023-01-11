@@ -136,7 +136,7 @@ class Node {
 const enum ParseState {
   Start,
   NewNode,
-  Comma
+  Comma,
 }
 
 function parseVal(input: string): [string, number] {

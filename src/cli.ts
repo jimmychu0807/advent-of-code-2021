@@ -16,6 +16,7 @@ import { command as ExtendedPolymerizationCommand } from "./14-extended-polymeri
 import { command as ChitonCommand } from "./15-chiton/index.js";
 import { command as PacketDecoderCommand } from "./16-packet-decoder/index.js";
 import { command as TrickShotCommand } from "./17-trick-shot/index.js";
+import { command as SnailfishCommand } from "./18-snailfish/index.js";
 
 // Read the package.json info
 const name = process.env["npm_package_name"] ?? "";
@@ -45,6 +46,7 @@ program
   .addCommand(ExtendedPolymerizationCommand)
   .addCommand(ChitonCommand)
   .addCommand(PacketDecoderCommand)
-  .addCommand(TrickShotCommand);
+  .addCommand(TrickShotCommand)
+  .addCommand(SnailfishCommand);
 
 export { program as default };
