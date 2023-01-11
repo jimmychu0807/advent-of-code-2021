@@ -1,3 +1,10 @@
+const enum Direction {
+  Up,
+  Down,
+  Left,
+  Right,
+}
+
 class Coordinate {
   y: number;
   x: number;
@@ -40,4 +47,4 @@ class Rect {
   }
 }
 
-export { Coordinate as default, CoordinateRC, Rect };
+export { Coordinate as default, CoordinateRC, Rect, Direction };
