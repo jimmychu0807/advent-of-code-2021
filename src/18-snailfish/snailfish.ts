@@ -190,7 +190,7 @@ class Snailfish {
   }
 
   static findBiggestSum(input: string[]): number {
-    const nodes: Node[] = input.map(ln => Snailfish.parse(ln));
+    const nodes: Node[] = input.map((ln) => Snailfish.parse(ln));
     const sumArray: number[][] = new Array(input.length)
       .fill(0)
       .map(() => new Array(input.length).fill(0));
