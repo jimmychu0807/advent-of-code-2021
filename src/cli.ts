@@ -18,6 +18,7 @@ import { command as PacketDecoderCommand } from "./16-packet-decoder/index.js";
 import { command as TrickShotCommand } from "./17-trick-shot/index.js";
 import { command as SnailfishCommand } from "./18-snailfish/index.js";
 import { command as TrenchMapCommand } from "./20-trench-map/index.js";
+import { command as DiracDiceCommand } from "./21-dirac-dice/index.js";
 
 // Read the package.json info
 const name = process.env["npm_package_name"] ?? "";
@@ -49,6 +50,7 @@ program
   .addCommand(PacketDecoderCommand)
   .addCommand(TrickShotCommand)
   .addCommand(SnailfishCommand)
-  .addCommand(TrenchMapCommand);
+  .addCommand(TrenchMapCommand)
+  .addCommand(DiracDiceCommand);
 
 export { program as default };
