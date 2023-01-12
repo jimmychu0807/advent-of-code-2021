@@ -22,6 +22,8 @@ This is my attempt on [Advent of Code 2021](https://adventofcode.com/2021) :rock
 - [Day 16 - Packet Decoder](/16-packet-decoder.md)
 - [Day 17 - Trick Shot](/17-trick-shot.md)
 - [Day 18 - Snailfish](/18-snailfish.md)
+- [Day 19 - Beacon Scanner](/19-beacon-scanner.md)
+- [Day 20 - Trench Map](/20-trench-map.md)
 
 ## Workflow
 
