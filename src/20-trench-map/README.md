@@ -1,5 +1,8 @@
 # Day 20: Trench Map
 
+- [Original problem statement](https://adventofcode.com/2021/day/20)
+- [My solutions](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/src/20-trench-map)
+
 ## Part One
 
 With the scanners fully deployed, you turn their attention to mapping the floor of the ocean trench.
