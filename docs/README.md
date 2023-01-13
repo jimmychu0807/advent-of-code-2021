@@ -24,6 +24,7 @@ This is my attempt on [Advent of Code 2021](https://adventofcode.com/2021) :rock
 - [Day 18 - Snailfish](/18-snailfish.md)
 - [Day 19 - Beacon Scanner](/19-beacon-scanner.md)
 - [Day 20 - Trench Map](/20-trench-map.md)
+- [Day 21 - Dirac Dice](/21-dirac-dice.md)
 
 ## Workflow
 
