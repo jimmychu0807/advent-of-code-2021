@@ -14,8 +14,11 @@ command.action((options: CommandOptionsDF) => {
     const input = parseArgsDF(options, QUEST_INPUT_URL);
     const p1InitPos = Number(input[0]!.split(":")[1]!.trim());
     const p2InitPos = Number(input[1]!.split(":")[1]!.trim());
-    const result1 = DiracDice.simulate(p1InitPos, p2InitPos);
+    const result1 = DiracDice.simulate1(p1InitPos, p2InitPos);
     console.log(`Part I result: ${result1[1]}`);
+
+    const result2 = DiracDice.simulate2(p1InitPos, p2InitPos);
+    console.log(`Part I result: ${result2}`);
   } catch (err) {
     console.log((err as Error).message);
     command.help();
