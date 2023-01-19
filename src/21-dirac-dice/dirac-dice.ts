@@ -107,22 +107,20 @@ class DiracDice {
     movePlayer: PlayerInfo,
     nextPlayer: PlayerInfo,
     accFreq: number,
-    lv: number,
-    opts: Options,
+    rollAndFreq: RollAndFreq,
+    winningScore: number,
   ): [number, number] {
     // Terminal condition
-    if (nextPlayer.score >= opts.winningScore) return [0, accFreq];
+    if (nextPlayer.score >= winningScore) return [0, accFreq];
 
     let totResult: [number, number] = [0, 0];
-
-    const rollAndFreq = permutateAndSum(opts.diceFaces, opts.rollsOneTurn);
 
     for (const [roll, freq] of Object.entries(rollAndFreq)) {
       const newPos = this.newPosWithRoll(movePlayer.pos, Number(roll));
       const newScore = movePlayer.score + newPos;
 
       const moved: PlayerInfo = { pos: newPos, score: newScore };
-      const res = this.recSimulate2(nextPlayer, moved, accFreq * freq, lv + 1, opts);
+      const res = this.recSimulate2(nextPlayer, moved, accFreq * freq, rollAndFreq, winningScore);
 
       totResult = [totResult[0] + res[1], totResult[1] + res[0]];
     }
@@ -141,8 +139,9 @@ class DiracDice {
   ): [number, number] {
     const p1: PlayerInfo = { score: 0, pos: p1InitPos };
     const p2: PlayerInfo = { score: 0, pos: p2InitPos };
+    const rollAndFreq = permutateAndSum(opts.diceFaces, opts.rollsOneTurn);
 
-    return this.recSimulate2(p1, p2, 1, 1, opts);
+    return this.recSimulate2(p1, p2, 1, rollAndFreq, opts.winningScore);
   }
 }
 
