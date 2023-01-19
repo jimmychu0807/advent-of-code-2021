@@ -7,6 +7,12 @@ const TEST_CASE = {
   result: [0, 739785],
 };
 
+const TEST_CASE2 = {
+  p1InitPos: 4,
+  p2InitPos: 8,
+  result: [444356092776315, 341960390180808],
+};
+
 describe("Day 21 - Dirac Dice", () => {
   describe("Part I", () => {
     it("Dice works", () => {
@@ -47,38 +53,11 @@ describe("Day 21 - Dirac Dice", () => {
       expect(res3).to.eql(expected3);
     });
 
-    it("DiracDice.simulate2OneTurn() works in simple case", () => {
-      const input = [{ score: 0, pos: 1, freq: 2 }];
-      const moves = DiracDice.simulate2OneTurn(input);
-      const expectedMoves = [
-        { score: 4, pos: 4, freq: 2 },
-        { score: 5, pos: 5, freq: 6 },
-        { score: 6, pos: 6, freq: 12 },
-        { score: 7, pos: 7, freq: 14 },
-        { score: 8, pos: 8, freq: 12 },
-        { score: 9, pos: 9, freq: 6 },
-        { score: 10, pos: 10, freq: 2 },
-      ];
-      expect(moves).to.eql(expectedMoves);
+    it("DiracDice.simulate2() works in TEST_CASE2", () => {
+      const { p1InitPos, p2InitPos, result } = TEST_CASE2;
 
-      const winningRes = DiracDice.countWinning(moves, 9);
-      expect(winningRes).to.eql([8, [5, 6]]);
-    });
-
-    it("DiracDice.simulate2() works in simple case", () => {
-      const p1InitPos = 1;
-      const p2InitPos = 2;
-
-      const res = DiracDice.simulate2(p1InitPos, p2InitPos, 9);
-      console.log(res);
-    });
-
-    it("DiracDice.simulate2() works in test case", () => {
-      const p1InitPos = 4;
-      const p2InitPos = 8;
-
-      const res = DiracDice.simulate2(p1InitPos, p2InitPos, 21);
-      console.log(res);
-    });
+      const res = DiracDice.simulate2(p1InitPos, p2InitPos);
+      expect(res).to.eql(result);
+    }).timeout(60000); // allow running for 60 sec.
   });
 });

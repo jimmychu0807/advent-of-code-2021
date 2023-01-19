@@ -18,7 +18,7 @@ command.action((options: CommandOptionsDF) => {
     console.log(`Part I result: ${result1[1]}`);
 
     const result2 = DiracDice.simulate2(p1InitPos, p2InitPos);
-    console.log(`Part I result: ${result2}`);
+    console.log(`Part II result: ${result2}`);
   } catch (err) {
     console.log((err as Error).message);
     command.help();

@@ -59,3 +59,5 @@ The game is played the same as before, although to prevent things from getting t
 Using the same starting positions as in the example above, player 1 wins in **`444356092776315`** universes, while player 2 merely wins in `341960390180808` universes.
 
 Using your given starting positions, determine every possible outcome. **Find the player that wins in more universes; in how many universes does that player win?**
+
+Your puzzle answer was `492043106122795`.
