@@ -1,4 +1,4 @@
-const BOUNDARY: number = 50;
+const BOUNDARY = 50;
 
 interface Range {
   min: number;
@@ -17,7 +17,7 @@ class ReactorReboot {
       onOffStr === "on",
       { min: Number(xMin), max: Number(xMax) },
       { min: Number(yMin), max: Number(yMax) },
-      { min: Number(zMin), max: Number(zMax) }
+      { min: Number(zMin), max: Number(zMax) },
     ];
   }
 
@@ -37,25 +37,34 @@ class ReactorReboot {
 
   static countOn(domains: boolean[][][]): number {
     return domains.reduce(
-      (memo, area) => memo + area.reduce(
-        (memo, ln) => memo + ln.reduce((memo, val) => val ? memo + 1: memo, 0),
-        0),
-      0);
+      (memo, area) =>
+        memo +
+        area.reduce((memo, ln) => memo + ln.reduce((memo, val) => (val ? memo + 1 : memo), 0), 0),
+      0,
+    );
+  }
+
+  static initDomains(len: number): boolean[][][] {
+    return new Array(len)
+      .fill(0)
+      .map(() => new Array(len).fill(0).map(() => new Array(len).fill(0).map(() => false)));
   }
 
   static processRebootSteps(input: string[]): number {
-    const len = BOUNDARY * 2 + 1;
-
     // init the cube
-    const domains: boolean[][][] = new Array(len).fill(0)
-      .map(() => new Array(len).fill(0)
-        .map(() => new Array(len).fill(0).map(() => false)));
+    const domains: boolean[][][] = this.initDomains(BOUNDARY * 2 + 1);
 
-    input.forEach(ln => {
+    input.forEach((ln) => {
       const res = this.getLineInfo(ln);
-      if (res[1]!.min > BOUNDARY || res[1]!.max < BOUNDARY * -1
-        || res[2]!.min > BOUNDARY || res[2]!.max < BOUNDARY * -1
-        || res[3]!.min > BOUNDARY || res[3]!.max < BOUNDARY * -1) return;
+      if (
+        res[1]!.min > BOUNDARY ||
+        res[1]!.max < BOUNDARY * -1 ||
+        res[2]!.min > BOUNDARY ||
+        res[2]!.max < BOUNDARY * -1 ||
+        res[3]!.min > BOUNDARY ||
+        res[3]!.max < BOUNDARY * -1
+      )
+        return;
 
       this.processOneLine(domains, res);
     });
@@ -64,4 +73,4 @@ class ReactorReboot {
   }
 }
 
-export { ReactorReboot as default }
+export { ReactorReboot as default };
