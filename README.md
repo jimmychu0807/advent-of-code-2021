@@ -25,6 +25,7 @@ This is my attempt on [Advent of Code 2021](https://adventofcode.com/2021) :rock
 - [Day 19 - Beacon Scanner](./src/19-beacon-scanner)
 - [Day 20 - Trench Map](./src/20-trench-map)
 - [Day 21 - Dirac Dice](./src/21-dirac-dice)
+- [Day 22 - Reactor Reboot](./src/22-reactor-reboot)
 
 ## Workflow
 
