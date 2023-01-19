@@ -113,6 +113,6 @@ on x=967..23432,y=45373..81175,z=27513..53682
 
 The last two steps are fully outside the initialization procedure area; all other steps are fully within it. After executing these steps in the initialization procedure region, **590784** cubes are **on**.
 
-Execute the reboot steps. Afterward, considering only cubes in the region x=-50..50,y=-50..50,z=-50..50, **how many cubes are on?**
+Execute the reboot steps. Afterward, considering only cubes in the region `x=-50..50,y=-50..50,z=-50..50`, **how many cubes are on?**
 
 ## Part Two
