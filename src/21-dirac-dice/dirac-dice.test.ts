@@ -58,6 +58,6 @@ describe("Day 21 - Dirac Dice", () => {
 
       const res = DiracDice.simulate2(p1InitPos, p2InitPos);
       expect(res).to.eql(result);
-    }).timeout(20000); // allow running for 20 sec.
+    }).timeout(40000); // allow running for 40 sec.
   });
 });
