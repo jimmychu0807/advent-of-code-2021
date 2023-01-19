@@ -21,6 +21,11 @@ const enum NextRoll {
   P2,
 }
 
+const enum Ops {
+  Multiply,
+  Replace,
+}
+
 class Dice {
   private faces: number;
   private prevRoll: number | undefined;
@@ -134,6 +139,21 @@ class DiracDice {
     return [wonFreq, winningIdc];
   }
 
+  static opsFreq(targetMoves: PlayerRecord[], baseMoves: PlayerRecord[], ops: Ops) {
+    // When we apply this op, ensure both moves array has the same length
+    if (targetMoves.length !== baseMoves.length) {
+      throw new Error("Expect newMoves length to equal p1PrevMoves, but actually not.");
+    }
+
+    for (let i = 0; i < targetMoves.length; i++) {
+      if (ops === Ops.Multiply) {
+        targetMoves[i]!.freq *= baseMoves[i]!.freq;
+      } else if (ops === Ops.Replace) {
+        targetMoves[i]!.freq = baseMoves[i]!.freq;
+      }
+    }
+  }
+
   static simulate2(
     p1InitPos: number,
     p2InitPos: number,
@@ -149,24 +169,33 @@ class DiracDice {
 
     while (p1PrevMoves.length !== 0 || p2PrevMoves.length !== 0) {
       if (state === NextRoll.P1) {
+        // remove from p1PrevMoves because they have been won by p2.
+        p1PrevMoves = p1PrevMoves.filter((_, idx) => !skipIdc.includes(idx));
+        this.opsFreq(p1PrevMoves, p2PrevMoves, Ops.Replace);
+
         const newMoves = this.simulate2OneTurn(p1PrevMoves);
+
         // count number of winning freq there, also remember the winning pos index, so the other
         //   player will skip for that dice rolling.
         [wonFreq, skipIdc] = this.countWinning(newMoves, winScore);
-
         p1WonFreq += wonFreq;
         // remove the winning move
         p1PrevMoves = newMoves.filter((move) => move.score < winScore);
       } else {
+        // replace all freq in p2PrevMoves to 1
+        p2PrevMoves.forEach(move => {
+          move.freq = 1;
+        });
+
         let newMoves = this.simulate2OneTurn(p2PrevMoves);
 
-        // remove those already won move here
+        // remove the move that p1 have already won
         newMoves = newMoves.filter((_, idx) => !skipIdc.includes(idx));
 
-        [wonFreq, skipIdc] = this.countWinning(newMoves, winScore);
-        // remove from p1PrevMoves because they have been won by p2.
-        p1PrevMoves = p1PrevMoves.filter((_, idx) => !skipIdc.includes(idx));
+        // multiply the freq of newMoves with those from p1PrevMoves
+        this.opsFreq(newMoves, p1PrevMoves, Ops.Multiply);
 
+        [wonFreq, skipIdc] = this.countWinning(newMoves, winScore);
         p2WonFreq += wonFreq;
         p2PrevMoves = newMoves.filter((move) => move.score < winScore);
       }

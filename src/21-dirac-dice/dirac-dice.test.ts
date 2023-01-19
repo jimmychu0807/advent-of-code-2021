@@ -69,14 +69,16 @@ describe("Day 21 - Dirac Dice", () => {
       const p1InitPos = 1;
       const p2InitPos = 2;
 
-      DiracDice.simulate2(p1InitPos, p2InitPos, 9);
+      const res = DiracDice.simulate2(p1InitPos, p2InitPos, 9);
+      console.log(res);
     });
 
     it("DiracDice.simulate2() works in test case", () => {
       const p1InitPos = 4;
       const p2InitPos = 8;
 
-      DiracDice.simulate2(p1InitPos, p2InitPos, 21);
+      const res = DiracDice.simulate2(p1InitPos, p2InitPos, 21);
+      console.log(res);
     });
   });
 });
