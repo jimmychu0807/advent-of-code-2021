@@ -5,21 +5,23 @@ const WIN_SCORE1 = 1000;
 const WIN_SCORE2 = 21;
 const BOARD_SPACES = 10;
 
-import Debug from "debug";
-const log = Debug("dirac-dice");
-
-interface PlayerRecord {
+interface PlayerInfo {
   score: number;
   pos: number;
-  freq: number;
 }
-
-type RollAndFreq = { [key: number]: number };
 
 const enum NextRoll {
   P1,
   P2,
 }
+
+interface Options {
+  diceFaces: number;
+  rollsOneTurn: number;
+  winningScore: number;
+}
+
+type RollAndFreq = { [key: number]: number };
 
 class Dice {
   private faces: number;
@@ -101,88 +103,46 @@ class DiracDice {
     return p1Score >= WIN_SCORE1 ? [0, p2Score * dice.rollNum()] : [1, p1Score * dice.rollNum()];
   }
 
-  static simulate2OneTurn(
-    prevMoves: PlayerRecord[],
-    opts = {
-      diceFaces: DICE_FACES2,
-      rollsOneTurn: ROLLS_ONE_TURN,
-    },
-  ): PlayerRecord[] {
+  static recSimulate2(
+    movePlayer: PlayerInfo,
+    nextPlayer: PlayerInfo,
+    accFreq: number,
+    lv: number,
+    opts: Options,
+  ): [number, number] {
+    // Terminal condition
+    if (nextPlayer.score >= opts.winningScore) return [0, accFreq];
+
+    let totResult: [number, number] = [0, 0];
+
     const rollAndFreq = permutateAndSum(opts.diceFaces, opts.rollsOneTurn);
-    const newMoves: PlayerRecord[] = [];
 
-    prevMoves.forEach((prevMove) => {
-      Object.entries(rollAndFreq).forEach(([roll, freq]) => {
-        const newPos = this.newPosWithRoll(prevMove.pos, Number(roll));
-        const newScore = prevMove.score + newPos;
-        const newFreq = prevMove.freq * freq;
-        newMoves.push({ score: newScore, pos: newPos, freq: newFreq });
-      });
-    });
+    for (const [roll, freq] of Object.entries(rollAndFreq)) {
+      const newPos = this.newPosWithRoll(movePlayer.pos, Number(roll));
+      const newScore = movePlayer.score + newPos;
 
-    return newMoves;
-  }
+      const moved: PlayerInfo = { pos: newPos, score: newScore };
+      const res = this.recSimulate2(nextPlayer, moved, accFreq * freq, lv + 1, opts);
 
-  static countWinning(moves: PlayerRecord[], winScore: number): [number, number[]] {
-    const winningIdc: number[] = [];
-    let wonFreq = 0;
-    moves.forEach((move, idx) => {
-      if (move.score < winScore) return;
-      wonFreq += move.freq;
-      winningIdc.push(idx);
-    });
-    return [wonFreq, winningIdc];
+      totResult = [totResult[0] + res[1], totResult[1] + res[0]];
+    }
+
+    return totResult;
   }
 
   static simulate2(
     p1InitPos: number,
     p2InitPos: number,
-    winScore: number = WIN_SCORE2,
+    opts: Options = {
+      diceFaces: DICE_FACES2,
+      rollsOneTurn: ROLLS_ONE_TURN,
+      winningScore: WIN_SCORE2,
+    },
   ): [number, number] {
-    let p1WonFreq = 0,
-      p2WonFreq = 0;
-    let p1PrevMoves: PlayerRecord[] = [{ score: 0, pos: p1InitPos, freq: 1 }];
-    let p2PrevMoves: PlayerRecord[] = [{ score: 0, pos: p2InitPos, freq: 1 }];
-    let state = NextRoll.P1;
-    let wonFreq: number,
-      skipIdc: number[] = [];
+    const p1: PlayerInfo = { score: 0, pos: p1InitPos };
+    const p2: PlayerInfo = { score: 0, pos: p2InitPos };
 
-    while (p1PrevMoves.length !== 0 || p2PrevMoves.length !== 0) {
-      if (state === NextRoll.P1) {
-        const newMoves = this.simulate2OneTurn(p1PrevMoves);
-        // count number of winning freq there, also remember the winning pos index, so the other
-        //   player will skip for that dice rolling.
-        [wonFreq, skipIdc] = this.countWinning(newMoves, winScore);
-
-        p1WonFreq += wonFreq;
-        // remove the winning move
-        p1PrevMoves = newMoves.filter((move) => move.score < winScore);
-      } else {
-        let newMoves = this.simulate2OneTurn(p2PrevMoves);
-
-        // remove those already won move here
-        newMoves = newMoves.filter((_, idx) => !skipIdc.includes(idx));
-
-        [wonFreq, skipIdc] = this.countWinning(newMoves, winScore);
-        // remove from p1PrevMoves because they have been won by p2.
-        p1PrevMoves = p1PrevMoves.filter((_, idx) => !skipIdc.includes(idx));
-
-        p2WonFreq += wonFreq;
-        p2PrevMoves = newMoves.filter((move) => move.score < winScore);
-      }
-
-      log(`-- ${state} --`);
-      log("p1PrevMoves:", p1PrevMoves);
-      log("p1WonFreq:", p1WonFreq);
-      log("p2PrevMoves:", p2PrevMoves);
-      log("p2WonFreq:", p2WonFreq);
-      log("skipIdc", skipIdc);
-
-      // switching the state
-      state = state === NextRoll.P1 ? NextRoll.P2 : NextRoll.P1;
-    }
-
-    return [p1WonFreq, p2WonFreq];
+    return this.recSimulate2(p1, p2, 1, 1, opts);
   }
 }
 
