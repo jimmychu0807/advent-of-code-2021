@@ -5,8 +5,10 @@ interface Range {
   max: number;
 }
 
+type Instruction = [boolean, Range, Range, Range];
+
 class ReactorReboot {
-  static getLineInfo(line: string): [boolean, Range, Range, Range] {
+  static getLineInfo(line: string): Instruction {
     const [onOffStr, afterSpace] = line.split(" ");
     const [xStr, yStr, zStr] = afterSpace!.split(",");
     const [xMin, xMax] = xStr!.slice(2).split("..");
@@ -21,10 +23,15 @@ class ReactorReboot {
     ];
   }
 
-  static processOneLine(domains: boolean[][][], lineInfo: [boolean, Range, Range, Range]) {
-    const [xFrom, xTo] = [lineInfo[1].min + BOUNDARY, lineInfo[1].max + BOUNDARY];
-    const [yFrom, yTo] = [lineInfo[2].min + BOUNDARY, lineInfo[2].max + BOUNDARY];
-    const [zFrom, zTo] = [lineInfo[3].min + BOUNDARY, lineInfo[3].max + BOUNDARY];
+  static processOneLine(
+    domains: boolean[][][],
+    lineInfo: [boolean, Range, Range, Range],
+    offset: [number, number, number],
+  ) {
+    const [xOffset, yOffset, zOffset] = offset;
+    const [xFrom, xTo] = [lineInfo[1].min - xOffset, lineInfo[1].max - xOffset];
+    const [yFrom, yTo] = [lineInfo[2].min - yOffset, lineInfo[2].max - yOffset];
+    const [zFrom, zTo] = [lineInfo[3].min - zOffset, lineInfo[3].max - zOffset];
 
     for (let x = xFrom; x <= xTo; x++) {
       for (let y = yFrom; y <= yTo; y++) {
@@ -44,15 +51,24 @@ class ReactorReboot {
     );
   }
 
-  static initDomains(len: number): boolean[][][] {
-    return new Array(len)
+  static initDomains(xLen: number, yLen?: number, zLen?: number): boolean[][][] {
+    return new Array(xLen)
       .fill(0)
-      .map(() => new Array(len).fill(0).map(() => new Array(len).fill(0).map(() => false)));
+      .map(() =>
+        new Array(yLen ?? xLen).fill(0).map(() => new Array(zLen ?? xLen).fill(0).map(() => false)),
+      );
+  }
+
+  static getOffsetAndLen(ranges: Range[]): [number, number] {
+    const minMin = Math.min(...ranges.map((r) => r.min));
+    const maxMax = Math.max(...ranges.map((r) => r.max));
+    return [minMin, maxMax - minMin + 1];
   }
 
   static processRebootSteps(input: string[]): number {
     // init the cube
-    const domains: boolean[][][] = this.initDomains(BOUNDARY * 2 + 1);
+    const sideLen = BOUNDARY * 2 + 1;
+    const domains: boolean[][][] = this.initDomains(sideLen, sideLen, sideLen);
 
     input.forEach((ln) => {
       const res = this.getLineInfo(ln);
@@ -66,11 +82,27 @@ class ReactorReboot {
       )
         return;
 
-      this.processOneLine(domains, res);
+      this.processOneLine(domains, res, [BOUNDARY * -1, BOUNDARY * -1, BOUNDARY * -1]);
+    });
+
+    return this.countOn(domains);
+  }
+
+  static processFullReboot(input: string[]): number {
+    // Find the offset and length for x, y, z axis.
+    const instructions = input.map(this.getLineInfo);
+    const [xOffset, xLen] = this.getOffsetAndLen(instructions.map((i) => i[1]));
+    const [yOffset, yLen] = this.getOffsetAndLen(instructions.map((i) => i[2]));
+    const [zOffset, zLen] = this.getOffsetAndLen(instructions.map((i) => i[3]));
+
+    const domains: boolean[][][] = this.initDomains(xLen, yLen, zLen);
+
+    instructions.forEach((ins) => {
+      this.processOneLine(domains, ins, [xOffset, yOffset, zOffset]);
     });
 
     return this.countOn(domains);
   }
 }
 
-export { ReactorReboot as default };
+export { ReactorReboot as default, BOUNDARY };

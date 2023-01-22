@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import ReactorReboot from "./reactor-reboot.js";
+import ReactorReboot, { BOUNDARY } from "./reactor-reboot.js";
 
 const TEST_CASE1 = {
   input: [
@@ -50,7 +50,7 @@ describe("Day 22 - Reactor Reboot", () => {
     it("ReactorReboot.processOneLine() and ReactorReboot.countOn() works", () => {
       const domains = ReactorReboot.initDomains(101);
       const lnInfo = ReactorReboot.getLineInfo(TEST_CASE1.input[0]!);
-      ReactorReboot.processOneLine(domains, lnInfo);
+      ReactorReboot.processOneLine(domains, lnInfo, [BOUNDARY * -1, BOUNDARY * -1, BOUNDARY * -1]);
       const res = ReactorReboot.countOn(domains);
 
       expect(res).to.eq(27);
