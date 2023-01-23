@@ -7,6 +7,17 @@ interface Range {
 
 type Instruction = [boolean, Range, Range, Range];
 
+interface GridConfig {
+  x: OffsetAndLen;
+  y: OffsetAndLen;
+  z: OffsetAndLen;
+}
+
+interface OffsetAndLen {
+  offset: number;
+  len: number;
+}
+
 class ReactorReboot {
   static getLineInfo(line: string): Instruction {
     const [onOffStr, afterSpace] = line.split(" ");
@@ -28,6 +39,8 @@ class ReactorReboot {
     lineInfo: [boolean, Range, Range, Range],
     offset: [number, number, number],
   ) {
+    console.log("processOneLine:", lineInfo, offset);
+
     const [xOffset, yOffset, zOffset] = offset;
     const [xFrom, xTo] = [lineInfo[1].min - xOffset, lineInfo[1].max - xOffset];
     const [yFrom, yTo] = [lineInfo[2].min - yOffset, lineInfo[2].max - yOffset];
@@ -42,6 +55,35 @@ class ReactorReboot {
     }
   }
 
+  static toDomainIdxAndBitPos(x: number, y: number, z: number, gc: GridConfig): [number, number] {
+    const pos =
+      (x - gc.x.offset) * gc.y.len * gc.z.len + (y - gc.y.offset) * gc.z.len + (z - gc.z.offset);
+    return [Math.floor(pos / 32), pos % 32];
+  }
+
+  static setDomainBit(domains: number[], di: number, dbp: number, onOff: boolean) {
+    domains[di] = onOff ? domains[di]! | (1 << dbp) : domains[di]! & ~(1 << dbp);
+  }
+
+  static processOneLine2(
+    domains: number[],
+    lineInfo: [boolean, Range, Range, Range],
+    gc: GridConfig,
+  ) {
+    const [xFrom, xTo] = [lineInfo[1].min, lineInfo[1].max];
+    const [yFrom, yTo] = [lineInfo[2].min, lineInfo[2].max];
+    const [zFrom, zTo] = [lineInfo[3].min, lineInfo[3].max];
+
+    for (let x = xFrom; x <= xTo; x++) {
+      for (let y = yFrom; y <= yTo; y++) {
+        for (let z = zFrom; z <= zTo; z++) {
+          const [di, dbp] = this.toDomainIdxAndBitPos(x, y, z, gc);
+          this.setDomainBit(domains, di, dbp, lineInfo[0]);
+        }
+      }
+    }
+  }
+
   static countOn(domains: boolean[][][]): number {
     return domains.reduce(
       (memo, area) =>
@@ -51,12 +93,23 @@ class ReactorReboot {
     );
   }
 
+  static countOn2(domains: number[]): number {
+    let cnt = 0;
+    for (let i = 0; i < domains.length; i++) {
+      const val = domains[i]!;
+      for (let j = 0; j < 32; j++) {
+        if ((val & (1 << j)) !== 0) cnt++;
+      }
+    }
+    return cnt;
+  }
+
   static initDomains(xLen: number, yLen?: number, zLen?: number): boolean[][][] {
+    console.log(`initDomains: ${xLen}, ${yLen}, ${zLen}`);
+
     return new Array(xLen)
       .fill(0)
-      .map(() =>
-        new Array(yLen ?? xLen).fill(0).map(() => new Array(zLen ?? xLen).fill(0).map(() => false)),
-      );
+      .map(() => new Array(yLen ?? xLen).fill(0).map(() => new Array(zLen ?? xLen).fill(false)));
   }
 
   static getOffsetAndLen(ranges: Range[]): [number, number] {
@@ -68,7 +121,7 @@ class ReactorReboot {
   static processRebootSteps(input: string[]): number {
     // init the cube
     const sideLen = BOUNDARY * 2 + 1;
-    const domains: boolean[][][] = this.initDomains(sideLen, sideLen, sideLen);
+    const domains: boolean[][][] = this.initDomains(sideLen);
 
     input.forEach((ln) => {
       const res = this.getLineInfo(ln);
@@ -88,20 +141,39 @@ class ReactorReboot {
     return this.countOn(domains);
   }
 
+  static initDomains2(xLen: number, yLen?: number, zLen?: number): number[] {
+    const product = xLen * (yLen ?? xLen) * (zLen ?? xLen);
+    return new Array(product % 32 === 0 ? product / 32 : Math.floor(product / 32) + 1).fill(0);
+  }
+
+  static getGridConfigFromIns(ins: Instruction[]): GridConfig {
+    const [xOffset, xLen] = this.getOffsetAndLen(ins.map((i) => i[1]));
+    const [yOffset, yLen] = this.getOffsetAndLen(ins.map((i) => i[2]));
+    const [zOffset, zLen] = this.getOffsetAndLen(ins.map((i) => i[3]));
+
+    return {
+      x: { offset: xOffset, len: xLen },
+      y: { offset: yOffset, len: yLen },
+      z: { offset: zOffset, len: zLen },
+    };
+  }
+
   static processFullReboot(input: string[]): number {
     // Find the offset and length for x, y, z axis.
     const instructions = input.map(this.getLineInfo);
-    const [xOffset, xLen] = this.getOffsetAndLen(instructions.map((i) => i[1]));
-    const [yOffset, yLen] = this.getOffsetAndLen(instructions.map((i) => i[2]));
-    const [zOffset, zLen] = this.getOffsetAndLen(instructions.map((i) => i[3]));
+    const gc: GridConfig = this.getGridConfigFromIns(instructions);
 
-    const domains: boolean[][][] = this.initDomains(xLen, yLen, zLen);
+    console.log("config", gc);
+
+    const domains: number[] = this.initDomains2(gc.x.len, gc.y.len, gc.z.len);
+
+    console.log(`domain len: ${domains.length}`);
 
     instructions.forEach((ins) => {
-      this.processOneLine(domains, ins, [xOffset, yOffset, zOffset]);
+      this.processOneLine2(domains, ins, gc);
     });
 
-    return this.countOn(domains);
+    return this.countOn2(domains);
   }
 }
 

@@ -70,4 +70,16 @@ describe("Day 22 - Reactor Reboot", () => {
       expect(res).to.eq(expectedCountOn);
     });
   });
+
+  describe("Part II", () => {
+    it("ReactorReboot.processFullReboot works with simple test cases", () => {
+      const insStrs = [
+        "on x=16383..101554,y=4615..83635,z=-44907..18747",
+        "off x=-95822..-15171,y=-19987..48940,z=10804..104439",
+      ];
+
+      const res = ReactorReboot.processFullReboot(insStrs);
+      console.log(`res: ${res}`);
+    });
+  });
 });
