@@ -30,7 +30,7 @@ class ReactorReboot {
     };
   }
 
-  static processRebootInit(
+  static rebootInitOneIns(
     domains: boolean[][][],
     ins: Instruction,
     offset: [number, number, number],
@@ -64,7 +64,7 @@ class ReactorReboot {
       .map(() => new Array(yLen ?? xLen).fill(0).map(() => new Array(zLen ?? xLen).fill(false)));
   }
 
-  static initRebootSteps(input: string[]): number {
+  static rebootInit(input: string[]): number {
     // init the cube
     const sideLen = BOUNDARY * 2 + 1;
     const domains: boolean[][][] = this.initDomains(sideLen);
@@ -81,18 +81,18 @@ class ReactorReboot {
       )
         return;
 
-      this.processRebootInit(domains, ins, [BOUNDARY * -1, BOUNDARY * -1, BOUNDARY * -1]);
+      this.rebootInitOneIns(domains, ins, [BOUNDARY * -1, BOUNDARY * -1, BOUNDARY * -1]);
     });
 
     return this.countOn(domains);
   }
 
-  static processRebootSteps(input: string[]): number {
-    const intersectionSets: Cuboid[][] = []
+  static fullReboot(input: string[]): number {
+    const intersectionSets: Cuboid[][] = [];
 
-    input.forEach(ln => {
+    input.forEach((ln) => {
       const ins = this.parseInstruction(ln);
-      for(let i = 0; i < intersectionSets.length; i ++) {
+      for (let i = 0; i < intersectionSets.length; i++) {
         if (this.hasIntersection(intersectionSets[i]!, ins)) {
           intersectionSets[i]!.push(ins);
           return;
@@ -107,14 +107,20 @@ class ReactorReboot {
 
   static hasIntersection(set: Cuboid[], cuboid: Cuboid): boolean {
     for (let i = 0; i < set.length; i++) {
-      if (set[i]!.x.max >= cuboid.x.min && set[i]!.x.min <= cuboid.x.max
-        && set[i]!.y.max >= cuboid.y.min && set[i]!.y.min <= cuboid.y.max
-        && set[i]!.z.max >= cuboid.z.min && set[i]!.z.min <= cuboid.z.max) return true;
+      if (
+        set[i]!.x.max >= cuboid.x.min &&
+        set[i]!.x.min <= cuboid.x.max &&
+        set[i]!.y.max >= cuboid.y.min &&
+        set[i]!.y.min <= cuboid.y.max &&
+        set[i]!.z.max >= cuboid.z.min &&
+        set[i]!.z.min <= cuboid.z.max
+      )
+        return true;
     }
     return false;
   }
 
-  static recGetOnVolume(set: Cuboid[], pick: number = 1): number {
+  static recGetOnVolume(set: Cuboid[], pick = 1): number {
     return pick < set.length
       ? this.sumOfIntersectionVol(set, pick) - this.recGetOnVolume(set, pick + 1)
       : this.sumOfIntersectionVol(set, pick);
@@ -123,7 +129,7 @@ class ReactorReboot {
   static sumOfIntersectionVol(set: Cuboid[], pick: number): number {
     const indices = new Array(set.length).fill(0).map((_, idx) => idx);
     return this.setCombination(indices, pick).reduce((memo, com) => {
-      const subset = com.map(idx => set[idx]!);
+      const subset = com.map((idx) => set[idx]!);
       return pick === 1 && !subset[0]!.on ? memo : memo + this.intersectionVol(subset);
     }, 0);
   }
@@ -133,9 +139,9 @@ class ReactorReboot {
     if (pick === 0) return new Array(array.length).fill(0).map(() => []);
 
     let result: number[][] = [];
-    for(let idx = 0; idx < array.length; idx++) {
+    for (let idx = 0; idx < array.length; idx++) {
       const skipIdxArr = array.filter((_, i) => i !== idx);
-      let res = this.setCombination(skipIdxArr, pick - 1).map(set => set.concat([array[idx]!]));
+      const res = this.setCombination(skipIdxArr, pick - 1).map((set) => set.concat([array[idx]!]));
       result = result.concat(res);
     }
     return result;
@@ -147,10 +153,14 @@ class ReactorReboot {
     const z: Range = { min: set[0]!.z.min, max: set[0]!.z.max };
 
     for (let i = 1; i < set.length; i++) {
-      if (set[i]!.x.max >= x.min && set[i]!.x.min <= x.max
-        && set[i]!.y.max >= y.min && set[i]!.y.min <= y.max
-        && set[i]!.z.max >= z.min && set[i]!.z.min <= z.max) {
-
+      if (
+        set[i]!.x.max >= x.min &&
+        set[i]!.x.min <= x.max &&
+        set[i]!.y.max >= y.min &&
+        set[i]!.y.min <= y.max &&
+        set[i]!.z.max >= z.min &&
+        set[i]!.z.min <= z.max
+      ) {
         x.min = Math.max(x.min, set[i]!.x.min);
         x.max = Math.min(x.max, set[i]!.x.max);
         y.min = Math.max(y.min, set[i]!.y.min);

@@ -41,31 +41,36 @@ const TEST_CASE2 = {
 
 describe("Day 22 - Reactor Reboot", () => {
   describe("Part I", () => {
-    it("ReactorReboot.getLineInfo() works", () => {
+    it("ReactorReboot.parseInstruction() works", () => {
       const testCase = "off x=9..11,y=9..11,z=9..11";
-      const res = ReactorReboot.getLineInfo(testCase);
-      expect(res).to.eql([false, { min: 9, max: 11 }, { min: 9, max: 11 }, { min: 9, max: 11 }]);
+      const res = ReactorReboot.parseInstruction(testCase);
+      expect(res).to.eql({
+        on: false,
+        x: { min: 9, max: 11 },
+        y: { min: 9, max: 11 },
+        z: { min: 9, max: 11 },
+      });
     });
 
-    it("ReactorReboot.processOneLine() and ReactorReboot.countOn() works", () => {
+    it("ReactorReboot.rebootInitOneIns() and ReactorReboot.countOn() works", () => {
       const domains = ReactorReboot.initDomains(101);
-      const lnInfo = ReactorReboot.getLineInfo(TEST_CASE1.input[0]!);
-      ReactorReboot.processOneLine(domains, lnInfo, [BOUNDARY * -1, BOUNDARY * -1, BOUNDARY * -1]);
+      const ins = ReactorReboot.parseInstruction(TEST_CASE1.input[0]!);
+      ReactorReboot.rebootInitOneIns(domains, ins, [BOUNDARY * -1, BOUNDARY * -1, BOUNDARY * -1]);
       const res = ReactorReboot.countOn(domains);
 
       expect(res).to.eq(27);
     });
 
-    it("ReactorReboot.processRebootSteps() works for TEST_CASE1", () => {
+    it("ReactorReboot.rebootInit() works for TEST_CASE1", () => {
       const { input, expectedCountOn } = TEST_CASE1;
-      const res = ReactorReboot.processRebootSteps(input);
+      const res = ReactorReboot.rebootInit(input);
 
       expect(res).to.eq(expectedCountOn);
     });
 
-    it("ReactorReboot.processRebootSteps() works for TEST_CASE2", () => {
+    it("ReactorReboot.rebootInit() works for TEST_CASE2", () => {
       const { input, expectedCountOn } = TEST_CASE2;
-      const res = ReactorReboot.processRebootSteps(input);
+      const res = ReactorReboot.rebootInit(input);
 
       expect(res).to.eq(expectedCountOn);
     });
@@ -77,9 +82,7 @@ describe("Day 22 - Reactor Reboot", () => {
         "on x=16383..101554,y=4615..83635,z=-44907..18747",
         "off x=-95822..-15171,y=-19987..48940,z=10804..104439",
       ];
-
-      const res = ReactorReboot.processFullReboot(insStrs);
-      console.log(`res: ${res}`);
+      insStrs;
     });
   });
 });

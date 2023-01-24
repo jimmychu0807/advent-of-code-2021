@@ -14,7 +14,7 @@ decorateCommand(command, { file: true, default: true, input: false });
 command.action((options: CommandOptionsDF) => {
   try {
     const input = parseArgsDF(options, QUEST_INPUT_URL);
-    const result1 = ReactorReboot.processRebootSteps(input);
+    const result1 = ReactorReboot.rebootInit(input);
     console.log(`Part I result: ${result1}`);
   } catch (err) {
     console.log((err as Error).message);
