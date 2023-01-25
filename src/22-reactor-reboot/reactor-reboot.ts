@@ -1,5 +1,11 @@
 const BOUNDARY = 50;
 
+let COUNTS = {
+  recGetOnVolume: 0,
+  intersectionVol: 0,
+  combination: 0,
+};
+
 interface Range {
   min: number;
   max: number;
@@ -11,6 +17,8 @@ interface Instruction {
   y: Range;
   z: Range;
 }
+
+let COMBINATION_CACHE = {};
 
 type Cuboid = Instruction;
 
@@ -121,6 +129,8 @@ class ReactorReboot {
   }
 
   static recGetOnVolume(set: Cuboid[], pick = 1): number {
+    console.log(`recGetOnVolume: ${COUNTS.recGetOnVolume++}`);
+
     return pick < set.length
       ? this.sumOfIntersectionVol(set, pick) - this.recGetOnVolume(set, pick + 1)
       : this.sumOfIntersectionVol(set, pick);
@@ -128,26 +138,36 @@ class ReactorReboot {
 
   static sumOfIntersectionVol(set: Cuboid[], pick: number): number {
     const indices = new Array(set.length).fill(0).map((_, idx) => idx);
-    return this.setCombination(indices, pick).reduce((memo, com) => {
+    return this.combination(indices, pick).reduce((memo, com) => {
       const subset = com.map((idx) => set[idx]!);
-      return pick === 1 && !subset[0]!.on ? memo : memo + this.intersectionVol(subset);
+      return !subset[0]!.on ? memo : memo + this.intersectionVol(subset);
     }, 0);
   }
 
-  static setCombination(array: number[], pick: number): number[][] {
-    if (pick === array.length) return [[...array]];
-    if (pick === 0) return new Array(array.length).fill(0).map(() => []);
+  static combination(indices: number[], pick: number): number[][] {
+    console.log(`combination: ${COUNTS.combination++}`);
+
+    const prepend = (set: number[][], el: number): number[][] => set.map((one) => [el, ...one]);
+
+    if (pick <= 0 || pick > indices.length) {
+      throw new Error(`Invalid pick: ${pick} out of array length: ${indices.length}`);
+    }
+
+    if (pick === indices.length) return [[...indices]];
+    if (pick === 1) return indices.map((idx) => [idx]);
 
     let result: number[][] = [];
-    for (let idx = 0; idx < array.length; idx++) {
-      const skipIdxArr = array.filter((_, i) => i !== idx);
-      const res = this.setCombination(skipIdxArr, pick - 1).map((set) => set.concat([array[idx]!]));
+    for (let idx = 0; idx <= indices.length - pick; idx++) {
+      const choppedIds = indices.slice(idx + 1);
+      const res = prepend(this.combination(choppedIds, pick - 1), indices[idx]!);
       result = result.concat(res);
     }
     return result;
   }
 
   static intersectionVol(set: Cuboid[]): number {
+    console.log(`intersectionVol: ${COUNTS.intersectionVol++}`);
+
     const x: Range = { min: set[0]!.x.min, max: set[0]!.x.max };
     const y: Range = { min: set[0]!.y.min, max: set[0]!.y.max };
     const z: Range = { min: set[0]!.z.min, max: set[0]!.z.max };
