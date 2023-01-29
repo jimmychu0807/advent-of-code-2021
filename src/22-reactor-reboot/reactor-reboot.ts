@@ -1,10 +1,8 @@
 const BOUNDARY = 50;
 
-const COUNTS = {
-  intersectionVol: 0,
-  sumOfPickVolume: 0,
-  combination: 0,
-};
+// const COUNTS = {
+//   combination: 0,
+// };
 
 interface Range {
   min: number;
@@ -19,7 +17,6 @@ interface Instruction {
 }
 
 const COMBINATION_CACHE: { [key: string]: number[][] } = {};
-const NULL_INTERSECTION_CACHE: { [key: string]: boolean } = {};
 
 type Cuboid = Instruction;
 
@@ -101,36 +98,31 @@ class ReactorReboot {
       typeof ln === "string" ? this.parseInstruction(ln) : ln,
     );
 
+    // optimize1: split instructions into multiple overlap sets. Sum them up.
+
     return this.sumOfPickVolume(instructions);
   }
 
   static sumOfPickVolume(set: Cuboid[], pick = 1): number {
     if (pick > set.length) return 0;
 
-    console.log(
-      `sumOfPickVolume, count: ${COUNTS.sumOfPickVolume++}, setLen: ${set.length}, pick: ${pick}`,
-    );
+    console.log(`sumOfPickVolume: ${set.length} choose ${pick}`);
 
-    return (
-      this.combination(0, set.length - 1, pick).reduce((memo, com) => {
-        const subset = com.map((idx) => set[idx]!);
-        return !subset[0]!.on || this.nullPrevIntersection(subset)
-          ? memo
-          : memo + this.intersectionVol(subset);
-      }, 0) - this.sumOfPickVolume(set, pick + 1)
-    );
-  }
+    const comSet = this.combination(0, set.length - 1, pick)
+      .map(subset => subset.map((idx) => set[idx]!));
 
-  static nullPrevIntersection(set: Cuboid[]): boolean {
-    if (set.length < 3) return false;
-    for (let i = 2; i < set.length; i++) {
-      const searchKey = JSON.stringify(set.slice(0, i));
-      if (NULL_INTERSECTION_CACHE[searchKey]) return true;
-    }
-    return false;
+    const totalVol = comSet.reduce((memo, subset) => memo +
+      (!subset[0]!.on
+        ? 0
+        : this.intersectionVol(subset)), 0);
+
+    return totalVol > 0 ? totalVol - this.sumOfPickVolume(set, pick + 1) : 0;
   }
 
   static combination(start: number, end: number, pick: number): number[][] {
+
+    // optimize2: better combination generation & caching. Generate the index.
+
     const key = `${start},${end},${pick}`;
     if (COMBINATION_CACHE[key]) return COMBINATION_CACHE[key]!;
 
@@ -161,16 +153,8 @@ class ReactorReboot {
   }
 
   static intersectionVol(set: Cuboid[]): number {
-    // if (set.length > 2) {
-    //   const searchKey = JSON.stringify(set.slice(0, -1));
-    //   if (ZERO_INTERSECTION_VOL[searchKey]) {
-    //     ZERO_INTERSECTION_VOL[key] = true;
-    //     return 0;
-    //   }
-    // }
-
     // console.log(`intersectionVol, count: ${COUNTS.intersectionVol++}, setLen: ${set.length}, json: ${JSON.stringify(set)}`);
-    console.log(`intersectionVol, count: ${COUNTS.intersectionVol++}, setLen: ${set.length}`);
+    // console.log(`intersectionVol, count: ${COUNTS.intersectionVol++}, setLen: ${set.length}`);
     const x: Range = { min: set[0]!.x.min, max: set[0]!.x.max };
     const y: Range = { min: set[0]!.y.min, max: set[0]!.y.max };
     const z: Range = { min: set[0]!.z.min, max: set[0]!.z.max };
@@ -191,14 +175,11 @@ class ReactorReboot {
         z.min = Math.max(z.min, set[i]!.z.min);
         z.max = Math.min(z.max, set[i]!.z.max);
       } else {
-        // There is no intersection point among this cuboid set.
-        console.log(`  L 0`);
-        NULL_INTERSECTION_CACHE[JSON.stringify(set)] = true;
         return 0;
       }
     }
 
-    console.log(`  L ${(x.max - x.min + 1) * (y.max - y.min + 1) * (z.max - z.min + 1)}`);
+    // console.log(`  L ${(x.max - x.min + 1) * (y.max - y.min + 1) * (z.max - z.min + 1)}`);
     return (x.max - x.min + 1) * (y.max - y.min + 1) * (z.max - z.min + 1);
   }
 }
