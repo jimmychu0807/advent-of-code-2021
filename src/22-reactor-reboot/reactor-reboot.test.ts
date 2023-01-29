@@ -103,7 +103,7 @@ const TEST_CASE3 = {
     // "off x=-93533..-4276,y=-16170..68771,z=-104985..-24507",
   ],
   expectedCountOn: 2758514936282235,
-}
+};
 
 describe("Day 22 - Reactor Reboot", () => {
   describe("Part I", () => {
@@ -194,7 +194,7 @@ describe("Day 22 - Reactor Reboot", () => {
       expect(ReactorReboot.intersectionVol([cuboid1, cuboid2, cuboid4])).to.eq(0);
     });
 
-    it("ReactorReboot.recGetOnVolume() works with all ON", () => {
+    it("ReactorReboot.fullReboot() works with all ON", () => {
       const cuboid1 = {
         on: true,
         x: { min: 0, max: 2 },
@@ -216,11 +216,11 @@ describe("Day 22 - Reactor Reboot", () => {
         z: { min: 1, max: 3 },
       };
 
-      expect(ReactorReboot.recGetOnVolume([cuboid1, cuboid2])).to.eq(42);
-      expect(ReactorReboot.recGetOnVolume([cuboid1, cuboid2, cuboid3])).to.eq(53);
+      expect(ReactorReboot.fullReboot([cuboid1, cuboid2])).to.eq(42);
+      expect(ReactorReboot.fullReboot([cuboid1, cuboid2, cuboid3])).to.eq(53);
     });
 
-    it("ReactorReboot.recGetOnVolume() works with both ON and OFF", () => {
+    it("ReactorReboot.fullReboot() works with both ON and OFF", () => {
       const cuboid1 = {
         on: true,
         x: { min: 0, max: 2 },
@@ -242,8 +242,8 @@ describe("Day 22 - Reactor Reboot", () => {
         z: { min: 0, max: 2 },
       };
 
-      expect(ReactorReboot.recGetOnVolume([cuboid1, cuboid2])).to.eq(15);
-      expect(ReactorReboot.recGetOnVolume([cuboid1, cuboid2, cuboid3])).to.eq(39);
+      expect(ReactorReboot.fullReboot([cuboid1, cuboid2])).to.eq(15);
+      expect(ReactorReboot.fullReboot([cuboid1, cuboid2, cuboid3])).to.eq(39);
     });
 
     it("ReactorReboot.fullReboot() works on small example", () => {

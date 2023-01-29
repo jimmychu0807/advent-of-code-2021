@@ -1,9 +1,8 @@
 const BOUNDARY = 50;
 
-let COUNTS = {
-  recGetOnVolume: 0,
+const COUNTS = {
   intersectionVol: 0,
-  sumOfSetVol: 0,
+  sumOfPickVolume: 0,
   combination: 0,
 };
 
@@ -19,8 +18,8 @@ interface Instruction {
   z: Range;
 }
 
-let COMBINATION_CACHE: { [key: string]: number[][] } = {};
-let NULL_INTERSECTION_CACHE: { [key: string]: boolean } = {};
+const COMBINATION_CACHE: { [key: string]: number[][] } = {};
+const NULL_INTERSECTION_CACHE: { [key: string]: boolean } = {};
 
 type Cuboid = Instruction;
 
@@ -97,59 +96,29 @@ class ReactorReboot {
     return this.countOn(domains);
   }
 
-  static fullReboot(input: string[]): number {
-    const intersectionSets: Cuboid[][] = [];
+  static fullReboot(input: string[] | Cuboid[]): number {
+    const instructions: Cuboid[] = input.map((ln) =>
+      typeof ln === "string" ? this.parseInstruction(ln) : ln,
+    );
 
-    input.forEach((ln) => {
-      const ins = this.parseInstruction(ln);
-      for (let i = 0; i < intersectionSets.length; i++) {
-        if (this.hasIntersection(intersectionSets[i]!, ins)) {
-          intersectionSets[i]!.push(ins);
-          return;
-        }
-      }
-      // we don't need to push an OFF cuboid in a new set.
-      if (ins.on) intersectionSets.push([ins]);
-    });
-
-    console.log("-- intersectionSets --", intersectionSets);
-
-    return intersectionSets.reduce((memo, set) => memo + this.recGetOnVolume(set), 0);
+    return this.sumOfPickVolume(instructions);
   }
 
-  static hasIntersection(set: Cuboid[], cuboid: Cuboid): boolean {
-    for (let i = 0; i < set.length; i++) {
-      if (
-        set[i]!.x.max >= cuboid.x.min &&
-        set[i]!.x.min <= cuboid.x.max &&
-        set[i]!.y.max >= cuboid.y.min &&
-        set[i]!.y.min <= cuboid.y.max &&
-        set[i]!.z.max >= cuboid.z.min &&
-        set[i]!.z.min <= cuboid.z.max
-      )
-        return true;
-    }
-    return false;
-  }
+  static sumOfPickVolume(set: Cuboid[], pick = 1): number {
+    if (pick > set.length) return 0;
 
-  static recGetOnVolume(set: Cuboid[], pick = 1): number {
-    console.log(`recGetOnVolume, count: ${COUNTS.recGetOnVolume++}`);
+    console.log(
+      `sumOfPickVolume, count: ${COUNTS.sumOfPickVolume++}, setLen: ${set.length}, pick: ${pick}`,
+    );
 
-    return pick < set.length
-      ? this.sumOfSetVol(set, pick) - this.recGetOnVolume(set, pick + 1)
-      : this.sumOfSetVol(set, pick);
-  }
-
-  static sumOfSetVol(set: Cuboid[], pick: number): number {
-
-    console.log(`sumOfSetVol, count: ${COUNTS.sumOfSetVol++}, setLen: ${set.length}, pick: ${pick}`);
-
-    return this.combination(0, set.length - 1, pick).reduce((memo, com) => {
-      const subset = com.map((idx) => set[idx]!);
-      return !subset[0]!.on || this.nullPrevIntersection(subset)
-        ? memo
-        : memo + this.intersectionVol(subset);
-    }, 0);
+    return (
+      this.combination(0, set.length - 1, pick).reduce((memo, com) => {
+        const subset = com.map((idx) => set[idx]!);
+        return !subset[0]!.on || this.nullPrevIntersection(subset)
+          ? memo
+          : memo + this.intersectionVol(subset);
+      }, 0) - this.sumOfPickVolume(set, pick + 1)
+    );
   }
 
   static nullPrevIntersection(set: Cuboid[]): boolean {
@@ -180,7 +149,10 @@ class ReactorReboot {
 
     let result: number[][] = [];
     for (let idx = 0; idx <= indices.length - pick; idx++) {
-      const res = prepend(this.combination(indices[idx + 1]!, indices.slice(-1)[0]!, pick - 1), indices[idx]!);
+      const res = prepend(
+        this.combination(indices[idx + 1]!, indices.slice(-1)[0]!, pick - 1),
+        indices[idx]!,
+      );
       result = result.concat(res);
     }
 
