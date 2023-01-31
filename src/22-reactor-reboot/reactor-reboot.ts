@@ -143,7 +143,9 @@ class ReactorReboot {
 
     console.log(`sumOfPickVolume: ${set.length} choose ${pick}`);
 
-    const combinations = this.combination(0, set.length - 1, pick);
+    // const combinations = this.combination(0, set.length - 1, pick);
+    const combinations = this.combination2(Array(set.length).fill(0).map((_, idx) => idx), pick);
+    console.log(`  L finish combination calc, with len:`, combinations.length);
 
     let totalVol = 0;
     let nonNullEls: number[] = [];
@@ -170,6 +172,15 @@ class ReactorReboot {
   static sortAndDedup(arr: number[]): number[] {
     const dup = [...arr].sort((a, b) => a - b);
     return dup.reduce((memo: number[], el) => el === memo[memo.length - 1] ? memo : [...memo, el], []);
+  }
+
+  static combination2(list: number[], pick: number): number[][] {
+    return pick == 0
+      ? [[]]
+      : list.flatMap((e, i) => this.combination2(
+          list.slice(i + 1),
+          pick - 1
+        ).map(c => [e].concat(c)));
   }
 
   static combination(start: number, end: number, pick: number): number[][] {
