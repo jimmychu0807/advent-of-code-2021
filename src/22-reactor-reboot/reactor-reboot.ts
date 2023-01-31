@@ -95,10 +95,8 @@ class ReactorReboot {
 
   static fullReboot(input: string[] | Cuboid[]): number {
     const instructions: Cuboid[] = input.map((ln) =>
-      typeof ln === "string" ? this.parseInstruction(ln) : ln,
+      typeof ln === "string" ? this.parseInstruction(ln) : ln
     );
-
-    // optimize1: split instructions into multiple overlap sets. Sum them up.
 
     return this.sumOfPickVolume(instructions);
   }
@@ -108,15 +106,32 @@ class ReactorReboot {
 
     console.log(`sumOfPickVolume: ${set.length} choose ${pick}`);
 
-    const comSet = this.combination(0, set.length - 1, pick)
-      .map(subset => subset.map((idx) => set[idx]!));
+    const combinations = this.combination(0, set.length - 1, pick);
 
-    const totalVol = comSet.reduce((memo, subset) => memo +
-      (!subset[0]!.on
-        ? 0
-        : this.intersectionVol(subset)), 0);
+    let totalVol = 0;
+    let nonNullEls: number[] = [];
 
-    return totalVol > 0 ? totalVol - this.sumOfPickVolume(set, pick + 1) : 0;
+    combinations.forEach((combination) => {
+      const comSet = combination.map(i => set[i]) as Cuboid[];
+
+      const vol = this.intersectionVol(comSet);
+      if (vol > 0) nonNullEls.push(...combination);
+      if (comSet[0]!.on) totalVol += vol;
+    });
+
+    // optimization 1: Flatten the nonNullSet and map to get the instructions
+    nonNullEls = this.dedupAndSort(nonNullEls);
+
+    console.log("nonNullEls", nonNullEls);
+
+    const nonNullSet = nonNullEls.map(i => set[i]!);
+
+    return totalVol > 0 ? totalVol - this.sumOfPickVolume(nonNullSet, pick + 1) : 0;
+  }
+
+  static dedupAndSort(arr: number[]): number[] {
+    const dup = [...arr].sort((a, b) => a - b);
+    return dup.reduce((memo: number[], el) => el === memo[memo.length - 1] ? memo : [...memo, el], []);
   }
 
   static combination(start: number, end: number, pick: number): number[][] {
@@ -153,8 +168,6 @@ class ReactorReboot {
   }
 
   static intersectionVol(set: Cuboid[]): number {
-    // console.log(`intersectionVol, count: ${COUNTS.intersectionVol++}, setLen: ${set.length}, json: ${JSON.stringify(set)}`);
-    // console.log(`intersectionVol, count: ${COUNTS.intersectionVol++}, setLen: ${set.length}`);
     const x: Range = { min: set[0]!.x.min, max: set[0]!.x.max };
     const y: Range = { min: set[0]!.y.min, max: set[0]!.y.max };
     const z: Range = { min: set[0]!.z.min, max: set[0]!.z.max };
@@ -179,7 +192,6 @@ class ReactorReboot {
       }
     }
 
-    // console.log(`  L ${(x.max - x.min + 1) * (y.max - y.min + 1) * (z.max - z.min + 1)}`);
     return (x.max - x.min + 1) * (y.max - y.min + 1) * (z.max - z.min + 1);
   }
 }
