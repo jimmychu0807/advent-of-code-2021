@@ -98,7 +98,44 @@ class ReactorReboot {
       typeof ln === "string" ? this.parseInstruction(ln) : ln
     );
 
-    return this.sumOfPickVolume(instructions);
+    const overlapSets = this.getOverlappingSets(instructions);
+    return overlapSets.reduce((accu, set) => accu + this.sumOfPickVolume(set), 0);
+  }
+
+  static getOverlappingSets(cuboids: Cuboid[]): Cuboid[][] {
+    let sets: number[][] = [];
+
+
+    cuboids.forEach((cuboid, cIdx) => {
+      const overlapSet = sets.map(set => set.some(setIdx => this.intersectionVol([cuboids[setIdx]!, cuboid]) > 0));
+      const intersectIds = overlapSet.map((el, i) => el ? i : -1).filter(el => el >= 0);
+
+      if (intersectIds.length === 0) {
+        sets.push([cIdx]);
+        return;
+
+      } else if (intersectIds.length === 1) {
+        // add the cuboid in the first overlap
+        sets[intersectIds[0]!]!.push(cIdx);
+        return;
+
+      } else {
+        // Merge multiple cuboid set together, and push the new cuboid in that set.
+        const target = intersectIds[0]!;
+        for (let i = 1; i < intersectIds.length; i++) {
+          sets[target] = sets[target]!.concat(sets[intersectIds[i]!]!)
+          delete sets[intersectIds[i]!];
+        }
+
+        sets[target] = this.sortAndDedup(sets[target]!);
+        sets[target]!.push(cIdx);
+        sets = sets.filter(set => typeof set !== "undefined");
+      }
+    });
+
+    console.log("overlap sets:", sets);
+
+    return sets.map(set => set.map(idx => cuboids[idx]!));
   }
 
   static sumOfPickVolume(set: Cuboid[], pick = 1): number {
@@ -119,17 +156,18 @@ class ReactorReboot {
       if (comSet[0]!.on) totalVol += vol;
     });
 
-    // optimization 1: Flatten the nonNullSet and map to get the instructions
-    nonNullEls = this.dedupAndSort(nonNullEls);
+    if (totalVol === 0) return 0;
 
-    console.log("nonNullEls", nonNullEls);
-
+    // optimization 1: Flatten the nonNullSet and split it into overlapping sets
+    nonNullEls = this.sortAndDedup(nonNullEls);
     const nonNullSet = nonNullEls.map(i => set[i]!);
 
-    return totalVol > 0 ? totalVol - this.sumOfPickVolume(nonNullSet, pick + 1) : 0;
+    const overlapSets = this.getOverlappingSets(nonNullSet);
+
+    return totalVol - overlapSets.reduce((accu, set) => accu + this.sumOfPickVolume(set, pick + 1), 0);
   }
 
-  static dedupAndSort(arr: number[]): number[] {
+  static sortAndDedup(arr: number[]): number[] {
     const dup = [...arr].sort((a, b) => a - b);
     return dup.reduce((memo: number[], el) => el === memo[memo.length - 1] ? memo : [...memo, el], []);
   }
@@ -168,6 +206,8 @@ class ReactorReboot {
   }
 
   static intersectionVol(set: Cuboid[]): number {
+    if (set.length < 1) return 0;
+
     const x: Range = { min: set[0]!.x.min, max: set[0]!.x.max };
     const y: Range = { min: set[0]!.y.min, max: set[0]!.y.max };
     const z: Range = { min: set[0]!.z.min, max: set[0]!.z.max };
