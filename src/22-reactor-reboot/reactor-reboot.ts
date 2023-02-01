@@ -1,9 +1,5 @@
 const BOUNDARY = 50;
 
-// const COUNTS = {
-//   combination: 0,
-// };
-
 interface Range {
   min: number;
   max: number;
@@ -15,8 +11,6 @@ interface Instruction {
   y: Range;
   z: Range;
 }
-
-const COMBINATION_CACHE: { [key: string]: number[][] } = {};
 
 type Cuboid = Instruction;
 
@@ -93,127 +87,48 @@ class ReactorReboot {
     return this.countOn(domains);
   }
 
+  static addOrConcat<El>(arr: El[][], idx: number, els: El[]) {
+    arr[idx] = typeof arr[idx] === "undefined" ? els : arr[idx]!.concat(els);
+  }
+
   static fullReboot(input: string[] | Cuboid[]): number {
     const instructions: Cuboid[] = input.map((ln) =>
-      typeof ln === "string" ? this.parseInstruction(ln) : ln
+      typeof ln === "string" ? this.parseInstruction(ln) : ln,
     );
 
-    const overlapSets = this.getOverlappingSets(instructions);
-    return overlapSets.reduce((accu, set) => accu + this.sumOfPickVolume(set), 0);
-  }
-
-  static getOverlappingSets(cuboids: Cuboid[]): Cuboid[][] {
-    let sets: number[][] = [];
-
-
-    cuboids.forEach((cuboid, cIdx) => {
-      const overlapSet = sets.map(set => set.some(setIdx => this.intersectionVol([cuboids[setIdx]!, cuboid]) > 0));
-      const intersectIds = overlapSet.map((el, i) => el ? i : -1).filter(el => el >= 0);
-
-      if (intersectIds.length === 0) {
-        sets.push([cIdx]);
-        return;
-
-      } else if (intersectIds.length === 1) {
-        // add the cuboid in the first overlap
-        sets[intersectIds[0]!]!.push(cIdx);
-        return;
-
-      } else {
-        // Merge multiple cuboid set together, and push the new cuboid in that set.
-        const target = intersectIds[0]!;
-        for (let i = 1; i < intersectIds.length; i++) {
-          sets[target] = sets[target]!.concat(sets[intersectIds[i]!]!)
-          delete sets[intersectIds[i]!];
-        }
-
-        sets[target] = this.sortAndDedup(sets[target]!);
-        sets[target]!.push(cIdx);
-        sets = sets.filter(set => typeof set !== "undefined");
-      }
-    });
-
-    console.log("overlap sets:", sets);
-
-    return sets.map(set => set.map(idx => cuboids[idx]!));
-  }
-
-  static sumOfPickVolume(set: Cuboid[], pick = 1): number {
-    if (pick > set.length) return 0;
-
-    console.log(`sumOfPickVolume: ${set.length} choose ${pick}`);
-
-    // const combinations = this.combination(0, set.length - 1, pick);
-    const combinations = this.combination2(Array(set.length).fill(0).map((_, idx) => idx), pick);
-    console.log(`  L finish combination calc, with len:`, combinations.length);
-
     let totalVol = 0;
-    let nonNullEls: number[] = [];
+    const intersectVols: Cuboid[][][] = [];
 
-    combinations.forEach((combination) => {
-      const comSet = combination.map(i => set[i]) as Cuboid[];
+    instructions.forEach((cuboid) => {
+      const addIntersectVols: Cuboid[][][] = [];
+      totalVol -= intersectVols
+        .map((list, numIntersect) => {
+          const sumRowIntersectVol = list.reduce((accu, set) => {
+            const newSet = [...set, cuboid];
+            const intersectVol = this.intersectionVol(newSet);
 
-      const vol = this.intersectionVol(comSet);
-      if (vol > 0) nonNullEls.push(...combination);
-      if (comSet[0]!.on) totalVol += vol;
+            if (intersectVol > 0) this.addOrConcat(addIntersectVols, newSet.length - 1, [newSet]);
+
+            return accu + intersectVol;
+          }, 0);
+          return sumRowIntersectVol * (numIntersect % 2 === 0 ? 1 : -1);
+        })
+        .reduce((accu, num) => accu + num, 0);
+
+      if (cuboid.on) {
+        this.addOrConcat(intersectVols, 0, [[cuboid]]);
+        const { x, y, z } = cuboid;
+        totalVol += (x.max - x.min + 1) * (y.max - y.min + 1) * (z.max - z.min + 1);
+      }
+
+      // merge `addIntersectVols` into `intersectVols`
+      addIntersectVols.forEach((row, numIntersect) => {
+        if (typeof row === "undefined") return;
+        this.addOrConcat(intersectVols, numIntersect, row);
+      });
     });
 
-    if (totalVol === 0) return 0;
-
-    // optimization 1: Flatten the nonNullSet and split it into overlapping sets
-    nonNullEls = this.sortAndDedup(nonNullEls);
-    const nonNullSet = nonNullEls.map(i => set[i]!);
-
-    const overlapSets = this.getOverlappingSets(nonNullSet);
-
-    return totalVol - overlapSets.reduce((accu, set) => accu + this.sumOfPickVolume(set, pick + 1), 0);
-  }
-
-  static sortAndDedup(arr: number[]): number[] {
-    const dup = [...arr].sort((a, b) => a - b);
-    return dup.reduce((memo: number[], el) => el === memo[memo.length - 1] ? memo : [...memo, el], []);
-  }
-
-  static combination2(list: number[], pick: number): number[][] {
-    return pick == 0
-      ? [[]]
-      : list.flatMap((e, i) => this.combination2(
-          list.slice(i + 1),
-          pick - 1
-        ).map(c => [e].concat(c)));
-  }
-
-  static combination(start: number, end: number, pick: number): number[][] {
-
-    // optimize2: better combination generation & caching. Generate the index.
-
-    const key = `${start},${end},${pick}`;
-    if (COMBINATION_CACHE[key]) return COMBINATION_CACHE[key]!;
-
-    // console.log(`combination, count: ${COUNTS.combination++}`);
-
-    const indices = new Array(end - start + 1).fill(0).map((_, idx) => idx + start);
-
-    const prepend = (set: number[][], el: number): number[][] => set.map((one) => [el, ...one]);
-
-    if (pick <= 0 || pick > indices.length) {
-      throw new Error(`Invalid pick: ${pick} out of array length: ${indices.length}`);
-    }
-
-    if (pick === indices.length) return [[...indices]];
-    if (pick === 1) return indices.map((idx) => [idx]);
-
-    let result: number[][] = [];
-    for (let idx = 0; idx <= indices.length - pick; idx++) {
-      const res = prepend(
-        this.combination(indices[idx + 1]!, indices.slice(-1)[0]!, pick - 1),
-        indices[idx]!,
-      );
-      result = result.concat(res);
-    }
-
-    COMBINATION_CACHE[key] = result;
-    return result;
+    return totalVol;
   }
 
   static intersectionVol(set: Cuboid[]): number {

@@ -16,6 +16,9 @@ command.action((options: CommandOptionsDF) => {
     const input = parseArgsDF(options, QUEST_INPUT_URL);
     const result1 = ReactorReboot.rebootInit(input);
     console.log(`Part I result: ${result1}`);
+
+    const result2 = ReactorReboot.fullReboot(input);
+    console.log(`Part II result: ${result2}`);
   } catch (err) {
     console.log((err as Error).message);
     command.help();
