@@ -2,7 +2,7 @@ name: Yarn Validate
 on:
   pull_request:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   yarn-validate:
