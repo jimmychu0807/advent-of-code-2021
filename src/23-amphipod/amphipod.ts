@@ -67,7 +67,7 @@ class Amphipod {
   static solve(initConfig: InitConfig): Path | undefined {
     const gameState: GameState = this.constructGameState(initConfig);
     const startPath: Path = { moves: [], totalCost: 0 };
-    const sols = this.recSolve(initConfig, gameState, startPath);
+    const sols = this.recSolve(initConfig, gameState, startPath, undefined);
 
     // console.dir(sols, {depth: null});
 
@@ -77,37 +77,46 @@ class Amphipod {
     return sols.reduce((acc, sol) => (acc.totalCost > sol.totalCost ? sol : acc));
   }
 
-  static recSolve(initConfig: InitConfig, gameState: GameState, path: Path): Path[] {
+  static recSolve(initConfig: InitConfig, gameState: GameState, path: Path, knownMinCost: number | undefined): Path[] {
     if (this.gameCompleted(initConfig, gameState)) {
       console.log('Game completed! Path:', JSON.stringify(path));
-      return [path];
+      process.exit(0);
+      // return knownMinCost ? (knownMinCost > path.totalCost ? [path] : []) : [path];
     }
+
+    console.log("path:");
+    console.dir(path, { depth: null });
+    console.log(`knownMinCost: ${knownMinCost}`);
+
+    if (knownMinCost && path.totalCost > knownMinCost) return [];
 
     const solutions: Path[] = [];
     const curGameState = JSON.parse(JSON.stringify(gameState));
     const curPath = JSON.parse(JSON.stringify(path));
-
-    console.log("path:");
-    console.dir(path, { depth: null });
 
     // Trying out all possible moves
     for (let pcIdx = 0; pcIdx < gameState.pcs.length; pcIdx++) {
       const validMoves = this.getValidMoves(pcIdx, initConfig, gameState);
       let pcState = gameState.pcs[pcIdx]!;
 
-      console.log("recSolve pcState:", pcState);
-      console.log("recSolve validMoves:", validMoves);
+      // console.log("recSolve pcState:", pcState);
+      // console.log("recSolve validMoves:", validMoves);
 
       for (let movIdx = 0; movIdx < validMoves.length; movIdx++) {
-        console.log(`pcIdx: ${pcIdx}, movIdx: ${movIdx}`);
+        // console.log(`pcIdx: ${pcIdx}, movIdx: ${movIdx}`);
 
         const dest = validMoves[movIdx]!;
         const { type, at } = dest;
 
+        const moveCost = this.getMoveCost(initConfig, pcState, dest);
+        if (knownMinCost && knownMinCost <= path.totalCost + moveCost) {
+          continue;
+        }
+
         // Updating the state: path
         const step = { pc: pcState.pc, loc: { type, at } };
         path.moves.push(step);
-        path.totalCost += this.getMoveCost(initConfig, pcState, dest);
+        path.totalCost += moveCost;
 
         // Updating the state: corridor & rooms
         // 1. remove the existing pc corridor & room state
@@ -131,7 +140,12 @@ class Amphipod {
         // 3. update the state: pcs itself
         pcState.loc = { type, at };
 
-        solutions.push(...this.recSolve(initConfig, gameState, path));
+        // save the solution
+        solutions.push(...this.recSolve(initConfig, gameState, path, knownMinCost));
+        knownMinCost = solutions.reduce((acc: number | undefined, sol) => acc
+          ? (acc > sol.totalCost ? sol.totalCost : acc)
+          : sol.totalCost
+        , knownMinCost);
 
         // restore the gameState back and try out another move, from the same or another piece
         gameState = JSON.parse(JSON.stringify(curGameState));
