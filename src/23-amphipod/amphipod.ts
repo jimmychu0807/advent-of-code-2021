@@ -42,6 +42,7 @@ interface PieceState {
 
 interface Move {
   pcState: PieceState;
+  pcIdx: number;
   dest: Loc;
   cost: number;
 }
@@ -77,13 +78,13 @@ class Amphipod {
   }
 
   static recSolve(initConfig: InitConfig, gameState: GameState, path: Path): Path | undefined {
-    if (this.gameCompleted(initConfig, gameState)) {
-      console.log("Game completed! Path:", JSON.stringify(path));
-      return path;
-    }
+    if (this.gameCompleted(initConfig, gameState)) return path;
 
     console.log("path:");
     console.dir(path, { depth: null });
+
+    console.log("gameState:");
+    console.dir(gameState, { depth: null });
 
     // backup `gameState` and `path`, we will restore them later
     const curGameState = JSON.parse(JSON.stringify(gameState));
@@ -97,7 +98,7 @@ class Amphipod {
 
     for (let movIdx = 0; movIdx < validMoves.length; movIdx++) {
       const nextMove = validMoves[movIdx]!;
-      const { pcState, dest, cost: moveCost } = nextMove;
+      const { pcState, pcIdx, dest, cost: moveCost } = nextMove;
       const { type: destLocType, at: destLocAt } = dest;
 
       // Updating the state: path
@@ -125,7 +126,7 @@ class Amphipod {
       }
 
       // 3. update the state: pcs itself
-      pcState.loc = dest;
+      gameState.pcs[pcIdx]!.loc = dest;
 
       // The first solution is the one we want
       const solution = this.recSolve(initConfig, gameState, path);
@@ -154,7 +155,7 @@ class Amphipod {
     const moves: Move[] = [];
     const { pcs, rooms, corridor } = gameState;
 
-    pcs.forEach((pcState) => {
+    pcs.forEach((pcState, pcIdx) => {
       // destRoom for this pc
       const destRoom = pcState.pc.charCodeAt(0) - BEGIN_PC_CODE;
       const { type, at } = pcState.loc;
@@ -180,6 +181,7 @@ class Amphipod {
             const dest: Loc = { type: "r", at: [destRoom, pos] };
             moves.push({
               pcState: JSON.parse(JSON.stringify(pcState)),
+              pcIdx,
               dest,
               cost: this.getMoveCost(initConfig, pcState, dest),
             });
@@ -224,6 +226,7 @@ class Amphipod {
             const dest: Loc = { type: "c", at: cIdx };
             moves.push({
               pcState: JSON.parse(JSON.stringify(pcState)),
+              pcIdx,
               dest,
               cost: this.getMoveCost(initConfig, pcState, dest),
             });
@@ -237,6 +240,7 @@ class Amphipod {
             const dest: Loc = { type: "c", at: cIdx };
             moves.push({
               pcState: JSON.parse(JSON.stringify(pcState)),
+              pcIdx,
               dest,
               cost: this.getMoveCost(initConfig, pcState, dest),
             });
@@ -246,7 +250,7 @@ class Amphipod {
     });
 
     // we get all the moves, then sort them by the move cost
-    return moves.sort((a, b) => b.cost - a.cost);
+    return moves.sort((a, b) => a.cost - b.cost);
   }
 
   static gameCompleted(initConfig: InitConfig, gameState: GameState): boolean {
