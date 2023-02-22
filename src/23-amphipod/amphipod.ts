@@ -40,6 +40,12 @@ interface PieceState {
   loc: Loc;
 }
 
+interface Move {
+  pcState: PieceState;
+  dest: Loc;
+  cost: number;
+}
+
 interface Path {
   moves: PieceState[];
   totalCost: number;
@@ -67,99 +73,72 @@ class Amphipod {
   static solve(initConfig: InitConfig): Path | undefined {
     const gameState: GameState = this.constructGameState(initConfig);
     const startPath: Path = { moves: [], totalCost: 0 };
-    const sols = this.recSolve(initConfig, gameState, startPath, undefined);
-
-    // console.dir(sols, {depth: null});
-
-    // returning the min path
-    if (sols.length === 0) return undefined;
-
-    return sols.reduce((acc, sol) => (acc.totalCost > sol.totalCost ? sol : acc));
+    return this.recSolve(initConfig, gameState, startPath);
   }
 
-  static recSolve(initConfig: InitConfig, gameState: GameState, path: Path, knownMinCost: number | undefined): Path[] {
+  static recSolve(initConfig: InitConfig, gameState: GameState, path: Path): Path | undefined {
     if (this.gameCompleted(initConfig, gameState)) {
-      console.log('Game completed! Path:', JSON.stringify(path));
-      process.exit(0);
-      // return knownMinCost ? (knownMinCost > path.totalCost ? [path] : []) : [path];
+      console.log("Game completed! Path:", JSON.stringify(path));
+      return path;
     }
 
     console.log("path:");
     console.dir(path, { depth: null });
-    console.log(`knownMinCost: ${knownMinCost}`);
 
-    if (knownMinCost && path.totalCost > knownMinCost) return [];
-
-    const solutions: Path[] = [];
+    // backup `gameState` and `path`, we will restore them later
     const curGameState = JSON.parse(JSON.stringify(gameState));
     const curPath = JSON.parse(JSON.stringify(path));
 
     // Trying out all possible moves
-    for (let pcIdx = 0; pcIdx < gameState.pcs.length; pcIdx++) {
-      const validMoves = this.getValidMoves(pcIdx, initConfig, gameState);
-      let pcState = gameState.pcs[pcIdx]!;
+    const validMoves = this.getValidMoves(initConfig, gameState);
 
-      // console.log("recSolve pcState:", pcState);
-      // console.log("recSolve validMoves:", validMoves);
+    console.log("validMoves:");
+    console.dir(validMoves, { depth: null });
 
-      for (let movIdx = 0; movIdx < validMoves.length; movIdx++) {
-        // console.log(`pcIdx: ${pcIdx}, movIdx: ${movIdx}`);
+    for (let movIdx = 0; movIdx < validMoves.length; movIdx++) {
+      const nextMove = validMoves[movIdx]!;
+      const { pcState, dest, cost: moveCost } = nextMove;
+      const { type: destLocType, at: destLocAt } = dest;
 
-        const dest = validMoves[movIdx]!;
-        const { type, at } = dest;
+      // Updating the state: path
+      const step: PieceState = { pc: pcState.pc, loc: dest };
+      path.moves.push(step);
+      path.totalCost += moveCost;
 
-        const moveCost = this.getMoveCost(initConfig, pcState, dest);
-        if (knownMinCost && knownMinCost <= path.totalCost + moveCost) {
-          continue;
-        }
-
-        // Updating the state: path
-        const step = { pc: pcState.pc, loc: { type, at } };
-        path.moves.push(step);
-        path.totalCost += moveCost;
-
-        // Updating the state: corridor & rooms
-        // 1. remove the existing pc corridor & room state
-        if (pcState.loc.type === "c") {
-          // originally in a corridor
-          gameState.corridor[pcState.loc.at as number] = "";
-        } else {
-          // originally in a room
-          const [roomIdx, pos] = pcState.loc.at as [number, number];
-          gameState.rooms[roomIdx]![pos] = "";
-        }
-
-        // 2. update the pc corridor & room state for next step
-        if (type === "c") {
-          gameState.corridor[at as number] = pcState.pc;
-        } else {
-          const [roomIdx, pos] = at as [number, number];
-          gameState.rooms[roomIdx]![pos] = pcState.pc;
-        }
-
-        // 3. update the state: pcs itself
-        pcState.loc = { type, at };
-
-        // save the solution
-        solutions.push(...this.recSolve(initConfig, gameState, path, knownMinCost));
-        knownMinCost = solutions.reduce((acc: number | undefined, sol) => acc
-          ? (acc > sol.totalCost ? sol.totalCost : acc)
-          : sol.totalCost
-        , knownMinCost);
-
-        // restore the gameState back and try out another move, from the same or another piece
-        gameState = JSON.parse(JSON.stringify(curGameState));
-        path = JSON.parse(JSON.stringify(curPath));
-        pcState = gameState.pcs[pcIdx]!;
+      // Updating the state: corridor & rooms
+      // 1. remove the existing pc corridor & room state
+      if (pcState.loc.type === "c") {
+        // originally in a corridor
+        gameState.corridor[pcState.loc.at as number] = "";
+      } else {
+        // originally in a room
+        const [roomIdx, pos] = pcState.loc.at as [number, number];
+        gameState.rooms[roomIdx]![pos] = "";
       }
+
+      // 2. update the pc corridor & room state for the destination
+      if (destLocType === "c") {
+        gameState.corridor[destLocAt as number] = pcState.pc;
+      } else {
+        const [roomIdx, pos] = destLocAt as [number, number];
+        gameState.rooms[roomIdx]![pos] = pcState.pc;
+      }
+
+      // 3. update the state: pcs itself
+      pcState.loc = dest;
+
+      // The first solution is the one we want
+      const solution = this.recSolve(initConfig, gameState, path);
+      if (solution) return solution;
+
+      // restore the gameState back and try out another move, from the same or another piece
+      gameState = JSON.parse(JSON.stringify(curGameState));
+      path = JSON.parse(JSON.stringify(curPath));
     }
-    return solutions;
+    return undefined;
   }
 
   static getMoveCost(initConfig: InitConfig, pcState: PieceState, dest: Loc): number {
-    // console.log("getMoveCost pcState:", pcState);
-    // console.log("getMoveCost dest:", dest);
-
     const corrLoc = pcState.loc.type === "c" ? pcState.loc : dest;
     const roomLoc = pcState.loc.type === "c" ? dest : pcState.loc;
 
@@ -171,87 +150,103 @@ class Amphipod {
     return dist * initConfig.cost[pcState.pc]!;
   }
 
-  static getValidMoves(pcIdx: number, initConfig: InitConfig, gameState: GameState): Loc[] {
-    const pcState = gameState.pcs[pcIdx]!;
+  static getValidMoves(initConfig: InitConfig, gameState: GameState): Move[] {
+    const moves: Move[] = [];
+    const { pcs, rooms, corridor } = gameState;
 
-    // console.log("getValidMoves pcState:", JSON.stringify(pcState));
+    pcs.forEach((pcState) => {
+      // destRoom for this pc
+      const destRoom = pcState.pc.charCodeAt(0) - BEGIN_PC_CODE;
+      const { type, at } = pcState.loc;
 
-    const rooms = gameState.rooms;
-    const destRoom = pcState.pc.charCodeAt(0) - BEGIN_PC_CODE;
-    const { type, at } = pcState.loc;
+      // check if the pc is on corridor, if yes, check the path from its corridor to its room is unblocked. If yes return the single path
+      if (type === "c") {
+        const destRoomLoc = initConfig.roomLoc[destRoom]!;
+        const startLoc = at as number;
+        // check if corridor blocked
+        if (startLoc < destRoomLoc) {
+          for (let cIdx = startLoc + 1; cIdx <= destRoomLoc; cIdx++) {
+            if (gameState.corridor[cIdx]!.length > 0) return;
+          }
+        } else {
+          for (let cIdx = startLoc - 1; cIdx >= destRoomLoc; cIdx--) {
+            if (gameState.corridor[cIdx]!.length > 0) return;
+          }
+        }
 
-    // check if the pc is on corridor, if yes, check the path from its corridor to its room is unblocked. If yes return the single path
-    if (type === "c") {
-      const destRoomLoc = initConfig.roomLoc[destRoom]!;
-      const startLoc = at as number;
-      // check if corridor blocked
-      if (startLoc < destRoomLoc) {
-        for (let cIdx = startLoc + 1; cIdx <= destRoomLoc; cIdx++) {
-          if (gameState.corridor[cIdx]!.length > 0) return [];
+        // Check if the pc can enter the room
+        for (let pos = initConfig.roomCapacity - 1; pos >= 0; pos--) {
+          if (rooms[destRoom]![pos]!.length === 0) {
+            const dest: Loc = { type: "r", at: [destRoom, pos] };
+            moves.push({
+              pcState: JSON.parse(JSON.stringify(pcState)),
+              dest,
+              cost: this.getMoveCost(initConfig, pcState, dest),
+            });
+            return;
+          }
+
+          // there are still pcs that need to move out from the room, so the pc cannot enter the room
+          if (rooms[destRoom]![pos] !== pcState.pc) return;
         }
       } else {
-        for (let cIdx = startLoc - 1; cIdx >= destRoomLoc; cIdx--) {
-          if (gameState.corridor[cIdx]!.length > 0) return [];
+        // type === 'r'
+        const [roomNum, roomPos] = at as [number, number];
+        // console.log(`roomNum: ${roomNum}, rooms:`, rooms[roomNum]);
+
+        // Check if the pc is already at its destination room. If yes, return
+        if (roomNum === destRoom) {
+          let bSame = true;
+          // check everything and below are correct
+          for (let pos = roomPos + 1; pos < initConfig.roomCapacity; pos++) {
+            if (rooms[destRoom]![pos] !== pcState.pc) {
+              bSame = false;
+              break;
+            }
+          }
+          if (bSame) return;
+        }
+
+        // Check if the path to the corridor is blocked
+        for (let pos = roomPos - 1; pos >= 0; pos--) {
+          if (rooms[roomNum]![pos]!.length > 0) return;
+        }
+
+        // By this point, return all unblocked corridor location that the pc can reach from its
+        //   curent room.
+        const curCorrLoc = initConfig.roomLoc[roomNum]!;
+
+        // check and add corridor loc to the left
+        for (let cIdx = curCorrLoc - 1; cIdx >= 0; cIdx--) {
+          if (corridor[cIdx]!.length > 0) break;
+          // we don't allow stopping in front of a room
+          if (!initConfig.roomLoc.includes(cIdx)) {
+            const dest: Loc = { type: "c", at: cIdx };
+            moves.push({
+              pcState: JSON.parse(JSON.stringify(pcState)),
+              dest,
+              cost: this.getMoveCost(initConfig, pcState, dest),
+            });
+          }
+        }
+
+        // check and add corridor loc to the right
+        for (let cIdx = curCorrLoc + 1; cIdx < initConfig.corridorLen; cIdx++) {
+          if (corridor[cIdx]!.length > 0) break;
+          if (!initConfig.roomLoc.includes(cIdx)) {
+            const dest: Loc = { type: "c", at: cIdx };
+            moves.push({
+              pcState: JSON.parse(JSON.stringify(pcState)),
+              dest,
+              cost: this.getMoveCost(initConfig, pcState, dest),
+            });
+          }
         }
       }
+    });
 
-      // console.log("getValidMoves destRoom:", rooms[destRoom]);
-
-      // Check if the pc can enter the room
-      for (let pos = initConfig.roomCapacity - 1; pos >= 0; pos--) {
-        if (rooms[destRoom]![pos]!.length === 0) return [{ type: "r", at: [destRoom, pos] }];
-
-        // there are still pcs that need to move out from the room, so the pc cannot enter the room
-        if (rooms[destRoom]![pos] !== pcState.pc) return [];
-      }
-      return [];
-    }
-
-    // By this point, type === 'r'
-    const [roomNum, roomPos] = at as [number, number];
-    // console.log(`roomNum: ${roomNum}, rooms:`, rooms[roomNum]);
-
-    // Check if the pc is already at its destination room
-    if (roomNum === destRoom) {
-      let bSame = true;
-      // check everything and below are correct
-      for (let pos = roomPos + 1; pos < initConfig.roomCapacity; pos++) {
-        if (rooms[destRoom]![pos] !== pcState.pc) {
-          bSame = false;
-          break;
-        }
-      }
-      if (bSame) return [];
-    }
-
-    // if not, return all unblocked corridor location that the pc can reach from its curent room
-    const moves: Loc[] = [];
-
-    for (let pos = roomPos - 1; pos >= 0; pos--) {
-      if (rooms[roomNum]![pos]!.length > 0) return [];
-    }
-
-    const curCorrLoc = initConfig.roomLoc[roomNum]!;
-
-    // check and add corridor loc to the left
-    for (let cIdx = curCorrLoc - 1; cIdx >= 0; cIdx--) {
-      if (gameState.corridor[cIdx]!.length > 0) break;
-      if (!initConfig.roomLoc.includes(cIdx)) {
-        // we don't allow stopping in front of a room
-        moves.push({ type: "c", at: cIdx });
-      }
-    }
-
-    // check and add corridor loc to the right
-    for (let cIdx = curCorrLoc + 1; cIdx < initConfig.corridorLen; cIdx++) {
-      if (gameState.corridor[cIdx]!.length > 0) break;
-      if (!initConfig.roomLoc.includes(cIdx)) {
-        // we don't allow stopping in front of a room
-        moves.push({ type: "c", at: cIdx });
-      }
-    }
-
-    return moves;
+    // we get all the moves, then sort them by the move cost
+    return moves.sort((a, b) => b.cost - a.cost);
   }
 
   static gameCompleted(initConfig: InitConfig, gameState: GameState): boolean {
