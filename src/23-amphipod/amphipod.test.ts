@@ -19,11 +19,39 @@ const TEST_CASE1: InitConfig = {
   corridorLen: 11,
 };
 
-// const TEST_CASE1_ANS = 12521;
+const TEST_CASE1_ANS = 12521;
+
+const TEST_CASE2: InitConfig = {
+  roomCapacity: 2,
+  roomLoc: [2, 4],
+  roomContent: [
+    ["A", "A"],
+    ["B", "B"],
+  ],
+  cost: {
+    A: 1,
+    B: 10,
+  },
+  corridorLen: 11,
+};
+
+const TEST_CASE3: InitConfig = {
+  roomCapacity: 2,
+  roomLoc: [1, 3],
+  roomContent: [
+    ["B", "B"],
+    ["A", "A"],
+  ],
+  cost: {
+    A: 1,
+    B: 10,
+  },
+  corridorLen: 5,
+};
 
 describe("Day 23 - Amphipod", () => {
   describe("Part I", () => {
-    it("constructGameState() works", () => {
+    it("Amphipod.constructGameState() works", () => {
       const gameState = Amphipod.constructGameState(TEST_CASE1);
       expect(gameState).to.eql({
         rooms: [
@@ -44,6 +72,38 @@ describe("Day 23 - Amphipod", () => {
           { pc: "D", loc: { type: "r", at: [3, 0] } },
         ],
       });
+    });
+
+    it("Amphipod.getValidMoves() works", () => {
+      const gameState = Amphipod.constructGameState(TEST_CASE1);
+      expect(Amphipod.getValidMoves(0, TEST_CASE1, gameState)).to.eql([]);
+
+      expect(Amphipod.getValidMoves(1, TEST_CASE1, gameState)).to.eql([]);
+
+      const moves = Amphipod.getValidMoves(2, TEST_CASE1, gameState);
+      expect(moves.length).to.eq(7);
+    });
+
+    it("Amphipod.getMoveCost() works", () => {
+      const gameState = Amphipod.constructGameState(TEST_CASE1);
+      const moves = Amphipod.getValidMoves(2, TEST_CASE1, gameState);
+      const cost = Amphipod.getMoveCost(TEST_CASE1, gameState.pcs[2]!, moves[1]!);
+      expect(cost).to.eq(30);
+    });
+
+    it("Amphipod.solve() works for already solved case", () => {
+      const sol = Amphipod.solve(TEST_CASE2);
+      expect(sol).to.eql({ moves: [], totalCost: 0 });
+    });
+
+    it("Amphipod.solve() works for somple case", () => {
+      const sol = Amphipod.solve(TEST_CASE3);
+      expect(sol!.totalCost).to.eq(114);
+    });
+
+    it("Amphipod.solve() works for given test case", () => {
+      const sol = Amphipod.solve(TEST_CASE1);
+      expect(sol!.totalCost).to.eq(TEST_CASE1_ANS);
     });
   });
 });
