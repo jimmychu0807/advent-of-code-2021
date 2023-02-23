@@ -59,8 +59,8 @@ class IndexedPriorityQueue<K, V> {
     return this.heapLookup.length;
   }
 
-  public update(key: K, val: V): void {
-  }
+  // public update(key: K, val: V): void {
+  // }
 
   public contains(key: K): boolean {
     const ki = this.keyToKi.get(key);
@@ -80,6 +80,8 @@ class IndexedPriorityQueue<K, V> {
   }
 
   public popMinEntry(): [K, V] | undefined {
-
+    const rootIdx = 0;
+    const rootKi = this.inverseLookup[]
+    const lastIdx = this.heapLookup.length - 1;
   }
 }

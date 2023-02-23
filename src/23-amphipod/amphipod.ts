@@ -50,8 +50,15 @@ interface Move {
   accCost: number;
 }
 
+interface Step {
+  pc: string;
+  from: Loc;
+  to: Loc;
+  cost: number;
+}
+
 interface Path {
-  moves: PieceState[];
+  steps: Step[];
   totalCost: number;
 }
 
@@ -78,7 +85,7 @@ class Amphipod {
     );
     pcs.sort((a, b) => a.pc.charCodeAt(0) - b.pc.charCodeAt(0));
 
-    const startPath: Path = { moves: [], totalCost: 0 };
+    const startPath: Path = { steps: [], totalCost: 0 };
     return { rooms, corridor, pcs, path: startPath };
   }
 
@@ -137,13 +144,20 @@ class Amphipod {
           latestState.rooms[roomIdx]![pos] = pcState.pc;
         }
 
-        // -- update the gameState: latestState.pcs --
-        pcState.loc = move.dest;
-
         // -- update the gameState: latestState.path --
         const { path: latestPath } = latestState;
-        latestPath.moves.push(pcState);
+        const step = {
+          pc: pcState.pc,
+          from: JSON.parse(JSON.stringify(pcState.loc)),
+          to: move.dest,
+          cost: move.accCost - latestPath.totalCost,
+        }
+
+        latestPath.steps.push(step);
         latestPath.totalCost = move.accCost;
+
+        // -- update the gameState: latestState.pcs --
+        pcState.loc = move.dest;
       } else {
         latestState = undefined;
       }
