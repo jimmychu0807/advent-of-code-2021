@@ -112,11 +112,6 @@ class Amphipod {
       // Verbose debugging output
       if (iter % 5000 === 0) {
         log(`iter: ${iter}, edge #: ${edges.size}, minAccCost: ${minEdge?.move?.accCost}`);
-        // console.log("L edges:");
-        // console.dir(edges, { depth: null });
-        // console.log("L minEdge:");
-        // console.dir(minEdge, { depth: null });
-        // console.log("");
       }
       iter++;
 

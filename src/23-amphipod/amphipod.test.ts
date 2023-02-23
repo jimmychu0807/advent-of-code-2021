@@ -51,7 +51,7 @@ const TEST_CASE3: InitConfig = {
 const TEST_CASE3_ANS = 114;
 
 describe("Day 23 - Amphipod", () => {
-  describe("Part I", () => {
+  describe("Part I & II", () => {
     it("Amphipod.constructGameState() works", () => {
       const gameState = Amphipod.constructGameState(TEST_CASE1);
       expect(gameState).to.eql({
@@ -84,14 +84,12 @@ describe("Day 23 - Amphipod", () => {
     it("Amphipod.solve() works for simple case", () => {
       const sol = Amphipod.solve(TEST_CASE3);
       expect(sol?.totalCost).to.eq(TEST_CASE3_ANS);
-      console.dir(sol, { depth: null });
     });
 
     it("Amphipod.solve() works for given test case", function () {
       this.timeout(30000);
       const sol = Amphipod.solve(TEST_CASE1);
       expect(sol?.totalCost).to.eq(TEST_CASE1_ANS);
-      console.dir(sol, { depth: null });
     });
   });
 });
