@@ -47,12 +47,10 @@ command.action(() => {
     const sol1 = Amphipod.solve(initConfig1);
     console.log(`solution of part I: ${sol1!.totalCost}`);
     console.dir(sol1, { depth: null });
-    // sol: 18170
 
     const sol2 = Amphipod.solve(initConfig2);
     console.log(`solution of part II: ${sol2!.totalCost}`);
     console.dir(sol2, { depth: null });
-    // sol: 50208
   } catch (err) {
     console.log((err as Error).message);
     command.help();
