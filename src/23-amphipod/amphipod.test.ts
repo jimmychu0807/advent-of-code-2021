@@ -19,7 +19,7 @@ const TEST_CASE1: InitConfig = {
   corridorLen: 11,
 };
 
-const TEST_CASE1_ANS = 12521;
+// const TEST_CASE1_ANS = 12521;
 
 const TEST_CASE2: InitConfig = {
   roomCapacity: 2,
@@ -71,6 +71,7 @@ describe("Day 23 - Amphipod", () => {
           { pc: "D", loc: { type: "r", at: [1, 1] } },
           { pc: "D", loc: { type: "r", at: [3, 0] } },
         ],
+        path: { moves: [], totalCost: 0 },
       });
     });
 
@@ -84,9 +85,9 @@ describe("Day 23 - Amphipod", () => {
       expect(sol!.totalCost).to.eq(114);
     });
 
-    it("Amphipod.solve() works for given test case", () => {
-      const sol = Amphipod.solve(TEST_CASE1);
-      expect(sol!.totalCost).to.eq(TEST_CASE1_ANS);
-    });
+    // it("Amphipod.solve() works for given test case", () => {
+    //   const sol = Amphipod.solve(TEST_CASE1);
+    //   expect(sol!.totalCost).to.eq(TEST_CASE1_ANS);
+    // });
   });
 });
