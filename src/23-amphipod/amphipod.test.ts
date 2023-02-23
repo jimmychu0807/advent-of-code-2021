@@ -18,8 +18,7 @@ const TEST_CASE1: InitConfig = {
   },
   corridorLen: 11,
 };
-
-// const TEST_CASE1_ANS = 12521;
+const TEST_CASE1_ANS = 12521;
 
 const TEST_CASE2: InitConfig = {
   roomCapacity: 2,
@@ -34,6 +33,7 @@ const TEST_CASE2: InitConfig = {
   },
   corridorLen: 11,
 };
+const TEST_CASE2_ANS = 0;
 
 const TEST_CASE3: InitConfig = {
   roomCapacity: 2,
@@ -48,6 +48,7 @@ const TEST_CASE3: InitConfig = {
   },
   corridorLen: 5,
 };
+const TEST_CASE3_ANS = 114;
 
 describe("Day 23 - Amphipod", () => {
   describe("Part I", () => {
@@ -77,17 +78,20 @@ describe("Day 23 - Amphipod", () => {
 
     it("Amphipod.solve() works for already solved case", () => {
       const sol = Amphipod.solve(TEST_CASE2);
-      expect(sol).to.eql({ moves: [], totalCost: 0 });
+      expect(sol?.totalCost).to.eql(TEST_CASE2_ANS);
     });
 
     it("Amphipod.solve() works for simple case", () => {
       const sol = Amphipod.solve(TEST_CASE3);
-      expect(sol!.totalCost).to.eq(114);
+      expect(sol?.totalCost).to.eq(TEST_CASE3_ANS);
+      console.dir(sol, { depth: null });
     });
 
-    // it("Amphipod.solve() works for given test case", () => {
-    //   const sol = Amphipod.solve(TEST_CASE1);
-    //   expect(sol!.totalCost).to.eq(TEST_CASE1_ANS);
-    // });
+    it("Amphipod.solve() works for given test case", function() {
+      this.timeout(30000);
+      const sol = Amphipod.solve(TEST_CASE1);
+      expect(sol?.totalCost).to.eq(TEST_CASE1_ANS);
+      console.dir(sol, { depth: null });
+    });
   });
 });

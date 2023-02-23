@@ -1,3 +1,7 @@
+import Debug from "debug";
+
+const log = Debug("amphipod");
+
 type Cost = { [key: string]: number };
 
 interface InitConfig {
@@ -60,7 +64,7 @@ interface GameState {
 
 interface Edge {
   gameState: GameState;
-  move: Move
+  move: Move;
 }
 
 class Amphipod {
@@ -79,12 +83,9 @@ class Amphipod {
   }
 
   static solve(initConfig: InitConfig): Path | undefined {
-    // latestGameState = initGameState;
-    // edges = []
-    //
     let latestState: GameState | undefined = this.constructGameState(initConfig);
-    let edges: Edge[] = [];
-
+    const edges: Map<string, Edge> = new Map();
+    let iter = 0;
     // Dijkstra's algorithm:
     //
     // while (latestState && !gameComplete(latestState)) {
@@ -101,26 +102,23 @@ class Amphipod {
     //
     // return latestState ? latestState.path : undefined;
 
-    while(latestState && !this.gameCompleted(initConfig, latestState)) {
-      const latestStateMoves = this.getValidMoves(initConfig, latestState);
-
+    while (latestState && !this.gameCompleted(initConfig, latestState)) {
       //   edges.push(...[{ gameState, move }];
-      edges.push(
-        ...latestStateMoves.map(move =>
-          ({ gameState: JSON.parse(JSON.stringify(latestState)), move })
-        )
-      );
+      this.insertEdges(edges, latestState, this.getValidMoves(initConfig, latestState));
 
       //   let [ gameState, move] = pick from edges the one with min accCost;
       const minEdge = this.popMinEdge(edges);
 
-      // debugging
-      // console.log('-- latestState: --');
-      // console.dir(latestState, { depth: null });
-      // console.log('-- edges: --');
-      // console.dir(edges, { depth: null });
-      // console.log('-- minEdge: --');
-      // console.dir(minEdge, { depth: null });
+      // Verbose debugging output
+      if (iter % 5000 === 0) {
+        log(`iter: ${iter}, edge #: ${edges.size}, minAccCost: ${minEdge?.move?.accCost}`);
+        // console.log("L edges:");
+        // console.dir(edges, { depth: null });
+        // console.log("L minEdge:");
+        // console.dir(minEdge, { depth: null });
+        // console.log("");
+      }
+      iter++;
 
       if (minEdge) {
         const { move } = minEdge;
@@ -128,16 +126,16 @@ class Amphipod {
 
         // -- update the gameState: remove the previous trace --
         const pcState = latestState.pcs[move.pcIdx]!;
-        if (pcState.loc.type === 'c') {
-          latestState.corridor[pcState.loc.at as number] = '';
+        if (pcState.loc.type === "c") {
+          latestState.corridor[pcState.loc.at as number] = "";
         } else {
           // in a room
           const [roomIdx, pos] = pcState.loc.at as [number, number];
-          latestState.rooms[roomIdx]![pos] = '';
+          latestState.rooms[roomIdx]![pos] = "";
         }
 
         // -- update the gameState: add to the new trace --
-        if (move.dest.type === 'c') {
+        if (move.dest.type === "c") {
           latestState.corridor[move.dest.at as number] = pcState.pc;
         } else {
           const [roomIdx, pos] = move.dest.at as [number, number];
@@ -159,79 +157,53 @@ class Amphipod {
     return latestState?.path;
   }
 
-  static popMinEdge(edges: Edge[]): Edge | undefined {
-    if (edges.length === 0) return undefined;
+  static popMinEdge(edges: Map<string, Edge>): Edge | undefined {
+    if (edges.size === 0) return undefined;
 
-    const [idx] = edges.reduce((acc: [number, number], edge, idx) =>
-      edge.move.accCost > acc[1] ? acc : [idx, edge.move.accCost],
-      [0, edges[0]!.move.accCost]
-    );
+    let minKey = undefined;
+    let minCost = undefined;
 
-    // delete one element at idx and return it
-    return edges.splice(idx, 1)[0];
+    for (const [key, edge] of edges.entries()) {
+      if (!minCost || minCost > edge.move.accCost) {
+        minKey = key;
+        minCost = edge.move.accCost;
+      }
+    }
+
+    const minEdge = edges.get(minKey!);
+    edges.delete(minKey!);
+    return minEdge;
   }
 
-  // static recSolve(initConfig: InitConfig, gameState: GameState, path: Path): Path | undefined {
-  //   if (this.gameCompleted(initConfig, gameState)) return path;
+  static insertEdges(edges: Map<string, Edge>, gameState: GameState, moves: Move[]) {
+    const getEdgeKey = (edge: Edge): string => {
+      const { rooms, corridor } = edge.gameState;
+      const { pcIdx, dest } = edge.move;
 
-  //   console.log("path:");
-  //   console.dir(path, { depth: null });
+      const roomStr = rooms
+        .flat()
+        .map((c) => (c === "" ? "_" : c))
+        .join("");
+      const corrStr = corridor.map((c) => (c === "" ? "_" : c)).join("");
+      const moveStr = `${pcIdx}${dest.type}${Array.isArray(dest.at) ? dest.at.join("-") : dest.at}`;
 
-  //   console.log("gameState:");
-  //   console.dir(gameState, { depth: null });
+      return `${roomStr}-${corrStr}-${moveStr}`;
+    };
 
-  //   // backup `gameState` and `path`, we will restore them later
-  //   const curGameState = JSON.parse(JSON.stringify(gameState));
-  //   const curPath = JSON.parse(JSON.stringify(path));
+    moves.forEach((move) => {
+      const edge = {
+        gameState: JSON.parse(JSON.stringify(gameState)),
+        move,
+      };
 
-  //   // Trying out all possible moves
-  //   const validMoves = this.getValidMoves(initConfig, gameState);
+      const key = getEdgeKey(edge);
 
-  //   console.log("validMoves:");
-  //   console.dir(validMoves, { depth: null });
-
-  //   for (let movIdx = 0; movIdx < validMoves.length; movIdx++) {
-  //     const nextMove = validMoves[movIdx]!;
-  //     const { pcState, pcIdx, dest, cost: moveCost } = nextMove;
-  //     const { type: destLocType, at: destLocAt } = dest;
-
-  //     // Updating the state: path
-  //     const step: PieceState = { pc: pcState.pc, loc: dest };
-  //     path.moves.push(step);
-  //     path.totalCost += moveCost;
-
-  //     // Updating the state: corridor & rooms
-  //     // 1. remove the existing pc corridor & room state
-  //     if (pcState.loc.type === "c") {
-  //       // originally in a corridor
-  //       gameState.corridor[pcState.loc.at as number] = "";
-  //     } else {
-  //       // originally in a room
-  //       const [roomIdx, pos] = pcState.loc.at as [number, number];
-  //       gameState.rooms[roomIdx]![pos] = "";
-  //     }
-
-  //     // 2. update the pc corridor & room state for the destination
-  //     if (destLocType === "c") {
-  //       gameState.corridor[destLocAt as number] = pcState.pc;
-  //     } else {
-  //       const [roomIdx, pos] = destLocAt as [number, number];
-  //       gameState.rooms[roomIdx]![pos] = pcState.pc;
-  //     }
-
-  //     // 3. update the state: pcs itself
-  //     gameState.pcs[pcIdx]!.loc = dest;
-
-  //     // The first solution is the one we want
-  //     const solution = this.recSolve(initConfig, gameState, path);
-  //     if (solution) return solution;
-
-  //     // restore the gameState back and try out another move, from the same or another piece
-  //     gameState = JSON.parse(JSON.stringify(curGameState));
-  //     path = JSON.parse(JSON.stringify(curPath));
-  //   }
-  //   return undefined;
-  // }
+      const existing = edges.get(key);
+      if (!existing || existing.move.accCost > edge.move.accCost) {
+        edges.set(key, edge);
+      }
+    });
+  }
 
   static getMoveCost(initConfig: InitConfig, pcState: PieceState, dest: Loc): number {
     const corrLoc = pcState.loc.type === "c" ? pcState.loc : dest;
@@ -277,7 +249,7 @@ class Amphipod {
             moves.push({
               pcIdx,
               dest,
-              accCost: cost + path.totalCost
+              accCost: cost + path.totalCost,
             });
             return;
           }
@@ -322,7 +294,7 @@ class Amphipod {
             moves.push({
               pcIdx,
               dest,
-              accCost: cost + path.totalCost
+              accCost: cost + path.totalCost,
             });
           }
         }
@@ -336,7 +308,7 @@ class Amphipod {
             moves.push({
               pcIdx,
               dest,
-              accCost: cost + path.totalCost
+              accCost: cost + path.totalCost,
             });
           }
         }
