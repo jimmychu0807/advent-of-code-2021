@@ -87,7 +87,7 @@ describe("Day 23 - Amphipod", () => {
       console.dir(sol, { depth: null });
     });
 
-    it("Amphipod.solve() works for given test case", function() {
+    it("Amphipod.solve() works for given test case", function () {
       this.timeout(30000);
       const sol = Amphipod.solve(TEST_CASE1);
       expect(sol?.totalCost).to.eq(TEST_CASE1_ANS);
