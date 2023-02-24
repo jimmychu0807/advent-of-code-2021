@@ -1,4 +1,5 @@
 import Debug from "debug";
+import IPQ from "../utils/indexed-priority-queue.js";
 
 const log = Debug("amphipod");
 
@@ -91,7 +92,8 @@ class Amphipod {
 
   static solve(initConfig: InitConfig): Path | undefined {
     let latestState: GameState | undefined = this.constructGameState(initConfig);
-    const edges: Map<string, Edge> = new Map();
+    const edges: IPQ<string, Edge> = new IPQ((e1, e2) => e1.move.accCost - e2.move.accCost);
+
     let iter = 0;
     // Dijkstra's algorithm:
     //
@@ -114,12 +116,12 @@ class Amphipod {
       this.insertEdges(edges, latestState, this.getValidMoves(initConfig, latestState));
 
       //   let [ gameState, move] = pick from edges the one with min accCost;
-      const minEdge = this.popMinEdge(edges);
+      const minEntry = edges.popMinEntry();
+      const minEdge = minEntry ? minEntry[1] : undefined;
 
       // Verbose debugging output
-      if (iter % 5000 === 0) {
-        log(`iter: ${iter}, edge #: ${edges.size}, minAccCost: ${minEdge?.move?.accCost}`);
-      }
+      if (iter % 50000 === 0)
+        log(`iter: ${iter}, edge #: ${edges.size()}, minAccCost: ${minEdge?.move?.accCost}`);
       iter++;
 
       if (minEdge) {
@@ -166,25 +168,7 @@ class Amphipod {
     return latestState?.path;
   }
 
-  static popMinEdge(edges: Map<string, Edge>): Edge | undefined {
-    if (edges.size === 0) return undefined;
-
-    let minKey = undefined;
-    let minCost = undefined;
-
-    for (const [key, edge] of edges.entries()) {
-      if (!minCost || minCost > edge.move.accCost) {
-        minKey = key;
-        minCost = edge.move.accCost;
-      }
-    }
-
-    const minEdge = edges.get(minKey!);
-    edges.delete(minKey!);
-    return minEdge;
-  }
-
-  static insertEdges(edges: Map<string, Edge>, gameState: GameState, moves: Move[]) {
+  static insertEdges(edges: IPQ<string, Edge>, gameState: GameState, moves: Move[]) {
     const getEdgeKey = (edge: Edge): string => {
       const { rooms, corridor } = edge.gameState;
       const { pcIdx, dest } = edge.move;
@@ -206,11 +190,8 @@ class Amphipod {
       };
 
       const key = getEdgeKey(edge);
-
-      const existing = edges.get(key);
-      if (!existing || existing.move.accCost > edge.move.accCost) {
-        edges.set(key, edge);
-      }
+      const existing = edges.valueOf(key);
+      if (!existing || existing.move.accCost > move.accCost) edges.insert(key, edge);
     });
   }
 
@@ -269,7 +250,6 @@ class Amphipod {
       } else {
         // type === 'r'
         const [roomNum, roomPos] = at as [number, number];
-        // console.log(`roomNum: ${roomNum}, rooms:`, rooms[roomNum]);
 
         // Check if the pc is already at its destination room. If yes, return
         if (roomNum === destRoom) {

@@ -35,7 +35,7 @@ class IndexedPriorityQueue<K, V> {
     this.keyToKi.set(key, ki);
     this.values.push(val);
     this.heap.push(ki);
-    this.reverseLookup.push(ki);
+    this.reverseLookup.push(this.heap.length - 1);
 
     // Do a `swim up` operation
     this.heapNodeSwimUp(this.heap.length - 1);
