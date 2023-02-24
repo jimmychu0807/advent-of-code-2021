@@ -151,7 +151,7 @@ class Amphipod {
           from: JSON.parse(JSON.stringify(pcState.loc)),
           to: move.dest,
           cost: move.accCost - latestPath.totalCost,
-        }
+        };
 
         latestPath.steps.push(step);
         latestPath.totalCost = move.accCost;

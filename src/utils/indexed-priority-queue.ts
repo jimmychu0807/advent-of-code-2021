@@ -3,25 +3,26 @@
 // Ref: https://www.youtube.com/watch?v=jND_WJ8r7FE
 
 function swapEls(arr: Array<number>, idx1: number, idx2: number) {
-  let tmp = arr[idx1]!;
+  const tmp = arr[idx1]!;
   arr[idx1] = arr[idx2]!;
   arr[idx2] = tmp;
 }
 
 class IndexedPriorityQueue<K, V> {
-  protected keyToKi: Map<K, number>;  // `Ki` stands for key-index
-  protected kiToKey: Array<K>;
-  protected heapLookup: Array<number>;
-  protected inverseLookup: Array<number>;
-  protected values: Array<V>;
-  protected comparator: (v1: V, v2: V) => number;
+  // `Ki` stands for key-index
+  readonly keyToKi: Map<K, number>; // key -> ki lookup
+  readonly kiToKey: Array<K | undefined>; // ki -> key lookup
+  readonly heapLookup: Array<number>; // ki -> heap position lookup
+  readonly inverseLookup: Array<number>; // heap position -> ki lookup
+  readonly values: Array<V | undefined>; // ki -> value lookup
+  readonly comparator: (v1: V, v2: V) => number;
 
   constructor(com: (v1: V, v2: V) => number) {
     this.keyToKi = new Map();
-    this.kiToKey = new Array();
-    this.heapLookup = new Array();
-    this.inverseLookup = new Array();
-    this.values = new Array();
+    this.kiToKey = [];
+    this.heapLookup = [];
+    this.inverseLookup = [];
+    this.values = [];
     this.comparator = com;
   }
 
@@ -40,10 +41,10 @@ class IndexedPriorityQueue<K, V> {
     // Do a `swim up` operation
     let heapIdx = this.heapLookup.length - 1;
     while (heapIdx > 0) {
-      const parentIdx = heapIdx % 2 === 0 ? (heapIdx - 2)/2 : (heapIdx - 1)/2;
-      const idxKi  = this.inverseLookup[heapIdx]!;
+      const parentIdx = heapIdx % 2 === 0 ? (heapIdx - 2) / 2 : (heapIdx - 1) / 2;
+      const idxKi = this.inverseLookup[heapIdx]!;
       const idxVal = this.values[idxKi]!;
-      const parentKi  = this.inverseLookup[parentIdx]!;
+      const parentKi = this.inverseLookup[parentIdx]!;
       const parentVal = this.values[parentKi]!;
       if (this.comparator(parentVal, idxVal) <= 0) break;
 
@@ -81,7 +82,60 @@ class IndexedPriorityQueue<K, V> {
 
   public popMinEntry(): [K, V] | undefined {
     const rootIdx = 0;
-    const rootKi = this.inverseLookup[]
+    let rootIdxKi = this.inverseLookup[rootIdx]!;
+
+    const key = this.kiToKey[rootIdxKi]!;
+    const value = this.values[rootIdxKi]!;
+
     const lastIdx = this.heapLookup.length - 1;
+    const lastIdxKi = this.inverseLookup[lastIdx]!;
+
+    swapEls(this.heapLookup, rootIdxKi, lastIdxKi);
+    swapEls(this.inverseLookup, rootIdx, lastIdx);
+
+    // Remove the last entry and its bookkeeping
+    this.keyToKi.delete(key);
+    this.kiToKey[rootIdxKi] = undefined;
+    this.heapLookup[lastIdxKi] = -1;
+    this.inverseLookup[lastIdx] = -1;
+    this.values[rootIdxKi] = undefined;
+
+    // TODO: swim down from rootIdx in the heap
+    rootIdxKi = this.inverseLookup[rootIdx]!;
+    const idx = rootIdx;
+    while (idx < this.heapLookup.length) {
+      const curVal = this.values[idx];
+      const leftChildIdx = idx * 2 + 1;
+      const leftChildVal =
+        leftChildIdx < this.heapLookup.length
+          ? this.values[this.inverseLookup[leftChildIdx]!]
+          : undefined;
+      const rightChildIdx = idx * 2 + 2;
+      const rightChildVal =
+        rightChildIdx < this.heapLookup.length
+          ? this.values[this.inverseLookup[rightChildIdx]!]
+          : undefined;
+
+      // check the heap invariant
+      if (
+        (!leftChildVal || this.comparator(curVal!, leftChildVal) <= 0) &&
+        (!rightChildVal || this.comparator(curVal!, rightChildVal) <= 0)
+      )
+        break;
+
+      // find the idx with lowest value, assume to be the left child idx first.
+      let swapIdx = leftChildIdx;
+      if (rightChildVal !== undefined && this.comparator(leftChildVal!, rightChildVal) > 0) {
+        swapIdx = rightChildIdx;
+      }
+
+      // swap idx and swapIdx
+      swapEls(this.heapLookup, this.heapLookup[idx]!, this.heapLookup[swapIdx]!);
+      swapEls(this.inverseLookup, idx, swapIdx);
+    }
+
+    return [key, value];
   }
 }
+
+export { IndexedPriorityQueue as default };
