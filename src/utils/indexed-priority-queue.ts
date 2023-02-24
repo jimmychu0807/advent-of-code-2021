@@ -1,5 +1,4 @@
 // Min indexed priority queue
-
 // Ref: https://www.youtube.com/watch?v=jND_WJ8r7FE
 
 function swapEls(arr: Array<number>, idx1: number, idx2: number) {

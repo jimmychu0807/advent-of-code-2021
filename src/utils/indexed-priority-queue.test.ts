@@ -1,4 +1,6 @@
+// Min indexed priority queue
 // Ref: https://www.youtube.com/watch?v=jND_WJ8r7FE
+
 import { expect } from "chai";
 import IndexedPriorityQueue from "./indexed-priority-queue.js";
 
