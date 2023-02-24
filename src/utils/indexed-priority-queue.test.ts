@@ -51,5 +51,54 @@ describe("Indexed Priority Queue test", () => {
       const result = ipq.popMinEntry();
       expect(result).to.eql([expectKey, expectVal]);
     }
+    expect(ipq.size()).to.eq(0);
+  });
+
+  it("can update the IPQ properly", () => {
+    const ipq = new IndexedPriorityQueue<string, number>((v1, v2) => v1 - v2);
+    TEST_DATA.forEach(([key, , val]) => ipq.insert(key, val));
+
+    ipq.update("Eve", 18);
+
+    const sorted: [string, number, number][] = JSON.parse(JSON.stringify(TEST_DATA));
+    sorted[4]![2] = 18;
+    sorted.sort((a, b) => a[2] - b[2]);
+
+    for (let idx = 0; idx < TEST_DATA.length; idx++) {
+      const [expectKey, , expectVal] = sorted[idx]!;
+      const result = ipq.popMinEntry();
+      expect(result).to.eql([expectKey, expectVal]);
+    }
+    expect(ipq.size()).to.eq(0);
+  });
+
+  // TODO: test doing all ops at once
+  it("test mixing all operations at once", () => {
+    const ipq = new IndexedPriorityQueue<string, number>((v1, v2) => v1 - v2);
+    const arr1 = TEST_DATA.slice(0, 4);
+    const arr2 = TEST_DATA.slice(4);
+
+    arr1.forEach(([key, , val]) => ipq.insert(key, val));
+
+    let res = ipq.popMinEntry();
+    expect(res).to.eql(["Alice", 3]);
+    res = ipq.popMinEntry();
+    expect(res).to.eql(["Charlie", 11]);
+
+    ipq.update("Bob", 18);
+    arr2.forEach(([key, , val]) => ipq.insert(key, val));
+
+    const keyOrder = [
+      ["Grace", 2],
+      ["Eve", 7],
+      ["Fred", 9],
+      ["Dave", 17],
+      ["Bob", 18],
+    ];
+    while (ipq.size() > 0) {
+      const res = ipq.popMinEntry();
+      const expectRes = keyOrder.shift();
+      expect(res).to.eql(expectRes);
+    }
   });
 });

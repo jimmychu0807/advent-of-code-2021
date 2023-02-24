@@ -72,7 +72,7 @@ describe("Day 23 - Amphipod", () => {
           { pc: "D", loc: { type: "r", at: [1, 1] } },
           { pc: "D", loc: { type: "r", at: [3, 0] } },
         ],
-        path: { moves: [], totalCost: 0 },
+        path: { steps: [], totalCost: 0 },
       });
     });
 

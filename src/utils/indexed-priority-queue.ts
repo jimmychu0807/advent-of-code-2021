@@ -38,21 +38,7 @@ class IndexedPriorityQueue<K, V> {
     this.reverseLookup.push(ki);
 
     // Do a `swim up` operation
-    let idx = this.heap.length - 1;
-    while (idx > 0) {
-      const parentIdx = idx % 2 === 0 ? (idx - 2) / 2 : (idx - 1) / 2;
-      const idxKi = this.heap[idx]!;
-      const idxVal = this.values[idxKi]!;
-      const parentIdxKi = this.heap[parentIdx]!;
-      const parentIdxVal = this.values[parentIdxKi]!;
-
-      if (this.comparator(parentIdxVal, idxVal) <= 0) break;
-
-      swapEls(this.heap, idx, parentIdx);
-      swapEls(this.reverseLookup, idxKi, parentIdxKi);
-
-      idx = parentIdx;
-    }
+    this.heapNodeSwimUp(this.heap.length - 1);
   }
 
   public size(): number {
@@ -60,8 +46,14 @@ class IndexedPriorityQueue<K, V> {
   }
 
   public update(key: K, val: V): void {
-    console.log(key, val);
-    throw new Error("Update is not implemented yet");
+    if (!this.contains(key)) return this.insert(key, val);
+
+    const ki = this.keyToKi.get(key)!;
+    this.values[ki] = val;
+    const curIdx = this.reverseLookup[ki]!;
+
+    this.heapNodeSwimUp(curIdx);
+    this.heapNodeSwimDown(curIdx);
   }
 
   public contains(key: K): boolean {
@@ -101,8 +93,34 @@ class IndexedPriorityQueue<K, V> {
     this.reverseLookup[rootIdxKi] = -1;
     this.heap.pop(); // Using `pop` so heap.length will decrease by 1.
 
-    // swim down from rootIdx in the heap
-    let idx = 0;
+    this.heapNodeSwimDown(0);
+
+    return [key, value];
+  }
+
+  protected heapNodeSwimUp(heapIdx: number) {
+    let idx = heapIdx;
+
+    while (idx > 0) {
+      const idxKi = this.heap[idx]!;
+      const idxVal = this.values[idxKi]!;
+
+      const parentIdx = idx % 2 === 0 ? (idx - 2) / 2 : (idx - 1) / 2;
+      const parentIdxKi = this.heap[parentIdx]!;
+      const parentIdxVal = this.values[parentIdxKi]!;
+
+      if (this.comparator(parentIdxVal, idxVal) <= 0) break;
+
+      swapEls(this.heap, idx, parentIdx);
+      swapEls(this.reverseLookup, idxKi, parentIdxKi);
+
+      idx = parentIdx;
+    }
+  }
+
+  protected heapNodeSwimDown(heapIdx: number) {
+    let idx = heapIdx;
+
     while (idx < this.heap.length) {
       const curVal = this.values[this.heap[idx]!]!;
       const leftChildIdx = idx * 2 + 1;
@@ -133,8 +151,6 @@ class IndexedPriorityQueue<K, V> {
 
       idx = swapIdx;
     }
-
-    return [key, value];
   }
 }
 
