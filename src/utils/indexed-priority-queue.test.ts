@@ -1,6 +1,6 @@
 // Ref: https://www.youtube.com/watch?v=jND_WJ8r7FE
-import { expect} from "chai";
-import IndexedPriorityQueue from './indexed-priority-queue.js';
+import { expect } from "chai";
+import IndexedPriorityQueue from "./indexed-priority-queue.js";
 
 // prettier-ignore
 const TEST_DATA: [string, number, number][] = [ // key, ki, value
@@ -23,11 +23,10 @@ describe("Indexed Priority Queue test", () => {
     });
 
     expect(ipq.keyToKi).to.eql(resultKeyToKi);
-    expect(ipq.kiToKey).to.eql(['Alice', 'Bob', 'Charlie', 'Dave', 'Eve', 'Fred', 'Grace']);
+    expect(ipq.kiToKey).to.eql(["Alice", "Bob", "Charlie", "Dave", "Eve", "Fred", "Grace"]);
     expect(ipq.values).to.eql([3, 15, 11, 17, 7, 9, 2]);
-
-    expect(ipq.heapLookup).to.eql([2, 4, 5, 3, 1, 6, 0]);
-    expect(ipq.inverseLookup).to.eql([6, 4, 0, 3, 1, 2, 5]);
+    expect(ipq.heap).to.eql([6, 4, 0, 3, 1, 2, 5]);
+    expect(ipq.reverseLookup).to.eql([2, 4, 5, 3, 1, 6, 0]);
   });
 
   it("can check and look up value properly", () => {
@@ -35,10 +34,10 @@ describe("Indexed Priority Queue test", () => {
     TEST_DATA.forEach(([key, , val]) => ipq.insert(key, val));
 
     expect(ipq.size()).to.eq(7);
-    expect(ipq.contains('Grace')).to.true;
-    expect(ipq.contains('Gilbert')).to.false;
-    expect(ipq.valueOf('Fred')).to.eq(9);
-    expect(ipq.peekMinEntry()).to.eql(['Grace', 2]);
+    expect(ipq.contains("Grace")).to.true;
+    expect(ipq.contains("Gilbert")).to.false;
+    expect(ipq.valueOf("Fred")).to.eq(9);
+    expect(ipq.peekMinEntry()).to.eql(["Grace", 2]);
   });
 
   it("can pop the min entry properly", () => {
@@ -51,9 +50,6 @@ describe("Indexed Priority Queue test", () => {
       const [expectKey, , expectVal] = sorted[idx]!;
       const result = ipq.popMinEntry();
       expect(result).to.eql([expectKey, expectVal]);
-
-      console.log('result:', result);
-      console.log('expecting:', expectKey, expectVal);
     }
   });
 });

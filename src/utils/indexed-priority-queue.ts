@@ -12,56 +12,57 @@ class IndexedPriorityQueue<K, V> {
   // `Ki` stands for key-index
   readonly keyToKi: Map<K, number>; // key -> ki lookup
   readonly kiToKey: Array<K | undefined>; // ki -> key lookup
-  readonly heapLookup: Array<number>; // ki -> heap position lookup
-  readonly inverseLookup: Array<number>; // heap position -> ki lookup
+  readonly heap: Array<number>; // heap position -> ki lookup
+  readonly reverseLookup: Array<number>; // ki -> heap position lookup
   readonly values: Array<V | undefined>; // ki -> value lookup
   readonly comparator: (v1: V, v2: V) => number;
 
   constructor(com: (v1: V, v2: V) => number) {
     this.keyToKi = new Map();
     this.kiToKey = [];
-    this.heapLookup = [];
-    this.inverseLookup = [];
+    this.heap = [];
+    this.reverseLookup = [];
     this.values = [];
     this.comparator = com;
   }
 
   public insert(key: K, val: V): void {
-    if (this.keyToKi.has(key)) {
-      throw new Error(`The queue already contains entry with key: ${key}.`);
-    }
+    if (this.contains(key)) return this.update(key, val);
+
     this.kiToKey.push(key);
     const ki = this.kiToKey.length - 1;
 
     this.keyToKi.set(key, ki);
     this.values.push(val);
-    this.heapLookup.push(ki);
-    this.inverseLookup.push(ki);
+    this.heap.push(ki);
+    this.reverseLookup.push(ki);
 
     // Do a `swim up` operation
-    let heapIdx = this.heapLookup.length - 1;
-    while (heapIdx > 0) {
-      const parentIdx = heapIdx % 2 === 0 ? (heapIdx - 2) / 2 : (heapIdx - 1) / 2;
-      const idxKi = this.inverseLookup[heapIdx]!;
+    let idx = this.heap.length - 1;
+    while (idx > 0) {
+      const parentIdx = idx % 2 === 0 ? (idx - 2) / 2 : (idx - 1) / 2;
+      const idxKi = this.heap[idx]!;
       const idxVal = this.values[idxKi]!;
-      const parentKi = this.inverseLookup[parentIdx]!;
-      const parentVal = this.values[parentKi]!;
-      if (this.comparator(parentVal, idxVal) <= 0) break;
+      const parentIdxKi = this.heap[parentIdx]!;
+      const parentIdxVal = this.values[parentIdxKi]!;
 
-      // swap the heapLookup and inverseLookup table
-      swapEls(this.heapLookup, idxKi, parentKi);
-      swapEls(this.inverseLookup, heapIdx, parentIdx);
+      if (this.comparator(parentIdxVal, idxVal) <= 0) break;
 
-      heapIdx = parentIdx;
+      swapEls(this.heap, idx, parentIdx);
+      swapEls(this.reverseLookup, idxKi, parentIdxKi);
+
+      idx = parentIdx;
     }
   }
 
   public size(): number {
-    return this.heapLookup.length;
+    return this.heap.length;
   }
 
-  // public update(key: K, val: V): void {
-  // }
+  public update(key: K, val: V): void {
+    console.log(key, val);
+    throw new Error("Update is not implemented yet");
+  }
 
   public contains(key: K): boolean {
     const ki = this.keyToKi.get(key);
@@ -74,52 +75,47 @@ class IndexedPriorityQueue<K, V> {
   }
 
   public peekMinEntry(): [K, V] | undefined {
-    if (this.heapLookup.length === 0) return undefined;
+    if (this.heap.length === 0) return undefined;
 
-    const ki = this.inverseLookup[0]!;
+    const ki = this.heap[0]!;
     return [this.kiToKey[ki]!, this.values[ki]!];
   }
 
   public popMinEntry(): [K, V] | undefined {
-    const rootIdx = 0;
-    let rootIdxKi = this.inverseLookup[rootIdx]!;
+    if (this.heap.length === 0) return undefined;
 
+    const rootIdxKi = this.heap[0]!;
     const key = this.kiToKey[rootIdxKi]!;
     const value = this.values[rootIdxKi]!;
 
-    const lastIdx = this.heapLookup.length - 1;
-    const lastIdxKi = this.inverseLookup[lastIdx]!;
+    const lastIdx = this.heap.length - 1;
+    const lastIdxKi = this.heap[lastIdx]!;
 
-    swapEls(this.heapLookup, rootIdxKi, lastIdxKi);
-    swapEls(this.inverseLookup, rootIdx, lastIdx);
+    swapEls(this.heap, 0, lastIdx);
+    swapEls(this.reverseLookup, rootIdxKi, lastIdxKi);
 
     // Remove the last entry and its bookkeeping
     this.keyToKi.delete(key);
     this.kiToKey[rootIdxKi] = undefined;
-    this.heapLookup[lastIdxKi] = -1;
-    this.inverseLookup[lastIdx] = -1;
     this.values[rootIdxKi] = undefined;
+    this.reverseLookup[rootIdxKi] = -1;
+    this.heap.pop(); // Using `pop` so heap.length will decrease by 1.
 
-    // TODO: swim down from rootIdx in the heap
-    rootIdxKi = this.inverseLookup[rootIdx]!;
-    const idx = rootIdx;
-    while (idx < this.heapLookup.length) {
-      const curVal = this.values[idx];
+    // swim down from rootIdx in the heap
+    let idx = 0;
+    while (idx < this.heap.length) {
+      const curVal = this.values[this.heap[idx]!]!;
       const leftChildIdx = idx * 2 + 1;
       const leftChildVal =
-        leftChildIdx < this.heapLookup.length
-          ? this.values[this.inverseLookup[leftChildIdx]!]
-          : undefined;
+        leftChildIdx < this.heap.length ? this.values[this.heap[leftChildIdx]!] : undefined;
       const rightChildIdx = idx * 2 + 2;
       const rightChildVal =
-        rightChildIdx < this.heapLookup.length
-          ? this.values[this.inverseLookup[rightChildIdx]!]
-          : undefined;
+        rightChildIdx < this.heap.length ? this.values[this.heap[rightChildIdx]!] : undefined;
 
       // check the heap invariant
       if (
-        (!leftChildVal || this.comparator(curVal!, leftChildVal) <= 0) &&
-        (!rightChildVal || this.comparator(curVal!, rightChildVal) <= 0)
+        (!leftChildVal || this.comparator(curVal, leftChildVal) <= 0) &&
+        (!rightChildVal || this.comparator(curVal, rightChildVal) <= 0)
       )
         break;
 
@@ -130,8 +126,12 @@ class IndexedPriorityQueue<K, V> {
       }
 
       // swap idx and swapIdx
-      swapEls(this.heapLookup, this.heapLookup[idx]!, this.heapLookup[swapIdx]!);
-      swapEls(this.inverseLookup, idx, swapIdx);
+      const idxKi = this.heap[idx]!;
+      const swapIdxKi = this.heap[swapIdx]!;
+      swapEls(this.heap, idx, swapIdx);
+      swapEls(this.reverseLookup, idxKi, swapIdxKi);
+
+      idx = swapIdx;
     }
 
     return [key, value];
