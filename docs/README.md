@@ -27,6 +27,7 @@ This is my attempt on [Advent of Code 2021](https://adventofcode.com/2021) :rock
 - [Day 21 - Dirac Dice](/21-dirac-dice.md)
 - [Day 22 - Reactor Reboot](/22-reactor-reboot.md)
 - [Day 23 - Amphipod](/23-amphipod.md)
+- [Day 24 - Arithmetic Logic Unit](/24-arithmetic-logic-unit.md)
 
 ## Workflow
 
