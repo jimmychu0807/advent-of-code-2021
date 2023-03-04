@@ -1,4 +1,5 @@
 type RegisterType = "w" | "x" | "y" | "z";
+type StateType = { w: number; x: number; y: number; z: number };
 
 class ALU {
   protected w = 0;
@@ -6,7 +7,7 @@ class ALU {
   protected y = 0;
   protected z = 0;
 
-  get state() {
+  get state(): StateType {
     const { w, x, y, z } = this;
     return { w, x, y, z };
   }
@@ -29,8 +30,6 @@ class ALU {
       const splitted = ins.split(/\s+/);
       const [op, reg, operand] = splitted;
 
-      // console.log(ins);
-
       switch (op) {
         case "inp":
           this[reg as RegisterType] = Number(input.shift()!);
@@ -51,12 +50,10 @@ class ALU {
           this[reg as RegisterType] = this[reg as RegisterType] === getOpVal(operand!) ? 1 : 0;
           break;
       }
-
-      // console.log(this.state);
     });
 
     return this.state;
   }
 }
 
-export { ALU as default };
+export { ALU as default, StateType };

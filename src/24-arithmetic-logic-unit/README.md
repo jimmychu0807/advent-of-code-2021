@@ -67,4 +67,19 @@ MONAD imposes additional, mysterious restrictions on model numbers, and legend s
 
 To enable as many submarine features as possible, find the largest valid fourteen-digit model number that contains no 0 digits. **What is the largest model number accepted by MONAD**?
 
+Your puzzle answer was `99429795993929`.
+
 ## Part Two
+
+As the submarine starts booting up things like the Retro Encabulator, you realize that maybe you don't need all these submarine features after all.
+
+**What is the smallest model number accepted by MONAD?**
+
+Your puzzle answer was `18113181571611`.
+
+---
+
+Solutions are solved with hints and answers:
+
+1. https://www.reddit.com/r/adventofcode/comments/rom5l5/2021_day_24pen_paper_monad_deparsed/
+2. [An over-engineerd solution](https://www.reddit.com/r/adventofcode/comments/rnwz9p/2021_day_24_solving_the_alu_programmatically_with/)
