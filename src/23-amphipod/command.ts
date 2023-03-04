@@ -45,11 +45,11 @@ const command = new Command("amphipod").description("Day 23 - Amphipod").showHel
 command.action(() => {
   try {
     const sol1 = Amphipod.solve(initConfig1);
-    console.log(`solution of part I: ${sol1!.totalCost}`);
+    console.log(`Part I result: ${sol1!.totalCost}`);
     console.dir(sol1, { depth: null });
 
     const sol2 = Amphipod.solve(initConfig2);
-    console.log(`solution of part II: ${sol2!.totalCost}`);
+    console.log(`part II result: ${sol2!.totalCost}`);
     console.dir(sol2, { depth: null });
   } catch (err) {
     console.log((err as Error).message);
