@@ -23,3 +23,4 @@
 - [Day 22 - Reactor Reboot](22-reactor-reboot.md)
 - [Day 23 - Amphipod](23-amphipod.md)
 - [Day 24 - Arithmetic Logic Unit](24-arithmetic-logic-unit.md)
+- [Day 25 - Sea Cucumber](25-sea-cucumber.md)
