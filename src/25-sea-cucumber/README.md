@@ -336,6 +336,6 @@ Installing device drivers...done.
 Recalibrating experimental antenna...done.
 Boost strength due to matching signal phase: 1 star
 ```
-Only 49 stars to go.
+Only **49 stars** to go.
 
 You don't have enough stars to boost the signal, though. You need 2 more.
