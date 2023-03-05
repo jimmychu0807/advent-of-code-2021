@@ -22,6 +22,7 @@ import { command as DiracDiceCommand } from "./21-dirac-dice/index.js";
 import { command as ReactorRebootCommand } from "./22-reactor-reboot/index.js";
 import { command as AmphipodCommand } from "./23-amphipod/index.js";
 import { command as ALUCommand } from "./24-arithmetic-logic-unit/index.js";
+import { command as SeaCucumberCommand } from "./25-sea-cucumber/index.js";
 
 // Read the package.json info
 const name = process.env["npm_package_name"] ?? "";
@@ -57,6 +58,7 @@ program
   .addCommand(DiracDiceCommand)
   .addCommand(ReactorRebootCommand)
   .addCommand(AmphipodCommand)
-  .addCommand(ALUCommand);
+  .addCommand(ALUCommand)
+  .addCommand(SeaCucumberCommand);
 
 export { program as default };
