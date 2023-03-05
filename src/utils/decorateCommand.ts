@@ -22,7 +22,7 @@ function decorateCommand(command: Command, opts: DCOpts): void {
   if (opts.default) {
     command.addOption(
       new Option("-d, --default", "using default quest data")
-        .default(false)
+        .default(true)
         .conflicts(["file", "input"]),
     );
   }
