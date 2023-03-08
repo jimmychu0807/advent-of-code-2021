@@ -1,10 +1,6 @@
 import { expect } from "chai";
-// import Debug from "debug";
-
 import { CoordinateXYZ } from "../utils/index.js";
-import { convertInputToCoordinateXYZ } from "./beacon-scanner.js";
-
-// const log = Debug("test:beacon-scanner");
+import BeaconScanner, { convertInputToCoordinateXYZ } from "./beacon-scanner.js";
 
 //prettier-ignore
 const TEST_CASE1 = {
@@ -21,7 +17,7 @@ const TEST_CASE1 = {
   ],
   expResMinDistSwitching: {
     dist: 16.16,
-    set1OrSet2: 1,
+    set1OrSet2: 2,
     coord: [
       "-5,0",
       "-1,-1",
@@ -48,8 +44,11 @@ describe("Day 19 - Beacon Scanner", () => {
       ]);
     });
 
-    // it("BeaconScanner.getMinDistBySwitching() works", () => {
-
-    // });
+    it("BeaconScanner.getMinDistBySwitching() works", () => {
+      const { input } = TEST_CASE1;
+      const scanners = convertInputToCoordinateXYZ(input);
+      const res = BeaconScanner.getMinDistBySwitching(scanners[0]!, scanners[1]!);
+      console.log(res);
+    });
   });
 });
