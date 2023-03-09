@@ -49,6 +49,10 @@ class CoordinateXYZ {
       Math.pow(this.x - pt.x, 2) + Math.pow(this.y - pt.y, 2) + Math.pow(this.z - pt.z, 2),
     );
   }
+
+  public offset(offsetBy: CoordinateXYZ): CoordinateXYZ {
+    return new CoordinateXYZ(this.x + offsetBy.x, this.y + offsetBy.y, this.z + offsetBy.z);
+  }
 }
 
 class CoordinateRC {

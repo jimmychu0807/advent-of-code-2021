@@ -2,6 +2,19 @@
 import { CoordinateXYZ } from "../utils/index.js";
 
 const EQL_THRESHOLD = 0.005;
+const OVERLAP_PTS_THRESHOLD = 12;
+
+// prettier-ignore
+const ROTATION_MATRICES = [
+  [[1,0,0],[0,1,0],[0,0,1]], [[0,1,0],[0,0,1],[1,0,0]], [[0,0,1],[1,0,0],[0,1,0]],
+  [[1,0,0],[0,0,1],[0,-1,0]], [[0,1,0],[1,0,0],[0,0,-1]], [[0,0,1],[0,1,0],[-1,0,0]],
+  [[-1,0,0],[0,0,1],[0,1,0]], [[0,-1,0],[1,0,0],[0,0,1]], [[0,0,-1],[0,1,0],[1,0,0]],
+  [[1,0,0],[0,0,-1],[0,1,0]], [[0,1,0],[-1,0,0],[0,0,1]], [[0,0,1],[0,-1,0],[1,0,0]],
+  [[-1,0,0],[0,1,0],[0,0,-1]], [[0,-1,0],[0,0,1],[-1,0,0]], [[0,0,-1],[1,0,0],[0,-1,0]],
+  [[1,0,0],[0,-1,0],[0,0,-1]], [[0,1,0],[0,0,-1],[-1,0,0]], [[0,0,1],[-1,0,0],[0,-1,0]],
+  [[-1,0,0],[0,-1,0],[0,0,1]], [[0,-1,0],[0,0,-1],[1,0,0]], [[0,0,-1],[-1,0,0],[0,1,0]],
+  [[-1,0,0],[0,0,-1],[0,-1,0]], [[0,-1,0],[-1,0,0],[0,0,-1]], [[0,0,-1],[0,-1,0],[-1,0,0]],
+];
 
 function convertInputToCoordinateXYZ(input: string[]): CoordinateXYZ[][] {
   return input
@@ -29,7 +42,10 @@ class BeaconScanner {
   }
 
   // It is actually num possibly overlapped
-  public static numDistOverlapped(set1: CoordinateXYZ[], set2: CoordinateXYZ[]): number {
+  public static numDistOverlapped(
+    set1: CoordinateXYZ[],
+    set2: CoordinateXYZ[],
+  ): [number, number[][], number[][]] {
     const set1Dists = BeaconScanner.getPairDistance(set1);
     const set2Dists = BeaconScanner.getPairDistance(set2);
 
@@ -45,20 +61,150 @@ class BeaconScanner {
       }
     });
 
-    return numOverlapped;
+    return [numOverlapped, set1Dists, set2Dists];
   }
 
-  public static solve(input: string[][]): number {
-    // convert to the Coordinate
-    const scannerReports = input.map((oneScanner) =>
-      oneScanner.map((beacon) => {
-        const [x, y, z] = beacon.split(",");
-        return new CoordinateXYZ(Number(x!), Number(y!), Number(z!));
-      }),
-    );
+  public static hasOverlappingPts(
+    set1: CoordinateXYZ[],
+    set2: CoordinateXYZ[],
+    numOverlapped: number,
+  ): boolean {
+    // 66 is (12 chooses 2), number of edges for a complete graph with 12 nodes.
+    const result = this.numDistOverlapped(set1, set2);
+    return result[0] >= (numOverlapped * (numOverlapped - 1)) / 2;
+  }
 
-    scannerReports;
-    return 0;
+  public static pickTwoPairSameDistPts(
+    set1: CoordinateXYZ[],
+    set2: CoordinateXYZ[],
+  ): [[number, number], [number, number]] | undefined {
+    const set1Dists = BeaconScanner.getPairDistance(set1);
+    const set2Dists = BeaconScanner.getPairDistance(set2);
+
+    const set1Len = set1Dists.length;
+    const set2Len = set2Dists.length;
+    for (let set1rIdx = 0; set1rIdx < set1Len - 1; set1rIdx++) {
+      for (let set1cIdx = 1; set1cIdx < set1Len; set1cIdx++) {
+        for (let set2rIdx = 0; set2rIdx < set2Len - 1; set2rIdx++) {
+          for (let set2cIdx = 1; set2cIdx < set2Len; set2cIdx++) {
+            if (isNumEql(set1Dists[set1rIdx]![set1cIdx]!, set2Dists[set2rIdx]![set2cIdx]!))
+              return [
+                [set1rIdx, set1cIdx],
+                [set2rIdx, set2cIdx],
+              ];
+          }
+        }
+      }
+    }
+    return undefined;
+  }
+
+  public static rotateForEqlOrientation(
+    set1Pairs: [CoordinateXYZ, CoordinateXYZ],
+    set2Pairs: [CoordinateXYZ, CoordinateXYZ],
+  ): number | undefined {
+    const set1PairDiffs = [
+      new CoordinateXYZ(
+        set1Pairs[0].x - set1Pairs[1].x,
+        set1Pairs[0].y - set1Pairs[1].y,
+        set1Pairs[0].z - set1Pairs[1].z,
+      ),
+      new CoordinateXYZ(
+        set1Pairs[1].x - set1Pairs[0].x,
+        set1Pairs[1].y - set1Pairs[0].y,
+        set1Pairs[1].z - set1Pairs[0].z,
+      ),
+    ];
+
+    for (let rIdx = 0; rIdx < ROTATION_MATRICES.length; rIdx++) {
+      const rotatedPairs = set2Pairs.map((pt) => this.rotateOrientation(pt, rIdx)) as [
+        CoordinateXYZ,
+        CoordinateXYZ,
+      ];
+      const set2PairDiff = new CoordinateXYZ(
+        rotatedPairs[0].x - rotatedPairs[1].x,
+        rotatedPairs[0].y - rotatedPairs[1].y,
+        rotatedPairs[0].z - rotatedPairs[1].z,
+      );
+      if (set1PairDiffs.some((set1PairDiff) => set1PairDiff.eql(set2PairDiff))) return rIdx;
+    }
+    return undefined;
+  }
+
+  public static rotateOrientation(pt: CoordinateXYZ, rIdx: number): CoordinateXYZ {
+    const matrix = ROTATION_MATRICES[rIdx]!;
+    const x = matrix[0]![0]! * pt.x + matrix[0]![1]! * pt.y + matrix[0]![2]! * pt.z;
+    const y = matrix[1]![0]! * pt.x + matrix[1]![1]! * pt.y + matrix[1]![2]! * pt.z;
+    const z = matrix[2]![0]! * pt.x + matrix[2]![1]! * pt.y + matrix[2]![2]! * pt.z;
+    return new CoordinateXYZ(x, y, z);
+  }
+
+  public static solve(input: string[]): number {
+    const scannerReports = convertInputToCoordinateXYZ(input);
+    // Using the first report as the reference frame
+    const knownPts = [...scannerReports[0]!];
+    const knownScanners: (CoordinateXYZ | undefined)[] = new Array(scannerReports.length).fill(
+      undefined,
+    );
+    knownScanners[0]! = new CoordinateXYZ(0, 0, 0);
+
+    let scannerIdx = 1;
+    while (knownScanners.some((coord) => coord === undefined)) {
+      // comparing scanners[scannerIdx] with current coordinate
+      const scannerReport = scannerReports[scannerIdx]!;
+      if (this.hasOverlappingPts(knownPts, scannerReport, OVERLAP_PTS_THRESHOLD)) {
+        // pick two points from the scanner report that has the same distance
+        const twoPairs = this.pickTwoPairSameDistPts(knownPts, scannerReport)!;
+        const set1Pairs = twoPairs[0].map((idx) => knownPts[idx]!) as [
+          CoordinateXYZ,
+          CoordinateXYZ,
+        ];
+        const set2Pairs = twoPairs[1].map((idx) => scannerReport[idx]!) as [
+          CoordinateXYZ,
+          CoordinateXYZ,
+        ];
+        const rotationIdx = this.rotateForEqlOrientation(set1Pairs, set2Pairs)!;
+
+        // Apply the rotational matrix to all points in `scannerReport`
+        const rotatedScannerReport = scannerReport.map((pt) =>
+          this.rotateOrientation(pt, rotationIdx),
+        );
+
+        let rotatedSet2Pairs = [
+          rotatedScannerReport[twoPairs[1][0]]!,
+          rotatedScannerReport[twoPairs[1][1]]!,
+        ] as [CoordinateXYZ, CoordinateXYZ];
+
+        // Get the right order for the `rotatedSet2Pairs`
+        if (rotatedSet2Pairs[0].x - rotatedSet2Pairs[1].x !== set1Pairs[0].x - set1Pairs[1].x) {
+          // reverse the order of rotatedSet2Pairs
+          rotatedSet2Pairs = [rotatedSet2Pairs[1], rotatedSet2Pairs[0]];
+        }
+
+        // by here we have identified the two points that should be overlapping to each others:
+        //   (set1Pairs[0], rotatedSet2Pairs[0]), and (set1Pairs[1], rotatedSet2Pairs[1])
+        const scannerCoord = new CoordinateXYZ(
+          set1Pairs[0].x - rotatedSet2Pairs[0].x,
+          set1Pairs[0].y - rotatedSet2Pairs[0].y,
+          set1Pairs[0].z - rotatedSet2Pairs[0].z,
+        );
+
+        // Another check here
+        if (!set1Pairs[1].offset(scannerCoord).eql(rotatedSet2Pairs[1])) {
+          throw new Error("point offsetting between set1Pair and set2Pair are not consistent");
+        }
+
+        knownScanners[scannerIdx] = scannerCoord;
+        rotatedScannerReport.forEach((rotatedPt) => {
+          if (!knownPts.some((pt) => pt.eql(rotatedPt))) knownPts.push(rotatedPt);
+        });
+      }
+
+      scannerIdx += 1;
+      if (scannerIdx >= scannerReports.length) scannerIdx = 1;
+    }
+
+    return knownPts.length;
   }
 }
 
