@@ -219,12 +219,12 @@ describe("Day 19 - Beacon Scanner", () => {
       const scanners = convertInputToCoordinateXYZ(input);
       expect(BeaconScanner.hasOverlappingPts(scanners[0]!, scanners[1]!, 12)).to.true;
 
-      const twoPairs = BeaconScanner.pickTwoPairSameDistPts(scanners[0]!, scanners[1]!)!;
-      const set1Pairs = twoPairs[0].map((idx) => scanners[0]![idx]!) as [
-        CoordinateXYZ,
-        CoordinateXYZ,
-      ];
-      const set2Pairs = twoPairs[1].map((idx) => scanners[1]![idx]!) as [
+      const { refIds, targetIds } = BeaconScanner.pickTwoPairSameDistPts(
+        scanners[0]!,
+        scanners[1]!,
+      )!;
+      const set1Pairs = refIds.map((idx) => scanners[0]![idx]!) as [CoordinateXYZ, CoordinateXYZ];
+      const set2Pairs = targetIds.map((idx) => scanners[1]![idx]!) as [
         CoordinateXYZ,
         CoordinateXYZ,
       ];
@@ -248,13 +248,26 @@ describe("Day 19 - Beacon Scanner", () => {
       scanners = [scanners[0]!, scanners[1]!, scanners[4]!];
       const [knownPts, knownScanners] = BeaconScanner.solve(scanners);
 
-      console.log('knownPts:', knownPts);
-      console.log('knownScanners:', knownScanners);
-
-      expect(knownPts.length).to.eq(scanners[0]!.length + scanners[1]!.length + scanners[2]!.length - 24);
+      expect(knownPts.length).to.eq(
+        scanners[0]!.length + scanners[1]!.length + scanners[2]!.length - 24,
+      );
       expect(knownScanners).to.eql([
         new CoordinateXYZ(0, 0, 0),
         new CoordinateXYZ(68, -1246, -43),
+        new CoordinateXYZ(-20, -1133, 1061),
+      ]);
+    });
+
+    it("BeaconScanner.solve() works for four scanners", () => {
+      const { input } = TEST_CASE2;
+      const [knownPts, knownScanners] = BeaconScanner.solve(convertInputToCoordinateXYZ(input));
+
+      expect(knownPts.length).to.eq(79);
+      expect(knownScanners).to.eql([
+        new CoordinateXYZ(0, 0, 0),
+        new CoordinateXYZ(68, -1246, -43),
+        new CoordinateXYZ(1105,-1205,1229),
+        new CoordinateXYZ(-92,-2380,-20),
         new CoordinateXYZ(-20, -1133, 1061),
       ]);
     });
