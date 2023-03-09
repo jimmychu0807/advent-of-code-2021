@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { CoordinateXYZ } from "../utils/index.js";
-import BeaconScanner, { convertInputToCoordinateXYZ } from "./beacon-scanner.js";
+import BeaconScanner, { convertInputToCoordinateXYZ, isNumEql } from "./beacon-scanner.js";
 
 //prettier-ignore
 const TEST_CASE1 = {
@@ -44,11 +44,28 @@ describe("Day 19 - Beacon Scanner", () => {
       ]);
     });
 
-    it("BeaconScanner.getMinDistBySwitching() works", () => {
+    it("BeaconScanner.getPairDistance() works", () => {
+      const { input } = TEST_CASE1;
+      const expectedDist = [
+        [-1, 4.123, 3.162],
+        [-1, -1, 2.236],
+        [-1, -1, -1],
+      ];
+      const scanners = convertInputToCoordinateXYZ(input);
+      const dist = BeaconScanner.getPairDistance(scanners[0]!);
+      const rowLen = dist.length;
+      const colLen = dist[0]!.length;
+      for (let rIdx = 0; rIdx < rowLen; rIdx++) {
+        for (let cIdx = 0; cIdx < colLen; cIdx++) {
+          expect(isNumEql(dist[rIdx]![cIdx]!, expectedDist[rIdx]![cIdx]!)).to.true;
+        }
+      }
+    });
+
+    it("BeaconScanner.numDistOverlapped() works", () => {
       const { input } = TEST_CASE1;
       const scanners = convertInputToCoordinateXYZ(input);
-      const res = BeaconScanner.getMinDistBySwitching(scanners[0]!, scanners[1]!);
-      console.log(res);
+      expect(BeaconScanner.numDistOverlapped(scanners[0]!, scanners[1]!)).to.eq(3);
     });
   });
 });

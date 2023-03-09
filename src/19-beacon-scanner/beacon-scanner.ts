@@ -1,7 +1,7 @@
 // local import
 import { CoordinateXYZ } from "../utils/index.js";
 
-type Set1OrSet2 = 1 | 2;
+const EQL_THRESHOLD = 0.005;
 
 function convertInputToCoordinateXYZ(input: string[]): CoordinateXYZ[][] {
   return input
@@ -11,90 +11,41 @@ function convertInputToCoordinateXYZ(input: string[]): CoordinateXYZ[][] {
     .map((chunk) => chunk.split("\n").map((ln) => CoordinateXYZ.fromStr(ln)));
 }
 
+function isNumEql(num1: number, num2: number): boolean {
+  return Math.abs(num1 - num2) < EQL_THRESHOLD;
+}
+
 class BeaconScanner {
-  public static getMinDistBySwitching(
-    set1: CoordinateXYZ[],
-    set2: CoordinateXYZ[],
-  ): [number, Set1OrSet2, CoordinateXYZ[]] {
-    // actually have to return the long set
-    let shortSet = set1,
-      longSet = [...set2];
-    let set1Or2: Set1OrSet2 = 2;
+  public static getPairDistance(set: CoordinateXYZ[]): number[][] {
+    const setLen = set.length;
+    const dists: number[][] = new Array(setLen).fill(0).map(() => new Array(setLen).fill(-1));
 
-    if (set1.length > set2.length) {
-      set1Or2 = 1;
-      shortSet = set2;
-      longSet = [...set1];
-    }
-
-    let accDist = 0;
-    let switchedSet: CoordinateXYZ[] = [];
-    for (let sIdx = 0; sIdx < shortSet.length; sIdx++) {
-
-      let minDist: number | undefined = undefined;
-      let minlIdx: number = 0;
-
-      // note: taking the minDist for each shortSet doesn't necessarily get the min dist when
-      //   summed up together
-      for (let lIdx = 0; lIdx < longSet.length; lIdx++) {
-        const dist = shortSet[sIdx]!.distTo(longSet[lIdx]!);
-
-        if (!minDist || minDist > dist) {
-          minDist = dist;
-          minlIdx = lIdx;
-        }
+    for (let rIdx = 0; rIdx < setLen - 1; rIdx++) {
+      for (let cIdx = rIdx + 1; cIdx < setLen; cIdx++) {
+        dists[rIdx]![cIdx] = set[rIdx]!.distTo(set[cIdx]!);
       }
-      accDist += minDist!;
-      switchedSet.push(longSet[minlIdx]!);
-      longSet.splice(minlIdx, 1);
     }
-
-    // Copy the rest of the array to switchedSet
-    switchedSet = switchedSet.concat(
-      longSet.filter((pt) => switchedSet.some((switchedPt) => switchedPt.eql(pt))),
-    );
-
-    return [accDist, set1Or2, switchedSet];
+    return dists;
   }
 
-  public static shiftSetByCoordXYZ(set: CoordinateXYZ[], shiftBy: CoordinateXYZ): CoordinateXYZ[] {
-    // NEXT: implement this
-  }
+  // It is actually num possibly overlapped
+  public static numDistOverlapped(set1: CoordinateXYZ[], set2: CoordinateXYZ[]): number {
+    const set1Dists = BeaconScanner.getPairDistance(set1);
+    const set2Dists = BeaconScanner.getPairDistance(set2);
 
-  public static getMinDist(set1: CoordinateXYZ[], set2: CoordinateXYZ[]): number {
-    // NEXT: implement this
-  }
+    const set1DistArr = set1Dists.reduce((memo, row) => memo.concat(row).filter((val) => val > 0));
+    const set2DistArr = set2Dists.reduce((memo, row) => memo.concat(row).filter((val) => val > 0));
 
-  public static getMinDistByShifting(
-    set1: CoordinateXYZ[],
-    set2: CoordinateXYZ[],
-  ): [number, Set1OrSet2, CoordinateXYZ[]] {
-    // TODO
-    set1;
-    set2;
-    throw new Error("Not implemented yet");
-    // return [0, 0, [new CoordinateXYZ(0, 0, 0)]];
-  }
+    let numOverlapped = 0;
+    set1DistArr.forEach((dist) => {
+      const targetIdx = set2DistArr.findIndex((set2Dist) => isNumEql(set2Dist, dist));
+      if (targetIdx >= 0) {
+        numOverlapped += 1;
+        set2DistArr.splice(targetIdx, 1);
+      }
+    });
 
-  public static getMinDistByRotating(
-    set1: CoordinateXYZ[],
-    set2: CoordinateXYZ[],
-  ): [number, Set1OrSet2, CoordinateXYZ[]] {
-    // TODO
-    set1;
-    set2;
-    throw new Error("Not implemented yet");
-    // return [0, 0, [new CoordinateXYZ(0, 0, 0)]];
-  }
-
-  public static numOverlapped(set1: CoordinateXYZ[], set2: CoordinateXYZ[]): number {
-    let shortSet = set1,
-      longSet = set2;
-    if (set1.length > set2.length) {
-      shortSet = set2;
-      longSet = set1;
-    }
-    return shortSet.reduce((memo, coord, idx) => (coord.eql(longSet[idx]!) ? memo + 1 : memo), 0);
+    return numOverlapped;
   }
 
   public static solve(input: string[][]): number {
@@ -111,4 +62,4 @@ class BeaconScanner {
   }
 }
 
-export { BeaconScanner as default, convertInputToCoordinateXYZ };
+export { BeaconScanner as default, convertInputToCoordinateXYZ, isNumEql };
