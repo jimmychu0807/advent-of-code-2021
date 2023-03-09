@@ -1,6 +1,10 @@
 import { expect } from "chai";
 import { CoordinateXYZ } from "../utils/index.js";
-import BeaconScanner, { convertInputToCoordinateXYZ, isNumEql } from "./beacon-scanner.js";
+import BeaconScanner, {
+  convertInputToCoordinateXYZ,
+  isNumEql,
+  ROTATION_MATRICES,
+} from "./beacon-scanner.js";
 
 //prettier-ignore
 const TEST_CASE1 = {
@@ -210,10 +214,49 @@ describe("Day 19 - Beacon Scanner", () => {
       expect(BeaconScanner.numDistOverlapped(scanners[0]!, scanners[1]!)).to.eq(3);
     });
 
-    it("BeaconScanner.hasOverlappedPts() works", () => {
+    it("BeaconScanner.hasOverlappedPts() & BeaconScanner.pickTwoPairSameDistPts() works", () => {
       const { input } = TEST_CASE2;
       const scanners = convertInputToCoordinateXYZ(input);
-      scanners;
+      expect(BeaconScanner.hasOverlappingPts(scanners[0]!, scanners[1]!, 12)).to.true;
+
+      const twoPairs = BeaconScanner.pickTwoPairSameDistPts(scanners[0]!, scanners[1]!)!;
+      const set1Pairs = twoPairs[0].map((idx) => scanners[0]![idx]!) as [
+        CoordinateXYZ,
+        CoordinateXYZ,
+      ];
+      const set2Pairs = twoPairs[1].map((idx) => scanners[1]![idx]!) as [
+        CoordinateXYZ,
+        CoordinateXYZ,
+      ];
+
+      const rotationIdx = BeaconScanner.rotateForEqlOrientation(set1Pairs, set2Pairs)!;
+      expect(rotationIdx >= 0 && rotationIdx < ROTATION_MATRICES.length);
+    });
+
+    it("BeaconScanner.solve() works for two scanners", () => {
+      const { input } = TEST_CASE2;
+      const scanners = convertInputToCoordinateXYZ(input).slice(0, 2);
+      const [knownPts, knownScanners] = BeaconScanner.solve(scanners);
+
+      expect(knownPts.length).to.eq(scanners[0]!.length + scanners[1]!.length - 12);
+      expect(knownScanners).to.eql([new CoordinateXYZ(0, 0, 0), new CoordinateXYZ(68, -1246, -43)]);
+    });
+
+    it("BeaconScanner.solve() works for three scanners", () => {
+      const { input } = TEST_CASE2;
+      let scanners = convertInputToCoordinateXYZ(input);
+      scanners = [scanners[0]!, scanners[1]!, scanners[4]!];
+      const [knownPts, knownScanners] = BeaconScanner.solve(scanners);
+
+      console.log('knownPts:', knownPts);
+      console.log('knownScanners:', knownScanners);
+
+      expect(knownPts.length).to.eq(scanners[0]!.length + scanners[1]!.length + scanners[2]!.length - 24);
+      expect(knownScanners).to.eql([
+        new CoordinateXYZ(0, 0, 0),
+        new CoordinateXYZ(68, -1246, -43),
+        new CoordinateXYZ(-20, -1133, 1061),
+      ]);
     });
   });
 });

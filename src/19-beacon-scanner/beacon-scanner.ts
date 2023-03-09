@@ -1,3 +1,5 @@
+import Debug from "debug";
+
 // local import
 import { CoordinateXYZ } from "../utils/index.js";
 
@@ -15,6 +17,8 @@ const ROTATION_MATRICES = [
   [[-1,0,0],[0,-1,0],[0,0,1]], [[0,-1,0],[0,0,-1],[1,0,0]], [[0,0,-1],[-1,0,0],[0,1,0]],
   [[-1,0,0],[0,0,-1],[0,-1,0]], [[0,-1,0],[-1,0,0],[0,0,-1]], [[0,0,-1],[0,-1,0],[-1,0,0]],
 ];
+
+const log = Debug("beacon-scanner");
 
 function convertInputToCoordinateXYZ(input: string[]): CoordinateXYZ[][] {
   return input
@@ -42,10 +46,7 @@ class BeaconScanner {
   }
 
   // It is actually num possibly overlapped
-  public static numDistOverlapped(
-    set1: CoordinateXYZ[],
-    set2: CoordinateXYZ[],
-  ): [number, number[][], number[][]] {
+  public static numDistOverlapped(set1: CoordinateXYZ[], set2: CoordinateXYZ[]): number {
     const set1Dists = BeaconScanner.getPairDistance(set1);
     const set2Dists = BeaconScanner.getPairDistance(set2);
 
@@ -61,7 +62,7 @@ class BeaconScanner {
       }
     });
 
-    return [numOverlapped, set1Dists, set2Dists];
+    return numOverlapped;
   }
 
   public static hasOverlappingPts(
@@ -69,9 +70,7 @@ class BeaconScanner {
     set2: CoordinateXYZ[],
     numOverlapped: number,
   ): boolean {
-    // 66 is (12 chooses 2), number of edges for a complete graph with 12 nodes.
-    const result = this.numDistOverlapped(set1, set2);
-    return result[0] >= (numOverlapped * (numOverlapped - 1)) / 2;
+    return this.numDistOverlapped(set1, set2) >= (numOverlapped * (numOverlapped - 1)) / 2;
   }
 
   public static pickTwoPairSameDistPts(
@@ -100,24 +99,24 @@ class BeaconScanner {
   }
 
   public static rotateForEqlOrientation(
-    set1Pairs: [CoordinateXYZ, CoordinateXYZ],
-    set2Pairs: [CoordinateXYZ, CoordinateXYZ],
+    set1Pair: [CoordinateXYZ, CoordinateXYZ],
+    set2Pair: [CoordinateXYZ, CoordinateXYZ],
   ): number | undefined {
     const set1PairDiffs = [
       new CoordinateXYZ(
-        set1Pairs[0].x - set1Pairs[1].x,
-        set1Pairs[0].y - set1Pairs[1].y,
-        set1Pairs[0].z - set1Pairs[1].z,
+        set1Pair[0].x - set1Pair[1].x,
+        set1Pair[0].y - set1Pair[1].y,
+        set1Pair[0].z - set1Pair[1].z,
       ),
       new CoordinateXYZ(
-        set1Pairs[1].x - set1Pairs[0].x,
-        set1Pairs[1].y - set1Pairs[0].y,
-        set1Pairs[1].z - set1Pairs[0].z,
+        set1Pair[1].x - set1Pair[0].x,
+        set1Pair[1].y - set1Pair[0].y,
+        set1Pair[1].z - set1Pair[0].z,
       ),
     ];
 
     for (let rIdx = 0; rIdx < ROTATION_MATRICES.length; rIdx++) {
-      const rotatedPairs = set2Pairs.map((pt) => this.rotateOrientation(pt, rIdx)) as [
+      const rotatedPairs = set2Pair.map((pt) => this.rotateOrientation(pt, rIdx)) as [
         CoordinateXYZ,
         CoordinateXYZ,
       ];
@@ -139,8 +138,16 @@ class BeaconScanner {
     return new CoordinateXYZ(x, y, z);
   }
 
-  public static solve(input: string[]): number {
-    const scannerReports = convertInputToCoordinateXYZ(input);
+  public static solve(
+    input: string[] | CoordinateXYZ[][],
+  ): [CoordinateXYZ[], (CoordinateXYZ | undefined)[]] {
+    if (input.length === 0) return [[], []];
+
+    const scannerReports =
+      typeof input[0] === "string"
+        ? convertInputToCoordinateXYZ(input as string[])
+        : (input as CoordinateXYZ[][]);
+
     // Using the first report as the reference frame
     const knownPts = [...scannerReports[0]!];
     const knownScanners: (CoordinateXYZ | undefined)[] = new Array(scannerReports.length).fill(
@@ -155,15 +162,16 @@ class BeaconScanner {
       if (this.hasOverlappingPts(knownPts, scannerReport, OVERLAP_PTS_THRESHOLD)) {
         // pick two points from the scanner report that has the same distance
         const twoPairs = this.pickTwoPairSameDistPts(knownPts, scannerReport)!;
-        const set1Pairs = twoPairs[0].map((idx) => knownPts[idx]!) as [
+        const set1Pair = twoPairs[0].map((idx) => knownPts[idx]!) as [CoordinateXYZ, CoordinateXYZ];
+        const set2Pair = twoPairs[1].map((idx) => scannerReport[idx]!) as [
           CoordinateXYZ,
           CoordinateXYZ,
         ];
-        const set2Pairs = twoPairs[1].map((idx) => scannerReport[idx]!) as [
-          CoordinateXYZ,
-          CoordinateXYZ,
-        ];
-        const rotationIdx = this.rotateForEqlOrientation(set1Pairs, set2Pairs)!;
+        const rotationIdx = this.rotateForEqlOrientation(set1Pair, set2Pair)!;
+
+        log(`set1Pair:`, set1Pair);
+        log(`set2Pair:`, set2Pair);
+        log(`rotationIdx:`, rotationIdx);
 
         // Apply the rotational matrix to all points in `scannerReport`
         const rotatedScannerReport = scannerReport.map((pt) =>
@@ -176,27 +184,30 @@ class BeaconScanner {
         ] as [CoordinateXYZ, CoordinateXYZ];
 
         // Get the right order for the `rotatedSet2Pairs`
-        if (rotatedSet2Pairs[0].x - rotatedSet2Pairs[1].x !== set1Pairs[0].x - set1Pairs[1].x) {
+        if (rotatedSet2Pairs[0].x - rotatedSet2Pairs[1].x !== set1Pair[0].x - set1Pair[1].x) {
           // reverse the order of rotatedSet2Pairs
           rotatedSet2Pairs = [rotatedSet2Pairs[1], rotatedSet2Pairs[0]];
         }
 
         // by here we have identified the two points that should be overlapping to each others:
-        //   (set1Pairs[0], rotatedSet2Pairs[0]), and (set1Pairs[1], rotatedSet2Pairs[1])
-        const scannerCoord = new CoordinateXYZ(
-          set1Pairs[0].x - rotatedSet2Pairs[0].x,
-          set1Pairs[0].y - rotatedSet2Pairs[0].y,
-          set1Pairs[0].z - rotatedSet2Pairs[0].z,
+        //   (set1Pair[0], rotatedSet2Pairs[0]), and (set1Pair[1], rotatedSet2Pairs[1])
+        const scannerLoc = new CoordinateXYZ(
+          set1Pair[0].x - rotatedSet2Pairs[0].x,
+          set1Pair[0].y - rotatedSet2Pairs[0].y,
+          set1Pair[0].z - rotatedSet2Pairs[0].z,
         );
 
-        // Another check here
-        if (!set1Pairs[1].offset(scannerCoord).eql(rotatedSet2Pairs[1])) {
-          throw new Error("point offsetting between set1Pair and set2Pair are not consistent");
+        log(`scanner ${scannerIdx} coord:`, scannerLoc);
+
+        // Add a check here
+        if (!rotatedSet2Pairs[1].offset(scannerLoc).eql(set1Pair[1])) {
+          throw new Error("Point offsetting between set1Pair and set2Pair are not consistent");
         }
 
-        knownScanners[scannerIdx] = scannerCoord;
-        rotatedScannerReport.forEach((rotatedPt) => {
-          if (!knownPts.some((pt) => pt.eql(rotatedPt))) knownPts.push(rotatedPt);
+        knownScanners[scannerIdx] = scannerLoc;
+        const offsetScannerReport = rotatedScannerReport.map((pt) => pt.offset(scannerLoc));
+        offsetScannerReport.forEach((pt) => {
+          if (!knownPts.some((knownPt) => pt.eql(knownPt))) knownPts.push(pt);
         });
       }
 
@@ -204,8 +215,8 @@ class BeaconScanner {
       if (scannerIdx >= scannerReports.length) scannerIdx = 1;
     }
 
-    return knownPts.length;
+    return [knownPts, knownScanners];
   }
 }
 
-export { BeaconScanner as default, convertInputToCoordinateXYZ, isNumEql };
+export { BeaconScanner as default, convertInputToCoordinateXYZ, isNumEql, ROTATION_MATRICES };
