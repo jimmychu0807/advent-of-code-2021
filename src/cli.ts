@@ -17,6 +17,7 @@ import { command as ChitonCommand } from "./15-chiton/index.js";
 import { command as PacketDecoderCommand } from "./16-packet-decoder/index.js";
 import { command as TrickShotCommand } from "./17-trick-shot/index.js";
 import { command as SnailfishCommand } from "./18-snailfish/index.js";
+import { command as BeaconScannerCommand } from "./19-beacon-scanner/index.js";
 import { command as TrenchMapCommand } from "./20-trench-map/index.js";
 import { command as DiracDiceCommand } from "./21-dirac-dice/index.js";
 import { command as ReactorRebootCommand } from "./22-reactor-reboot/index.js";
@@ -54,6 +55,7 @@ program
   .addCommand(PacketDecoderCommand)
   .addCommand(TrickShotCommand)
   .addCommand(SnailfishCommand)
+  .addCommand(BeaconScannerCommand)
   .addCommand(TrenchMapCommand)
   .addCommand(DiracDiceCommand)
   .addCommand(ReactorRebootCommand)

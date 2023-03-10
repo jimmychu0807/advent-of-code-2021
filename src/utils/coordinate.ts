@@ -50,8 +50,12 @@ class CoordinateXYZ {
     );
   }
 
-  public offset(offsetBy: CoordinateXYZ): CoordinateXYZ {
-    return new CoordinateXYZ(this.x + offsetBy.x, this.y + offsetBy.y, this.z + offsetBy.z);
+  public add(pt: CoordinateXYZ): CoordinateXYZ {
+    return new CoordinateXYZ(this.x + pt.x, this.y + pt.y, this.z + pt.z);
+  }
+
+  public minus(pt: CoordinateXYZ): CoordinateXYZ {
+    return new CoordinateXYZ(this.x - pt.x, this.y - pt.y, this.z - pt.z);
   }
 }
 
