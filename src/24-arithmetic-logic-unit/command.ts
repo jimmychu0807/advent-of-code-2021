@@ -23,9 +23,8 @@ command.action((options: CommandOptionsDF) => {
     return res;
   };
 
-  // This problem eventually is not solved by writing a program.
-  // It is solved by figuring what the MONAD program does.
-  // Ref:
+  // This problem eventually is solved not by writing a program,
+  // but by figuring out what the MONAD program does. Ref:
   //   1. https://www.reddit.com/r/adventofcode/comments/rom5l5/2021_day_24pen_paper_monad_deparsed/
   //   2. Over-engineering 1: https://www.reddit.com/r/adventofcode/comments/rnwz9p/2021_day_24_solving_the_alu_programmatically_with/
   //   3. Over-engineering 2: https://www.mattkeeter.com/blog/2021-12-27-brute/
