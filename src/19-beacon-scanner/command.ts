@@ -14,8 +14,11 @@ decorateCommand(command, { file: true, default: true, input: false });
 command.action((options: CommandOptionsDF) => {
   try {
     const input = parseArgsDF(options, QUEST_INPUT_URL);
-    const [knownPts] = BeaconScanner.solve(input.join("\n"));
+    const [knownPts, scannerLocs] = BeaconScanner.solve(input.join("\n"));
     console.log(`Part I result: ${knownPts.length}`);
+
+    const dist = BeaconScanner.getLargestManhattanDist(scannerLocs);
+    console.log(`Part II result: ${dist}`);
   } catch (err) {
     console.log((err as Error).message);
     command.help();
