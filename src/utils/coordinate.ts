@@ -29,14 +29,14 @@ class CoordinateXYZ {
     this.z = Number(z);
   }
 
-  public static fromStr(input: string): CoordinateXYZ {
+  public static fromString(input: string): CoordinateXYZ {
     const xyz = input.split(",").map((v) => Number(v.trim()));
     if (xyz.length !== 3)
       throw new Error(`Unexpected input for creating a CoordinateXYZ: ${input}`);
     return new CoordinateXYZ(xyz[0]!, xyz[1]!, xyz[2]!);
   }
 
-  public toStr(): string {
+  public toString(): string {
     return `(${this.x}, ${this.y}), ${this.z}`;
   }
 
