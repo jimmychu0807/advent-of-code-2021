@@ -170,9 +170,7 @@ class BeaconScanner {
     return new CoordinateXYZ(x, y, z);
   }
 
-  public static solve(
-    input: string | CoordinateXYZ[][],
-  ): [CoordinateXYZ[], (CoordinateXYZ | undefined)[]] {
+  public static solve(input: string | CoordinateXYZ[][]): [CoordinateXYZ[], CoordinateXYZ[]] {
     if (input.length === 0) return [[], []];
 
     const scannerReports =
@@ -184,9 +182,7 @@ class BeaconScanner {
     ).fill(undefined);
     rotatedOffsetReports[0] = [...scannerReports[0]!];
 
-    const scannerLocs: (CoordinateXYZ | undefined)[] = new Array(scannerReports.length).fill(
-      undefined,
-    );
+    const scannerLocs = new Array(scannerReports.length).fill(undefined);
     scannerLocs[0]! = new CoordinateXYZ(0, 0, 0);
 
     while (rotatedOffsetReports.some((report) => !report)) {
@@ -282,6 +278,21 @@ class BeaconScanner {
 
     log("scannerLocs", scannerLocs);
     return [knownPts, scannerLocs];
+  }
+
+  public static getLargestManhattanDist(pts: CoordinateXYZ[]): number {
+    const numPts = pts.length;
+    const dists: number[][] = new Array(numPts).fill(0).map(() => new Array(numPts).fill(-1));
+
+    for (let rIdx = 0; rIdx < numPts - 1; rIdx++) {
+      for (let cIdx = rIdx + 1; cIdx < numPts; cIdx++) {
+        dists[rIdx]![cIdx] = pts[rIdx]!.mhtDist(pts[cIdx]!);
+      }
+    }
+
+    // get the largest value
+    const reduceToArr = dists.reduce((memo, row) => memo.concat(row).filter((v) => v >= 0), []);
+    return Math.max(...reduceToArr);
   }
 }
 

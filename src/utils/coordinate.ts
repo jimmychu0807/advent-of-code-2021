@@ -50,6 +50,10 @@ class CoordinateXYZ {
     );
   }
 
+  public mhtDist(pt: CoordinateXYZ): number {
+    return Math.abs(this.x - pt.x) + Math.abs(this.y - pt.y) + Math.abs(this.z - pt.z);
+  }
+
   public add(pt: CoordinateXYZ): CoordinateXYZ {
     return new CoordinateXYZ(this.x + pt.x, this.y + pt.y, this.z + pt.z);
   }

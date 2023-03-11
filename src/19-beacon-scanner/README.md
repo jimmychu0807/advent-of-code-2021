@@ -398,3 +398,5 @@ Sometimes, it's a good idea to appreciate just how big the ocean is. Using the *
 In the above example, scanners 2 (`1105,-1205,1229`) and 3 (`-92,-2380,-20`) are the largest Manhattan distance apart. In total, they are 1197 + 1175 + 1249 = 3621 units apart.
 
 **What is the largest Manhattan distance between any two scanners?**
+
+Your puzzle answer was `10918`.
