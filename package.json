@@ -68,6 +68,5 @@
     "registry": "https://registry.npmjs.org",
     "bin": "dist/index.js",
     "main": "dist/index.js"
-  },
-  "packageManager": "yarn@3.2.1"
+  }
 }
