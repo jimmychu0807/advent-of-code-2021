@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/node16-strictest/tsconfig.json",
+  "extends": "@tsconfig/node20/tsconfig.json",
   "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "composite": true,
@@ -7,8 +7,8 @@
     "esModuleInterop": true,
     "inlineSources": true,
     "inlineSourceMap": true,
-    "module": "es2020",
-    "moduleResolution": "nodenext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
     "strict": true,
     "target": "es2021",
