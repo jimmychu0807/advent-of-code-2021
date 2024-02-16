@@ -1,27 +1,29 @@
-name: Yarn Validate
+name: Validate
 on:
   pull_request:
   push:
     branches: [main]
 
 jobs:
-  yarn-validate:
+  validate:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        step: ['validate']
-    name: ${{ matrix.step }}
-    runs-on: ubuntu-latest
+        node-version: [20]
     steps:
-    - uses: actions/checkout@v3
-      with:
-        lfs: true
-        submodules: 'recursive'
-
-    - uses: actions/setup-node@v3
-      with:
-        node-version: lts/hydrogen
-
-    - name: ${{ matrix.step }}
-      run: |
-        yarn install --immutable | grep -v 'YN0013'
-        yarn ${{ matrix.step }}
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+          submodules: "recursive"
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+      - name: Validate
+        run: |
+          pnpm install
+          pnpm validate

@@ -59,26 +59,3 @@ yarn docs:serve
 ```
 
 - Do not update the root [`README.md`](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/README.md) directly. Instead update [`scripts/templates/README.md.tpl`](https://github.com/jimmychu0807/advent-of-code-2021/blob/main/scripts/templates/README.md.tpl) as `scripts/doc-update.ts` will auto-generate the doc based on this template.
-
-**For publishing packages**
-
-```bash
-# Contributor
-
-yarn changeset add
-yarn changeset version
-yarn install
-git add .
-git commit -m "message"
-git push <repo>
-# Pull request to remote repo base branch
-
-# Repo owner
-
-# (Squash) Merge PR from contributor to base branch
-yarn changeset publish
-git push --follow-tags
-```
-
-For detail refer to: <https://github.com/changesets/changesets/blob/main/packages/cli/README.md>
-
